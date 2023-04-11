@@ -1,1 +1,185 @@
-/* You can add global styles to this file, and also import other style files */
+/* COLORS */
+.my-fill-1{ background-color: violet;}
+.my-fill-2{ background-color:rosybrown;}
+.my-fill-3{ background-color: rgb(105, 48, 8); }
+
+.my-text-1{ color: violet; }
+.my-text-2{ color:rosybrown; }
+.my-text-3{ color: aquamarine; }
+.my-text-4{ color: rgb(105, 48, 8); }
+
+.my-border-1{ border-left: 8px solid violet; }
+
+/* ELEMENTS */
+body{ 
+  background-color:rgb(105, 48, 8); 
+  color: aquamarine; 
+  font-family:monospace;
+}
+.my-page{
+  border-top: 0px;
+  border-bottom: 10px solid violet;
+  border-left: 15px solid violet;
+  border-right: 20px solid violet;
+  background-image: linear-gradient(to right, rgb(105, 48, 8), violet); 
+  margin: 0 auto;
+  padding: 0px;
+}
+.my-caret{
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 6px dashed;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  color: aquamarine;
+}
+.my-btn-1{
+  font-weight: 600;
+  font-style: italic;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-color: rgb(105, 48, 8);
+  color: violet;
+  border: transparent;
+  font-size: 14px;
+  user-select: none;
+  margin: 8px;
+}
+.my-btn-2{
+  font-weight: 400;
+  padding: 4px 8px;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-color: rgba(10,5,1,.75);
+  color: aquamarine;
+  border: 1px solid aquamarine;
+  font-size: 14px;
+  user-select: none;
+  margin: 0px;
+}
+.my-btn-3{
+  font-weight: bolder;
+  padding: 7px 6px;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image:linear-gradient(to top left, rgb(64, 32, 9), rgb(85, 235, 185));
+  color: violet;
+  border: solid;
+  border-image: linear-gradient(to bottom right, rgb(105, 48, 8), aquamarine) 1/5px;
+  font-size: 20px;
+  user-select: none;
+}
+.my-fake-btn{
+  font-weight: 900;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor:default;
+  background-color: transparent;
+  color: violet;
+  border: 1px solid transparent;
+  font-size: 34px;
+  user-select: none;
+}
+.my-dropdown-1{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 100px;
+  max-width: 300px;
+  overflow-x: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  margin: 0px;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: rgba(10,5,1,.85);
+  background-clip: padding-box;
+  border: 1px solid aquamarine;
+  border-radius: 0px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.my-dropdown-1::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+.my-dropdown-1>li>a{
+  color: aquamarine;
+  padding-right: 10px;
+  margin-right: -20px;
+}
+.my-dropdown-1>li>a:focus, .my-dropdown-1>li>a:hover {
+  color: rgba(10,5,1,.85);;
+  text-decoration: none;
+  background-color: aquamarine;
+}
+.my-label-1{
+  font-weight: 900;
+  font-size: 125%;
+  padding-left: 2px;
+  margin-bottom: 0px;
+}
+.my-input-1{
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: aquamarine;
+  background-color: rgba(10,5,1,.75);
+  background-image: none;
+  border: 1px solid aquamarine;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.my-input-1:focus{
+  border-color: aquamarine;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px aquamarine;
+}
+.my-input-2{
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: aquamarine;
+  background-color: rgba(10,5,1,.5);
+  background-image: none;
+  border: 1px solid aquamarine;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.my-input-2:focus{
+  border-color: aquamarine;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px aquamarine;
+}
+
+/* FORMATTING */
+.my-fit{
+  margin: 0 auto;
+}
+.pad-5{
+  padding: 5px;
+}
+.pad-10{
+  padding: 10px;
+}
+

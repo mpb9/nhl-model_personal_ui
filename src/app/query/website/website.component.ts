@@ -1,0 +1,79 @@
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Website } from '../query.model';
+import { QueryService } from '../query.service';
+
+@Component({
+  selector: 'app-website',
+  templateUrl: './website.component.html',
+  styleUrls: ['./website.component.css']
+})
+export class WebsiteComponent implements OnInit {
+  multiplePages = false; 
+  multiplePagesText = "Need Multiple Pages?";
+
+  websites!: Website[];
+  @ViewChild('baseUrl') baseUrlRef!: ElementRef;
+  extensionGroups: string[][] = [["", "", ""]];
+  extensions: string[] = [];
+
+  constructor(private queryService: QueryService){}
+
+  ngOnInit(){
+    this.websites = this.queryService.getWebsites();
+    this.queryService.websitesChanged.subscribe(
+      (websites: Website[]) => {
+        this.websites = websites;
+      }
+    );
+  }
+
+  multiplePagesChanged(){
+    this.multiplePages = !this.multiplePages;
+    this.multiplePagesText = this.multiplePages ? "Just One Page?" : "Need Multiple Pages?";
+
+    this.extensions = [];
+    this.extensionGroups = [["", "", ""]];
+    this.queryService.updateQueryWebsite(new Website('', []));
+  }
+
+  updateExtensions(event: any, index: number){
+    if(event.target === null) return;
+    if(index === this.extensions.length){
+      this.extensions.push(event.target.value);
+    } else {
+      if(index > this.extensions.length) console.log("INDEX > EXT LENGTH");
+
+      this.extensions[index] = event.target.value;
+    }
+    this.updateWebsite();
+  }
+
+  autoCompleteExtensions(url: string){
+    let existingSearches = this.websites.filter((website) => website.baseUrl === url);
+
+    if(existingSearches !== undefined && this.multiplePages){
+      this.extensions = existingSearches[0].extensions;
+      for(let i = 0; i< this.extensions.length; i+=3){
+        let groupNum = i/3;
+        this.extensionGroups[groupNum][i] = this.extensions[i];
+        this.extensionGroups[groupNum][i+1] = this.extensions[i+1];
+        this.extensionGroups[groupNum][i+2] = this.extensions[i+2];
+      }
+    }
+
+    this.updateWebsite();
+  }
+
+  updateWebsite(){
+    let websiteSelected = new Website(this.baseUrlRef.nativeElement.value, this.extensions);
+    this.queryService.updateQueryWebsite(websiteSelected);
+  }
+
+  moreExtInputs(){
+    this.extensions.push("");     
+    this.extensions.push("");
+    this.extensions.push("");
+    this.extensionGroups.push(["", "", ""]);
+  }
+
+}

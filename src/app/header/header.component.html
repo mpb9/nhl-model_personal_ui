@@ -1,0 +1,39 @@
+<nav class="navbar navbar-default my-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" (click)="collapsed = !collapsed">
+        <span class="icon-bar" *ngFor="let iconBar of [1,2,3]"></span>
+      </button>
+      <a href="#" class="navbar-brand" style="font-size:x-large; color: violet;">BetNHL</a>
+    </div>
+    <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="#"
+            (click)="onSelect('option1')" 
+            style="font-size:large; color: aquamarine;">
+            Option1
+          </a>
+        </li>
+        <li>
+          <a href="#"
+            (click)="onSelect('option2')" 
+            style="font-size:large; color: aquamarine;">
+            Option2
+          </a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" appDropdown>
+          <a href="#" class="dropdown-toggle" role="button">
+            <span class="my-caret" ></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Do Something</a></li>
+            <li><a href="#">Do Something Else</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
