@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { WebsiteComponent } from './query/website/website.component';
 import { TableComponent } from './query/table/table.component';
+import { ResultComponent } from './query/result/result.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TableComponent } from './query/table/table.component';
     HeaderComponent,
     DropdownDirective,
     WebsiteComponent,
-    TableComponent
+    TableComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule

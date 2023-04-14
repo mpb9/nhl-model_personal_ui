@@ -3,38 +3,11 @@
     <h4 style="font-weight: bolder;">Website Properties</h4>
   </div>
   <div class="col-md-6" style="text-align: right;">
-    <button class="my-btn-1" (click)="multiplePagesChanged()">{{multiplePagesText}}</button>
+    <button class="my-btn-1" type="button" (click)="multiplePagesChanged()">{{multiplePagesText}}</button>
   </div>
 </div>
 <div class="row my-fit pad-10" [ngSwitch]="multiplePages">
-  <form *ngSwitchCase="false">
-    <div class="row my-fit">
-      <div class="col-md-3" style="text-align: center; padding-top: 5px;">
-        <div class="btn-group" appDropdown>
-          <button class="my-btn-2 dropdown-toggle" type="button">
-            Recent URLs
-            <span class="my-caret" ></span>
-          </button>
-          <ul class="dropdown-menu my-dropdown-1" 
-            style="margin: 0px; padding: 0px;">
-            <li *ngFor="let website of websites">
-              <a href="#" class="my-li-1" 
-                (click)="[baseUrl.value = website.baseUrl, autoCompleteExtensions(website.baseUrl)]">
-                {{website.baseUrl}}
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-8">
-        <label class="my-label-1">Website URL</label>
-        <input type="text" placeholder="Website URL"
-              class="my-input-2" #baseUrl 
-              (change)="autoCompleteExtensions(baseUrl.value)">
-      </div>
-    </div>
-  </form>
-  <form *ngSwitchDefault>
+  <form *ngSwitchCase="true">
     <div class="row my-fit">
       <div class="col-md-3" style="text-align: center; padding-top: 5px;">
         <div class="btn-group" appDropdown>
@@ -55,25 +28,74 @@
       </div>
       <div class="col-md-8">
         <label class="my-label-1">Base URL</label>
-        <input type="text" placeholder="Base URL"
-              class="my-input-2" #baseUrl 
-              (change)="autoCompleteExtensions(baseUrl.value)">
+        <input type="text" placeholder="Base URL" class="my-input-2" 
+              (change)="updateWebsite()" [value]="currentUrl" #baseUrl>
       </div>
     </div>
-    <div class="row my-fit" style="margin-left: 1.8%; padding-top: 5px; padding-bottom: 0px;">
-      <label class="my-label-1">Extensions</label>
+    <div class="row my-fit" style="padding-top: 10px; padding-bottom: -10px;">
+      <div class="col-md-3" style="padding-left: 30px; text-align: center;">
+        <label class="my-label-1" style="margin-right: 5px;">Extensions</label>
+        <div class="btn-group" appDropdown>
+          <button class="my-info-btn dropdown-toggle" type="button">
+            Syntax
+          </button>
+          <div class="dropdown-menu my-info-dropdown">
+            <p> <b style="font-style: italic;">Number Range:</b> ~num x-z </p>
+            <p> <b style="font-style: italic;">Date Range:</b> ~date dd/mm/yyyy-dd/mm/yyyy </p>
+            <p> <b style="font-style: italic;">Put Between prev-Ext's Range:</b> ~between x </p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row my-fit" *ngFor="let extensionGroup of extensionGroups; let i=index"
-      style="padding-top: 5px; padding-bottom: 10px;">
-      <div class="col-md-4" *ngFor="let extension of extensionGroup; let j=index">
+      style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
+      <div class="col-md-3" style="padding-left: 10px; padding-right: 10px;"
+          *ngFor="let extension of extensionGroup; let j=index">
         <input type="text" class="my-input-2" 
-          [placeholder]="'Extension ' + [3*i + j + 1]"
-          (change)="updateExtensions($event, 3*i + j)"
-          [value]="extensions[3*i + j] === undefined ? '' : extensions[3*i + j]">
+          [placeholder]="'Extension Part ' + [4*i + j + 1]"
+          (change)="updateExtensions($event, 4*i + j)"
+          [value]="extensions[4*i + j] === undefined ? '' : extensions[4*i + j]">
       </div>
     </div>
-    <div class="row my-fit" style="text-align: center; padding: 5px;">
-      <button class="my-btn-2" type="button" (click)="moreExtInputs()">Add More Extensions</button>
+    <div class="row my-fit" style="text-align: center; padding-bottom: 0px; padding-top: 15px; padding-left: 25px; padding-right: 25px;">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <button class="my-btn-2" type="button" (click)="moreExtInputs()">
+          Add More Extensions
+        </button>
+      </div>
+      <div class="col-md-4" style="text-align: right; padding-right: 30px;">
+        <button class="my-btn-4" type="button" (click)="clearExtInputs()">
+          Reset Extensions
+        </button>
+      </div>
+    </div>
+  </form>
+  <form *ngSwitchDefault>
+    <div class="row my-fit">
+      <div class="col-md-3" style="text-align: center; padding-top: 5px;">
+        <div class="btn-group" appDropdown>
+          <button class="my-btn-2 dropdown-toggle" type="button">
+            Recent URLs
+            <span class="my-caret" ></span>
+          </button>
+          <ul class="dropdown-menu my-dropdown-1" 
+            style="margin: 0px; padding: 0px;">
+            <li *ngFor="let website of websites">
+              <a href="#" class="my-li-1" 
+                (click)="[baseUrl.value = website.baseUrl, autoCompleteExtensions(website.baseUrl)]">
+                {{website.baseUrl}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <label class="my-label-1">Website URL</label>
+        <input type="text" placeholder="Website URL" class="my-input-2" 
+              (change)="updateWebsite()" [value]="currentUrl"
+              #baseUrl>
+      </div>
     </div>
   </form>
 </div>

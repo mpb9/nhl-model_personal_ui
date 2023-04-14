@@ -22,8 +22,10 @@ export class QueryService{
     {
       baseUrl: 'https://www.statmuse.com/nhl',
       extensions: [
-        '/ask?q=nhl+team+records+in+the+2018%2F2019+season',
-        '/ask?q=nhl+team+records+in+the+2019%2F2020+season'
+        '/ask?q=nhl+team+records+in+the+',
+        '~num 2014-2020',
+        '~between %2F',
+        '+season'
       ]
     },
     {
@@ -40,13 +42,21 @@ export class QueryService{
     website: new Website('', []) 
   };
 
+  // NEED TO HAVE A CURRENT WEBSITE / TABLE SO ALTERING WON'T CHANGE THEM UNTIL SUBMITTED
 
   // QUERY METHODS
   queryChanged = new EventEmitter<Query>();
   updateQuery(){
     console.log("QUERY UPDATED:");
-    console.log("WEBSITE: " + this.query.website.baseUrl  + ", [" + this.query.website.extensions + "]");
-    console.log("TABLE: " + this.query.table.name + " , [" + this.query.table.columns + "]");
+    console.log("WEBSITE: " + this.query.website.baseUrl);
+    console.log("  extensions: [");
+    this.query.website.extensions.forEach(ext => console.log("   " + ext));
+    console.log("  ]");
+    console.log("TABLE: " + this.query.table.name);
+    console.log("  columns: [");
+    this.query.table.columns.forEach(col => console.log("   [name: " + col.name + ", type: " + col.type + "]"));
+    console.log("  ]");
+    console.log("");
     this.queryChanged.emit(this.query);
   }
   updateQueryWebsite(website: Website){
@@ -60,6 +70,13 @@ export class QueryService{
   getQuery(){
     return this.query;
   }
+  getNewQuery(){
+    this.query = {
+      table: new Table('', []),
+      website: new Website('', []) 
+    };
+    return this.query;
+  }
 
   // TABLE METHODS
   tablesChanged = new EventEmitter<Table[]>();
@@ -70,6 +87,7 @@ export class QueryService{
     return this.tables.slice();
   }
   addTable(table: Table){
+    //ADD TIMESTAMP
     this.tables.push(table);
     this.updateTables();
   }
@@ -83,6 +101,7 @@ export class QueryService{
     return this.websites.slice();
   }
   addWebsite(website: Website){
+    //ADD TIMESTAMP
     this.websites.push(website);
     this.updateWebsites();
   }

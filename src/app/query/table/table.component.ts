@@ -10,6 +10,7 @@ import { Column, Table, Website } from '../query.model';
 export class TableComponent implements OnInit{
   tables!: Table[];
   @ViewChild('tableName') tableNameRef!: ElementRef;
+  currentName: string = "";
   columns: Column[] = [new Column("", "")];
 
   constructor(private queryService: QueryService){}
@@ -21,17 +22,19 @@ export class TableComponent implements OnInit{
         this.tables = tables;
       }
     );
+    this.columns = this.queryService.getQuery().table.columns.length > 0 
+                  ? this.queryService.getQuery().table.columns : [new Column("", "")];
+    this.currentName = this.queryService.getQuery().table.name;
   }
 
-  updateColumns(value: string, index: number, property: string){
-    if(index === this.columns.length){
-      if(property === "NAME") this.columns.push(new Column(value, ""));
-      if(property === "TYPE") this.columns.push(new Column("", value));
+  updateColumns(event: any | string, index: number, property: string){
+    if(event.target === undefined){
+      this.columns[index].type = event;      
     } else {
-      if(index > this.columns.length) console.log("INDEX > COL LENGTH");
-      if(property === "NAME") this.columns[index].name = value;
-      if(property === "TYPE") this.columns[index].type = value;
+      if(property === "NAME") this.columns[index].name = event.target.value;
+      if(property === "TYPE") this.columns[index].type = event.target.value;
     }
+
     this.updateTable();
   }
 
@@ -46,12 +49,15 @@ export class TableComponent implements OnInit{
   }
 
   updateTable(){
-    let tableSelected = new Table(this.tableNameRef.nativeElement.value, this.columns);
-    this.queryService.updateQueryTable(tableSelected);
+    this.queryService.updateQueryTable(new Table(this.tableNameRef.nativeElement.value, this.columns));
   }
 
   moreColumnInputs(){
     this.columns.push(new Column("", ""));
   }
 
+  clearColumnInputs(){
+    this.columns = [new Column("", "")];
+    this.updateTable();
+  }
 }

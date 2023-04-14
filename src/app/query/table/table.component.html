@@ -1,7 +1,7 @@
 <div class="row my-fill-3 my-fit" style="margin-top: 15px; padding-left: 10px; border-bottom: 2px solid aquamarine">
   <h4 style="font-weight: bolder;">Table Properties</h4>
 </div>
-<div class="row my-fit pad-10">
+<div class="row my-fit pad-10" style="padding-bottom: 50px;">
   <form>
     <div class="row my-fit">
       <div class="col-md-3" style="text-align: center; padding-top: 5px;">
@@ -23,10 +23,9 @@
       </div>
       <div class="col-md-8">
         <label class="my-label-1">Table Name</label>
-        <input type="text" 
-              placeholder="Table Name"
-              class="my-input-2" #tableName 
-              (change)="autoCompleteColumns(tableName.value)">
+        <input type="text" placeholder="Table Name" class="my-input-2"
+              (change)="updateTable()" [value]="currentName"
+              #tableName>
       </div>
     </div>
     <div class="row my-fit" style="padding-top: 15px; ">
@@ -41,22 +40,77 @@
         <div class="col-md-3">
         </div>
         <div class="col-md-4">
-          <p style="text-align: right; margin: 0 auto;">N A M E</p>
+          <p style="text-align: right; margin: 0 auto;" *ngIf="i == 0">N A M E</p>
           <input type="text" class="my-input-2" 
           [placeholder]="'Column Name ' + [i+1]"
-          (change)="updateColumns(column.name, i, 'NAME')"
+          (change)="updateColumns($event, i, 'NAME')"
           [value]="column.name === undefined ? '' : column.name">
         </div>
         <div class="col-md-4">
-          <p style="text-align: right; margin: 0 auto;">T Y P E</p>
-          <input type="text" class="my-input-2" 
-          [placeholder]="'Column Type ' + [i+1]"
-          (change)="updateColumns(column.type, i, 'TYPE')"
-          [value]="column.type === undefined ? '' : column.type">
+          <p style="text-align: right; margin: 0 auto;" *ngIf="i == 0">T Y P E</p>
+          <div class="row my-fit" style="display: flex;">
+            <input type="text" class="my-column-type-input dropdown-toggle" 
+            [placeholder]="'Column Type ' + [i+1]"
+            (change)="updateColumns($event, i, 'TYPE')"
+            [value]="column.type === undefined ? '' : column.type" #colType>
+            <div style="width: 15%;" appDropdown>
+              <button class="my-column-type-btn dropdown-toggle" type="button">
+                <span class="my-caret" ></span>
+              </button>
+              <ul class="dropdown-menu my-column-type-dropdown">
+                <li>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'INT', updateColumns('INT', i, 'TYPE')]">
+                  INT </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'VARCHAR', updateColumns('VARCHAR', i, 'TYPE')]">
+                  VARCHAR </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'TEXT', updateColumns('TEXT', i, 'TYPE')]">
+                  TEXT </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'DATE', updateColumns('DATE', i, 'TYPE')]">
+                  DATE </a>
+                  <p>Numeric</p>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'FLOAT', updateColumns('FLOAT', i, 'TYPE')]">
+                  FLOAT </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'BOOLEAN', updateColumns('BOOLEAN', i, 'TYPE')]">
+                  BOOLEAN </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'DECIMAL', updateColumns('DECIMAL', i, 'TYPE')]">
+                  DECIMAL </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'TINYINT', updateColumns('TINYINT', i, 'TYPE')]">
+                  TINYINT </a>
+                  <p>Date and Time</p>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'DATETIME', updateColumns('DATETIME', i, 'TYPE')]">
+                  DATETIME </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'TIME', updateColumns('TIME', i, 'TYPE')]">
+                  TIME </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'YEAR', updateColumns('YEAR', i, 'TYPE')]">
+                  YEAR </a>
+                  <p>String</p>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'CHAR', updateColumns('CHAR', i, 'TYPE')]">
+                  CHAR </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'BLOB', updateColumns('BLOB', i, 'TYPE')]">
+                  BLOB </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'ENUM', updateColumns('ENUM', i, 'TYPE')]">
+                  ENUM </a>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'SET', updateColumns('SET', i, 'TYPE')]">
+                  SET </a>
+                  <p>JSON</p>
+                  <a href="#" class="my-li-1" (click)="[colType.value = 'JSON', updateColumns('JSON', i, 'TYPE')]">
+                  JSON </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
     </div>
-    <div class="row my-fit" style="text-align: center; padding: 5px;">
+    <div class="row my-fit" style="text-align: center; padding-bottom: 0px; padding-top: 15px; padding-left: 25px; padding-right: 25px;">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
       <button class="my-btn-2" type="button" (click)="moreColumnInputs()">Add More Columns</button>
+      </div>
+      <div class="col-md-4" style="text-align: center;">
+        <button class="my-btn-4" type="button" (click)="clearColumnInputs()">
+          Reset Columns
+        </button>
+      </div>
     </div>
   </form>
 </div>

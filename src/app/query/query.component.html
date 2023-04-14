@@ -1,4 +1,4 @@
-<div class="col-md-12 my-page" style="margin: 0 auto;">
+<div class="col-md-12 my-page" style="margin: 0 auto;" *ngIf="createQuery">
   <div class="row my-fill-1 my-fit" style="padding: 5px; background-image: linear-gradient(to bottom, rgb(105, 48, 8), aquamarine);">
     <div class="col-md-6" style="text-align: right; padding-right: 1px;">
       <button class="my-btn-3" type="button" (click)="submitQuery()">create</button>
@@ -9,4 +9,21 @@
   </div>
   <app-website></app-website>
   <app-table></app-table>
+</div>
+<div class="col-md-12 my-page" style="margin: 0 auto;" *ngIf="!createQuery">
+  <div class="row my-fill-1 my-fit" style="padding: 5px; background-image: linear-gradient(to bottom, rgb(105, 48, 8), aquamarine);">
+    <div class="col-md-3" style="text-align: right; padding-right: 1px;">
+      <button class="my-btn-3" type="button" (click)="editQuery()">edit</button>
+    </div>
+    <div class="col-md-3" style="text-align: left; padding-left: 1px; margin-top: -4px;">
+      <button class="my-fake-btn">QUERY</button>
+    </div>
+    <div class="col-md-3" style="text-align: right; padding-right: 1px;">
+      <button class="my-btn-3" type="button" (click)="newQuery()">new</button>
+    </div>
+    <div class="col-md-3" style="text-align: left; padding-left: 1px; margin-top: -4px;">
+      <button class="my-fake-btn">QUERY</button>
+    </div>
+  </div>
+  <app-result></app-result>
 </div>

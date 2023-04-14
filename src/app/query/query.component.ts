@@ -9,7 +9,7 @@ import { QueryService } from './query.service';
 })
 export class QueryComponent implements OnInit{
   currentQuery!: Query;
-
+  createQuery: boolean = true;
 
   constructor(private queryService: QueryService){}
   
@@ -26,5 +26,27 @@ export class QueryComponent implements OnInit{
     console.log(this.currentQuery.table.name);
     console.log(this.currentQuery.table.columns);
 
+    this.queryService.addTable(this.currentQuery.table);
+    this.queryService.addWebsite(this.currentQuery.website);
+    this.createQuery = false;
   }
+
+  newQuery(){
+    this.currentQuery = this.queryService.getNewQuery();
+    this.createQuery = true;
+    console.log(this.currentQuery.website.baseUrl);
+    console.log(this.currentQuery.website.extensions);
+    console.log(this.currentQuery.table.name);
+    console.log(this.currentQuery.table.columns);
+  }
+
+  editQuery(){
+    this.currentQuery = this.queryService.getQuery();
+    this.createQuery = true;
+    console.log(this.currentQuery.website.baseUrl);
+    console.log(this.currentQuery.website.extensions);
+    console.log(this.currentQuery.table.name);
+    console.log(this.currentQuery.table.columns);
+  }
+
 }

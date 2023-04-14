@@ -8,12 +8,14 @@ import { QueryService } from '../query.service';
   styleUrls: ['./website.component.css']
 })
 export class WebsiteComponent implements OnInit {
-  multiplePages = false; 
-  multiplePagesText = "Need Multiple Pages?";
+  // can try to make multiple pages be false if returning from edit and it was false for prev query
+  multiplePages = true; 
+  multiplePagesText = "Just One Page?";
 
   websites!: Website[];
   @ViewChild('baseUrl') baseUrlRef!: ElementRef;
-  extensionGroups: string[][] = [["", "", ""]];
+  currentUrl: string = "";
+  extensionGroups: string[][] = [["", "", "", ""]];
   extensions: string[] = [];
 
   constructor(private queryService: QueryService){}
@@ -21,10 +23,10 @@ export class WebsiteComponent implements OnInit {
   ngOnInit(){
     this.websites = this.queryService.getWebsites();
     this.queryService.websitesChanged.subscribe(
-      (websites: Website[]) => {
-        this.websites = websites;
-      }
+      (websites: Website[]) => { this.websites = websites; }
     );
+    this.extensions = this.queryService.getQuery().website.extensions;
+    this.currentUrl = this.queryService.getQuery().website.baseUrl;
   }
 
   multiplePagesChanged(){
@@ -32,7 +34,7 @@ export class WebsiteComponent implements OnInit {
     this.multiplePagesText = this.multiplePages ? "Just One Page?" : "Need Multiple Pages?";
 
     this.extensions = [];
-    this.extensionGroups = [["", "", ""]];
+    this.extensionGroups = [["", "", "", ""]];
     this.queryService.updateQueryWebsite(new Website('', []));
   }
 
@@ -53,11 +55,12 @@ export class WebsiteComponent implements OnInit {
 
     if(existingSearches !== undefined && this.multiplePages){
       this.extensions = existingSearches[0].extensions;
-      for(let i = 0; i< this.extensions.length; i+=3){
-        let groupNum = i/3;
-        this.extensionGroups[groupNum][i] = this.extensions[i];
-        this.extensionGroups[groupNum][i+1] = this.extensions[i+1];
-        this.extensionGroups[groupNum][i+2] = this.extensions[i+2];
+      this.extensionGroups = [];
+      for(let i = 0; i< this.extensions.length; i+=4){
+        this.extensionGroups.push([
+          this.extensions[i], this.extensions[i+1],
+          this.extensions[i+2], this.extensions[i+3]
+        ]);
       }
     }
 
@@ -73,7 +76,14 @@ export class WebsiteComponent implements OnInit {
     this.extensions.push("");     
     this.extensions.push("");
     this.extensions.push("");
-    this.extensionGroups.push(["", "", ""]);
+    this.extensions.push("");
+    this.extensionGroups.push(["", "", "", ""]);
+  }
+
+  clearExtInputs(){
+    this.extensions = [];
+    this.extensionGroups = [["", "", "", ""]];
+    this.queryService.updateQueryWebsite(new Website(this.baseUrlRef.nativeElement.value, []));
   }
 
 }
