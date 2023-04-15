@@ -1,8 +1,10 @@
 import { EventEmitter } from "@angular/core";
 import { Query, Table, Website } from "./query.model";
+import axios from "axios";
 
+const MY_QUERIES = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/queries.php';
 export class QueryService{
-  private tables: Table[] =[
+  private tables: Table[] = [
     { 
       name: 'full_reg_season_stats',
       columns: [
@@ -46,17 +48,24 @@ export class QueryService{
 
   // QUERY METHODS
   queryChanged = new EventEmitter<Query>();
+  loadQueries(){
+    axios({
+      method: "post",
+      url: `${MY_QUERIES}`,
+      headers: { "content-type": "application/json" }
+    }).then((result) => {
+      const value = result.data;
+      console.log(value.table_name);
+      console.log(value.base_url);
+      this.query.table.name = value.table_name;
+      this.query.website.baseUrl = value.base_url;
+    }).catch((error) => {
+      console.log(error);
+    });
+    return this.getQuery();
+  }
   updateQuery(){
-    console.log("QUERY UPDATED:");
-    console.log("WEBSITE: " + this.query.website.baseUrl);
-    console.log("  extensions: [");
-    this.query.website.extensions.forEach(ext => console.log("   " + ext));
-    console.log("  ]");
-    console.log("TABLE: " + this.query.table.name);
-    console.log("  columns: [");
-    this.query.table.columns.forEach(col => console.log("   [name: " + col.name + ", type: " + col.type + "]"));
-    console.log("  ]");
-    console.log("");
+    this.printQuery();
     this.queryChanged.emit(this.query);
   }
   updateQueryWebsite(website: Website){
@@ -77,9 +86,25 @@ export class QueryService{
     };
     return this.query;
   }
+  printQuery(){
+    console.log("QUERY UPDATED:");
+    console.log("WEBSITE: " + this.query.website.baseUrl);
+    console.log("  extensions: [");
+    this.query.website.extensions.forEach(ext => console.log("   " + ext));
+    console.log("  ]");
+    console.log("TABLE: " + this.query.table.name);
+    console.log("  columns: [");
+    this.query.table.columns.forEach(col => console.log("   [name: " + col.name + ", type: " + col.type + "]"));
+    console.log("  ]");
+    console.log("");
+  }
 
   // TABLE METHODS
   tablesChanged = new EventEmitter<Table[]>();
+
+  loadTables(){
+    
+  }
   updateTables(){
     this.tablesChanged.emit(this.tables.slice());
   }

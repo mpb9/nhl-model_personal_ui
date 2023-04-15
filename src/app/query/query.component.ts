@@ -18,6 +18,10 @@ export class QueryComponent implements OnInit{
     this.queryService.queryChanged.subscribe(
       this.currentQuery = this.queryService.getQuery()
     );
+    this.currentQuery = this.queryService.loadQueries();
+    console.log(this.currentQuery.website.baseUrl);
+    console.log(this.currentQuery.table.name);
+
   }
 
   submitQuery(){
