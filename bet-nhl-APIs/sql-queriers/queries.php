@@ -10,10 +10,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/bet-nhl/bet-nhl-APIs/includes/helpers.inc.
 $restJson = file_get_contents("php://input");
 $_POST = json_decode($restJson, true);
 
+
 try{
-  $sql = "SELECT query_id, table_name, base_url FROM queries
-    WHERE table_name IS NOT NULL
-    AND base_url IS NOT NULL";
+  $sql = "SELECT * FROM queries";
   $s = $pdo->prepare($sql);
   $s->execute();
 } catch (PDOException $e) {
