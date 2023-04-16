@@ -4,31 +4,9 @@ import axios from "axios";
 
 const MY_QUERIES = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/saved_queries.php';
 export class QueryService{
-  private tables: Table[] = [
-    { 
-      name: 'full_reg_season_stats',
-      columns: [
-        { name: 'year', type: 'VARCHAR(9)'}, { name: 'team', type: 'VARCHAR'},
-        { name: 'gp', type: 'INT(2)'}, { name: 'record', type: 'VARCHAR(8)'},
-        { name: 'pts', type: 'INT(3)'}, { name: 'w', type: 'INT(2)'},
-        { name: 'l', type: 'INT(2)'}, { name: 't', type: 'INT(2)'},
-        { name: 'otl', type: 'INT(2)'}, { name: 'pts_pct', type: 'FLOAT'},
-        { name: 'g', type: 'INT(3)'}, { name: 'ga', type: 'INT(3)'},
-        { name: 'pp_pct', type: 'FLOAT'}, { name: 'pk_pct', type: 'FLOAT'},
-        { name: 's_per_gp', type: 'FLOAT'}, { name: 'sa_per_gp', type: 'FLOAT'}
-      ]
-    }
-  ];
+  private tables: Table[] = [];
 
-  private websites: Website[] = [
-    {
-      baseUrl: 'https://www.statmuse.com/nhl/something',
-      extensions: [
-        '/ask?q=nhl+team+records+in+the+2021%2F2022+season',
-        '/ask?q=nhl+team+records+in+the+2020%2F2021+season'
-      ]
-    }
-  ];
+  private websites: Website[] = [];
 
   public query: Query = {
     table: new Table('', []),
@@ -46,23 +24,10 @@ export class QueryService{
       headers: { "content-type": "application/json" }
     }).then((result) => {
       const all_saved_queries = result.data;
-      
       all_saved_queries.forEach((saved_query: { table: { table_name: string; columns: Column[]; }; website: { base_url: string; extensions: string[]; }; }) => {
-        
-        const saved_table = new Table(
-          saved_query.table.table_name,
-          saved_query.table.columns
-        );
-        this.addTable(saved_table);
-
-        this.addWebsite(new Website(
-          saved_query.website.base_url,
-          saved_query.website.extensions
-        ));
-
+        this.addTable( new Table(saved_query.table.table_name, saved_query.table.columns) );
+        this.addWebsite( new Website(saved_query.website.base_url, saved_query.website.extensions) );
       });
-
-      
     }).catch((error) => {
       console.log(error);
     });

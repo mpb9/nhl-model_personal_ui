@@ -14,11 +14,10 @@ export class QueryComponent implements OnInit{
   constructor(private queryService: QueryService){}
   
   ngOnInit() {
-    this.currentQuery = this.queryService.getQuery();
+    this.currentQuery = this.queryService.loadQueries();
     this.queryService.queryChanged.subscribe(
       this.currentQuery = this.queryService.getQuery()
     );
-    this.currentQuery = this.queryService.loadQueries();
     console.log(this.currentQuery.website.baseUrl);
     console.log(this.currentQuery.table.name);
 
