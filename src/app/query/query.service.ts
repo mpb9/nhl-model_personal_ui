@@ -1,8 +1,8 @@
 import { EventEmitter } from "@angular/core";
-import { Query, Table, Website } from "./query.model";
+import { Column, Query, Table, Website } from "./query.model";
 import axios from "axios";
 
-const MY_QUERIES = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/queries.php';
+const MY_QUERIES = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/saved_queries.php';
 export class QueryService{
   private tables: Table[] = [
     { 
@@ -21,15 +21,6 @@ export class QueryService{
   ];
 
   private websites: Website[] = [
-    {
-      baseUrl: 'https://www.statmuse.com/nhl',
-      extensions: [
-        '/ask?q=nhl+team+records+in+the+',
-        '~num 2014-2020',
-        '~between %2F',
-        '+season'
-      ]
-    },
     {
       baseUrl: 'https://www.statmuse.com/nhl/something',
       extensions: [
@@ -54,11 +45,24 @@ export class QueryService{
       url: `${MY_QUERIES}`,
       headers: { "content-type": "application/json" }
     }).then((result) => {
-      const value = result.data;
-      console.log(value.table_name);
-      console.log(value.base_url);
-      this.query.table.name = value.table_name;
-      this.query.website.baseUrl = value.base_url;
+      const all_saved_queries = result.data;
+      
+      all_saved_queries.forEach((saved_query: { table: { table_name: string; columns: Column[]; }; website: { base_url: string; extensions: string[]; }; }) => {
+        
+        const saved_table = new Table(
+          saved_query.table.table_name,
+          saved_query.table.columns
+        );
+        this.addTable(saved_table);
+
+        this.addWebsite(new Website(
+          saved_query.website.base_url,
+          saved_query.website.extensions
+        ));
+
+      });
+
+      
     }).catch((error) => {
       console.log(error);
     });
