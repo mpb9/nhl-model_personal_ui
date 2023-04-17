@@ -13,7 +13,10 @@
               (click)="manageTypeChanged('delete')">delete queries</button>
     </div>
   </div>
-  <div class="row my-fit">
+  <div class="row my-fit" *ngIf="deleted">
+    DELETED
+  </div>
+  <div class="row my-fit" *ngIf="!deleted">
     <div class="row my-fill-3 my-fit" style="padding: 2px; border-bottom: 2px solid aquamarine">
       <div class="col-md-6">
         <h4 style="font-weight: bolder;" *ngIf="manageType=='edit'">Edit Queries</h4>

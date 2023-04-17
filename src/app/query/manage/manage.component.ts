@@ -10,13 +10,13 @@ import { QueryService } from '../query.service';
 export class ManageComponent implements OnInit {
   manageType: string = 'edit';
   queries: Query[] = [];
-
+  deleted = false;
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
     this.queries = this.queryService.loadQueries();
     this.queryService.queriesChanged.subscribe(
-      (queries: Query[]) => { this.queries = queries; }
+      this.queries = this.queryService.loadQueries()
     );
   }
 
@@ -26,6 +26,7 @@ export class ManageComponent implements OnInit {
 
   deleteQuery(query: Query){
     this.queryService.deleteQuery(query);
+    this.deleted = true;
   }
 
 

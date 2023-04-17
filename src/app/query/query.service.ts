@@ -61,7 +61,7 @@ export class QueryService{
       headers: { "content-type": "application/json" },
       data: this.query
     }).then(()=>{
-      this.queries = [];
+      this.clearQueries();
     }).then(()=>{
       this.loadQueries();
     }).catch((error) => console.log(error));
