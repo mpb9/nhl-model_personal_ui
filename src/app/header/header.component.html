@@ -4,22 +4,18 @@
       <button type="button" class="navbar-toggle" (click)="collapsed = !collapsed">
         <span class="icon-bar" *ngFor="let iconBar of [1,2,3]"></span>
       </button>
-      <a href="#" class="navbar-brand" style="font-size:x-large; color: violet;">BetNHL</a>
+      <a routerLink="" class="navbar-brand" style="font-size:x-large; color: violet;">BetNHL</a>
     </div>
     <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
       <ul class="nav navbar-nav">
         <li>
-          <a href="#"
-            (click)="onSelect('option1')" 
-            style="font-size:large; color: aquamarine;">
-            Option1
+          <a routerLink="/querier" style="font-size:large; color: aquamarine;">
+            New Query
           </a>
         </li>
         <li>
-          <a href="#"
-            (click)="onSelect('option2')" 
-            style="font-size:large; color: aquamarine;">
-            Option2
+          <a routerLink="/querier/manage" style="font-size:large; color: aquamarine;">
+            Manage Queries
           </a>
         </li>
       </ul>

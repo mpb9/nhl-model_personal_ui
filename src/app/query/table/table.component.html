@@ -12,10 +12,10 @@
           </button>
           <ul class="dropdown-menu my-dropdown-1" 
             style="margin: 0px; padding: 0px;">
-            <li *ngFor="let table of tables">
-              <a href="#" class="my-li-1" 
-                (click)="[tableName.value = table.name, autoCompleteColumns(table.name)]">
-                {{table.name}}
+            <li *ngFor="let query of queries">
+              <a routerLink="/querier" class="my-li-1" 
+                (click)="[tableName.value = query.table.name, autoCompleteColumns(query.table.name)]">
+                {{query.table.name}}
               </a>
             </li>
           </ul>
@@ -59,41 +59,41 @@
               </button>
               <ul class="dropdown-menu my-column-type-dropdown">
                 <li>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'INT', updateColumns('INT', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'INT', updateColumns('INT', i, 'TYPE')]">
                   INT </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'VARCHAR', updateColumns('VARCHAR', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'VARCHAR', updateColumns('VARCHAR', i, 'TYPE')]">
                   VARCHAR </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'TEXT', updateColumns('TEXT', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'TEXT', updateColumns('TEXT', i, 'TYPE')]">
                   TEXT </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'DATE', updateColumns('DATE', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'DATE', updateColumns('DATE', i, 'TYPE')]">
                   DATE </a>
                   <p>Numeric</p>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'FLOAT', updateColumns('FLOAT', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'FLOAT', updateColumns('FLOAT', i, 'TYPE')]">
                   FLOAT </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'BOOLEAN', updateColumns('BOOLEAN', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'BOOLEAN', updateColumns('BOOLEAN', i, 'TYPE')]">
                   BOOLEAN </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'DECIMAL', updateColumns('DECIMAL', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'DECIMAL', updateColumns('DECIMAL', i, 'TYPE')]">
                   DECIMAL </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'TINYINT', updateColumns('TINYINT', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'TINYINT', updateColumns('TINYINT', i, 'TYPE')]">
                   TINYINT </a>
                   <p>Date and Time</p>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'DATETIME', updateColumns('DATETIME', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'DATETIME', updateColumns('DATETIME', i, 'TYPE')]">
                   DATETIME </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'TIME', updateColumns('TIME', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'TIME', updateColumns('TIME', i, 'TYPE')]">
                   TIME </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'YEAR', updateColumns('YEAR', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'YEAR', updateColumns('YEAR', i, 'TYPE')]">
                   YEAR </a>
                   <p>String</p>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'CHAR', updateColumns('CHAR', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'CHAR', updateColumns('CHAR', i, 'TYPE')]">
                   CHAR </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'BLOB', updateColumns('BLOB', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'BLOB', updateColumns('BLOB', i, 'TYPE')]">
                   BLOB </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'ENUM', updateColumns('ENUM', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'ENUM', updateColumns('ENUM', i, 'TYPE')]">
                   ENUM </a>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'SET', updateColumns('SET', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'SET', updateColumns('SET', i, 'TYPE')]">
                   SET </a>
                   <p>JSON</p>
-                  <a href="#" class="my-li-1" (click)="[colType.value = 'JSON', updateColumns('JSON', i, 'TYPE')]">
+                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'JSON', updateColumns('JSON', i, 'TYPE')]">
                   JSON </a>
                 </li>
               </ul>

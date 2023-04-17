@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../query.service';
-import { Column, Table, Website } from '../query.model';
+import { Column, Query, Table, Website } from '../query.model';
 
 @Component({
   selector: 'app-table',
@@ -8,7 +8,8 @@ import { Column, Table, Website } from '../query.model';
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit{
-  tables!: Table[];
+  //tables!: Table[];
+  queries: Query[] = [];
   @ViewChild('tableName') tableNameRef!: ElementRef;
   currentName: string = "";
   columns: Column[] = [new Column("", "")];
@@ -16,11 +17,9 @@ export class TableComponent implements OnInit{
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
-    this.tables = this.queryService.getTables();
-    this.queryService.tablesChanged.subscribe(
-      (tables: Table[]) => {
-        this.tables = tables;
-      }
+    this.queries = this.queryService.loadQueries()
+    this.queryService.queriesChanged.subscribe(
+      this.queries = this.queryService.loadQueries() 
     );
     this.columns = this.queryService.getQuery().table.columns.length > 0 
                   ? this.queryService.getQuery().table.columns : [new Column("", "")];
@@ -39,17 +38,17 @@ export class TableComponent implements OnInit{
   }
 
   autoCompleteColumns(table_name: string){
-    let existingSearches = this.tables.filter((table) => table.name === table_name);
+    let existingSearches = this.queries.filter((query) => query.table.name === table_name);
 
     if(existingSearches !== undefined){
-      this.columns = existingSearches[0].columns;
+      this.columns = existingSearches[0].table.columns;
     }
 
     this.updateTable();
   }
 
   updateTable(){
-    this.queryService.updateQueryTable(new Table(this.tableNameRef.nativeElement.value, this.columns));
+    this.queryService.updateQueryTable(new Table(this.queries.length, this.tableNameRef.nativeElement.value, this.columns));
   }
 
   moreColumnInputs(){

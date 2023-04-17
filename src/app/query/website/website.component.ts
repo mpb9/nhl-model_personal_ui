@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Website } from '../query.model';
+import { Query, Website } from '../query.model';
 import { QueryService } from '../query.service';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-website',
@@ -11,8 +12,7 @@ export class WebsiteComponent implements OnInit {
   // can try to make multiple pages be false if returning from edit and it was false for prev query
   multiplePages = true; 
   multiplePagesText = "Just One Page?";
-
-  websites!: Website[];
+  queries: Query[] = [];
   @ViewChild('baseUrl') baseUrlRef!: ElementRef;
   currentUrl: string = "";
   extensionGroups: string[][] = [["", "", "", ""]];
@@ -21,9 +21,9 @@ export class WebsiteComponent implements OnInit {
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
-    this.websites = this.queryService.getWebsites();
-    this.queryService.websitesChanged.subscribe(
-      (websites: Website[]) => { this.websites = websites; }
+    this.queries = this.queryService.loadQueries();
+    this.queryService.queriesChanged.subscribe(
+      this.queries = this.queryService.loadQueries() 
     );
     this.extensions = this.queryService.getQuery().website.extensions;
     this.currentUrl = this.queryService.getQuery().website.baseUrl;
@@ -35,7 +35,7 @@ export class WebsiteComponent implements OnInit {
 
     this.extensions = [];
     this.extensionGroups = [["", "", "", ""]];
-    this.queryService.updateQueryWebsite(new Website('', []));
+    this.queryService.updateQueryWebsite(new Website(this.queries.length, '', []));
   }
 
   updateExtensions(event: any, index: number){
@@ -51,10 +51,10 @@ export class WebsiteComponent implements OnInit {
   }
 
   autoCompleteExtensions(url: string){
-    let existingSearches = this.websites.filter((website) => website.baseUrl === url);
+    let existingSearches = this.queries.filter((query) => query.website.baseUrl === url);
 
     if(existingSearches !== undefined && this.multiplePages){
-      this.extensions = existingSearches[0].extensions;
+      this.extensions = existingSearches[0].website.extensions;
       this.extensionGroups = [];
       for(let i = 0; i< this.extensions.length; i+=4){
         this.extensionGroups.push([
@@ -68,7 +68,7 @@ export class WebsiteComponent implements OnInit {
   }
 
   updateWebsite(){
-    let websiteSelected = new Website(this.baseUrlRef.nativeElement.value, this.extensions);
+    let websiteSelected = new Website(this.queries.length, this.baseUrlRef.nativeElement.value, this.extensions);
     this.queryService.updateQueryWebsite(websiteSelected);
   }
 
@@ -83,7 +83,7 @@ export class WebsiteComponent implements OnInit {
   clearExtInputs(){
     this.extensions = [];
     this.extensionGroups = [["", "", "", ""]];
-    this.queryService.updateQueryWebsite(new Website(this.baseUrlRef.nativeElement.value, []));
+    this.queryService.updateQueryWebsite(new Website(this.queries.length, this.baseUrlRef.nativeElement.value, []));
   }
 
 }

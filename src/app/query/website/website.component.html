@@ -17,10 +17,10 @@
           </button>
           <ul class="dropdown-menu my-dropdown-1" 
             style="margin: 0px; padding: 0px;">
-            <li *ngFor="let website of websites">
-              <a href="#" class="my-li-1" 
-                (click)="[baseUrl.value = website.baseUrl, autoCompleteExtensions(website.baseUrl)]">
-                {{website.baseUrl}}
+            <li *ngFor="let query of queries">
+              <a routerLink="/querier" class="my-li-1" 
+                (click)="[baseUrl.value = query.website.baseUrl, autoCompleteExtensions(query.website.baseUrl)]">
+                {{query.website.baseUrl}}
               </a>
             </li>
           </ul>
@@ -81,10 +81,10 @@
           </button>
           <ul class="dropdown-menu my-dropdown-1" 
             style="margin: 0px; padding: 0px;">
-            <li *ngFor="let website of websites">
-              <a href="#" class="my-li-1" 
-                (click)="[baseUrl.value = website.baseUrl, autoCompleteExtensions(website.baseUrl)]">
-                {{website.baseUrl}}
+            <li *ngFor="let query of queries">
+              <a routerLink="/querier" class="my-li-1" 
+                (click)="[baseUrl.value = query.website.baseUrl, autoCompleteExtensions(query.website.baseUrl)]">
+                {{query.website.baseUrl}}
               </a>
             </li>
           </ul>

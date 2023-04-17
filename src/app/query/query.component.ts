@@ -14,7 +14,7 @@ export class QueryComponent implements OnInit{
   constructor(private queryService: QueryService){}
   
   ngOnInit() {
-    this.currentQuery = this.queryService.loadQueries();
+    this.currentQuery = this.queryService.getQuery();
     this.queryService.queryChanged.subscribe(
       this.currentQuery = this.queryService.getQuery()
     );

@@ -9,6 +9,9 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { WebsiteComponent } from './query/website/website.component';
 import { TableComponent } from './query/table/table.component';
 import { ResultComponent } from './query/result/result.component';
+import { HomeComponent } from './home/home.component';
+import { ManageComponent } from './query/manage/manage.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -18,10 +21,13 @@ import { ResultComponent } from './query/result/result.component';
     DropdownDirective,
     WebsiteComponent,
     TableComponent,
-    ResultComponent
+    ResultComponent,
+    HomeComponent,
+    ManageComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [QueryService],
   bootstrap: [AppComponent]

@@ -47,7 +47,10 @@ for($i = 0; $i < $count[0]; $i++){
   }
 
   while(($row = $s->fetch(PDO::FETCH_ASSOC)) != false){
-    $columns[] = array('name' => $row['col_name'], 'type' => $row['col_type']);
+    $columns[] = array(
+      'name' => $row['col_name'], 
+      'type' => $row['col_type']
+    );
   }
 
   try{
@@ -67,10 +70,12 @@ for($i = 0; $i < $count[0]; $i++){
   $queries[$i] = array(
     'query_id' => $i,
     'table' => array(
+      'query_id' => $i,
       'table_name' => $query['table_name'],
       'columns' => $columns
     ),
     'website' => array(
+      'query_id' => $i,
       'base_url' => $query['base_url'],
       'extensions' => $extensions
     )

@@ -10,7 +10,7 @@ $restJson = file_get_contents("php://input");
 $_POST = json_decode($restJson, true);
 
 $table = $_POST['table'];
-if(empty($table['name']) || empty($table['colums'])) die();
+if(empty($table['name']) || empty($table['columns'])) die();
 $table_name = $table['name'];
 $columns = $table['columns'];
 

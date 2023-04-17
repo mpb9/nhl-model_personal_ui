@@ -1,9 +1,9 @@
 export class Query{
-  constructor(public website: Website, public table: Table){}
+  constructor(public query_id: number, public website: Website, public table: Table){}
 }
 
 export class Table{
-  constructor(public name: string, public columns: Column[]){}
+  constructor(public query_id: number, public name: string, public columns: Column[]){}
 }
 
 export class Column{
@@ -11,5 +11,5 @@ export class Column{
 }
 
 export class Website{
-  constructor(public baseUrl: string, public extensions: string[]){}
+  constructor(public query_id: number, public baseUrl: string, public extensions: string[]){}
 }
