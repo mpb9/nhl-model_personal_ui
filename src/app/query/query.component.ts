@@ -18,38 +18,21 @@ export class QueryComponent implements OnInit{
     this.queryService.queryChanged.subscribe(
       this.currentQuery = this.queryService.getQuery()
     );
-    console.log(this.currentQuery.website.baseUrl);
-    console.log(this.currentQuery.table.name);
-
   }
 
   submitQuery(){
-    console.log(this.currentQuery.website.baseUrl);
-    console.log(this.currentQuery.website.extensions);
-    console.log(this.currentQuery.table.name);
-    console.log(this.currentQuery.table.columns);
-
-    this.queryService.addTable(this.currentQuery.table);
-    this.queryService.addWebsite(this.currentQuery.website);
+    this.queryService.addQuery();
     this.createQuery = false;
   }
 
   newQuery(){
     this.currentQuery = this.queryService.getNewQuery();
     this.createQuery = true;
-    console.log(this.currentQuery.website.baseUrl);
-    console.log(this.currentQuery.website.extensions);
-    console.log(this.currentQuery.table.name);
-    console.log(this.currentQuery.table.columns);
   }
 
   editQuery(){
     this.currentQuery = this.queryService.getQuery();
     this.createQuery = true;
-    console.log(this.currentQuery.website.baseUrl);
-    console.log(this.currentQuery.website.extensions);
-    console.log(this.currentQuery.table.name);
-    console.log(this.currentQuery.table.columns);
   }
 
 }
