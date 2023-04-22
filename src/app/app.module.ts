@@ -8,10 +8,12 @@ import { HeaderComponent } from './header/header.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { WebsiteComponent } from './query/website/website.component';
 import { TableComponent } from './query/table/table.component';
-import { ResultComponent } from './query/result/result.component';
+import { ScraperComponent } from './scraper/scraper.component';
 import { HomeComponent } from './home/home.component';
 import { ManageComponent } from './query/manage/manage.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ScraperService } from './scraper/scraper.service';
+import { PagePathsComponent } from './query/page-paths/page-paths.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +23,10 @@ import { AppRoutingModule } from './app-routing.module';
     DropdownDirective,
     WebsiteComponent,
     TableComponent,
-    ResultComponent,
+    ScraperComponent,
     HomeComponent,
-    ManageComponent
+    ManageComponent,
+    PagePathsComponent
   ],
   imports: [
     BrowserModule,

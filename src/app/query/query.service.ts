@@ -1,5 +1,5 @@
 import { EventEmitter } from "@angular/core";
-import { Column, Query, Table, Website } from "./query.model";
+import { Column, PagePath, Query, Table, Website } from "./query.model";
 import axios from "axios";
 
 const SAVED_QUERIES = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/saved_queries.php';
@@ -10,12 +10,14 @@ export class QueryService{
   private tables: Table[] = [];
   private websites: Website[] = [];
   private queries: Query[] = [];
+  private pagePaths: PagePath[] = [];
   public query: Query = this.getNewQuery();
 
   queryChanged = new EventEmitter<Query>();
   queriesChanged = new EventEmitter<Query[]>();
   tablesChanged = new EventEmitter<Table[]>();
   websitesChanged = new EventEmitter<Website[]>();
+  pagePathsChanged = new EventEmitter<PagePath[]>();
 
   loadQueries(){
     axios({
@@ -27,14 +29,18 @@ export class QueryService{
       all_saved_queries.forEach((saved_query: { 
                   query_id: number;
                   table: { query_id: number; table_name: string; columns: Column[]; }; 
-                  website: { query_id: number; base_url: string; extensions: string[]; }; }
+                  website: { query_id: number; base_url: string; extensions: string[]; }; 
+                  page_path: { query_id: number; to_table: string; to_all_data: string; to_data_element: string; };
+                }
       ) => {
         if(saved_query.query_id >= this.queries.length){
           const newTable = new Table(saved_query.table.query_id, saved_query.table.table_name, saved_query.table.columns);
           const newWebsite = new Website(saved_query.website.query_id, saved_query.website.base_url, saved_query.website.extensions);
-          this.queries.push(new Query(saved_query.query_id, newWebsite, newTable));
+          const newPagePath = new PagePath(saved_query.query_id, saved_query.page_path.to_table, saved_query.page_path.to_all_data, saved_query.page_path.to_data_element);
+          this.queries.push(new Query(saved_query.query_id, newWebsite, newTable, newPagePath));
           this.tables.push(newTable);
           this.websites.push(newWebsite);
+          this.pagePaths.push(newPagePath);
         }
       });
     }).catch((error) => console.log(error));
@@ -68,15 +74,22 @@ export class QueryService{
   }
 
   updateQuery(){
-    //this.printQuery();
     this.queryChanged.emit(this.query);
+    console.log(this.query)
   }
   updateQueryWebsite(website: Website){
     this.query.website = website;
+    this.query.query_id = website.query_id;
     this.updateQuery();
   }
   updateQueryTable(table: Table){
     this.query.table = table;
+    this.query.query_id =table.query_id;
+    this.updateQuery();
+  }
+  updateQueryPagePath(pagePath: PagePath){
+    this.query.pagePath = pagePath;
+    this.query.query_id = pagePath.query_id;
     this.updateQuery();
   }
   getQuery(){
@@ -85,20 +98,9 @@ export class QueryService{
   getNewQuery(){
     this.query = new Query(this.queries.length, 
                             new Website(this.queries.length, '', []), 
-                            new Table(this.queries.length, '', []));
+                            new Table(this.queries.length, '', []),
+                            new PagePath(this.queries.length, '', '', ''));
     return this.getQuery();
-  }
-  printQuery(){
-    console.log("___QUERY___");
-    console.log("WEBSITE: " + this.query.website.baseUrl);
-    console.log("  extensions: [");
-    this.query.website.extensions.forEach(ext => console.log("   " + ext));
-    console.log("  ]");
-    console.log("TABLE: " + this.query.table.name);
-    console.log("  columns: [");
-    this.query.table.columns.forEach(col => console.log("   [name: " + col.name + ", type: " + col.type + "]"));
-    console.log("  ]");
-    console.log("");
   }
 
   updateQueries(){
@@ -106,6 +108,7 @@ export class QueryService{
     this.queriesChanged.emit(this.queries.slice());
     this.tablesChanged.emit(this.tables.slice());
     this.websitesChanged.emit(this.websites.slice());
+    this.pagePathsChanged.emit(this.pagePaths.slice());
   }
   getQueries(){
     return this.queries.slice();
@@ -128,6 +131,17 @@ export class QueryService{
   }
   getWebsites(){
     return this.websites.slice();
+  }
+
+  updatePagePaths(){
+    console.log(this.query.pagePath);
+    this.pagePathsChanged.emit(this.pagePaths.slice());
+  }
+  getPagePaths(){
+    return this.pagePaths.slice();
+  }
+  getPagePath(query_id: number){
+    return this.pagePaths[query_id];
   }
 
 }

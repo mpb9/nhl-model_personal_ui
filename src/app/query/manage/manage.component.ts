@@ -8,9 +8,9 @@ import { QueryService } from '../query.service';
   styleUrls: ['./manage.component.css']
 })
 export class ManageComponent implements OnInit {
-  manageType: string = 'edit';
+  manageType: string = 'delete';
   queries: Query[] = [];
-  deleted = false;
+
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
@@ -26,10 +26,6 @@ export class ManageComponent implements OnInit {
 
   deleteQuery(query: Query){
     this.queryService.deleteQuery(query);
-    this.deleted = true;
   }
-
-
-
 
 }

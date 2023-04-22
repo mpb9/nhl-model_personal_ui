@@ -1,5 +1,5 @@
 export class Query{
-  constructor(public query_id: number, public website: Website, public table: Table){}
+  constructor(public query_id: number, public website: Website, public table: Table, public pagePath: PagePath){}
 }
 
 export class Table{
@@ -12,4 +12,8 @@ export class Column{
 
 export class Website{
   constructor(public query_id: number, public baseUrl: string, public extensions: string[]){}
+}
+
+export class PagePath{
+  constructor(public query_id: number, public toTable: string, public toAllData: string, public toDataElement: string){}
 }

@@ -13,10 +13,7 @@
               (click)="manageTypeChanged('delete')">delete queries</button>
     </div>
   </div>
-  <div class="row my-fit" *ngIf="deleted">
-    DELETED
-  </div>
-  <div class="row my-fit" *ngIf="!deleted">
+  <div class="row my-fit">
     <div class="row my-fill-3 my-fit" style="padding: 2px; border-bottom: 2px solid aquamarine">
       <div class="col-md-6">
         <h4 style="font-weight: bolder;" *ngIf="manageType=='edit'">Edit Queries</h4>
@@ -31,9 +28,9 @@
           Base URL: <b>{{query.website.baseUrl}}</b>
         </h4>
       </div>
-      <div class="col-md-4" style="padding: 5px; text-align: right;" *ngIf="manageType=='delete'">
-        <button class="my-btn-4" style="font-style:normal; font-size: 16px;"
-                (click)="deleteQuery(query)" routerLink="/querier/manage">Delete Query</button>
+      <div class="col-md-4" style="padding: 12px; text-align: right;" *ngIf="manageType=='delete'">
+        <a class="my-btn-4" style="font-style:normal; font-size: 16px;"
+                (click)="deleteQuery(query)" href="http://localhost:4200/querier/manage">Delete Query</a>
       </div>
         <div class="col-md-6">
           <h4 style="font-weight: bolder; text-decoration-line: underline;">Columns</h4>

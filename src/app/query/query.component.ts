@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Query, Table, Website } from './query.model';
+import { Query } from './query.model';
 import { QueryService } from './query.service';
 
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
-  styleUrls: ['./query.component.css']
+  styleUrls: ['./query.component.css'],
+  providers: [QueryService]
 })
 export class QueryComponent implements OnInit{
   currentQuery!: Query;
-  createQuery: boolean = true;
+  queries: Query[] = [];
+  query_id: number = -1;
 
   constructor(private queryService: QueryService){}
   
@@ -18,21 +20,25 @@ export class QueryComponent implements OnInit{
     this.queryService.queryChanged.subscribe(
       this.currentQuery = this.queryService.getQuery()
     );
+    this.queries = this.queryService.loadQueries();
+    
   }
 
   submitQuery(){
     this.queryService.addQuery();
-    this.createQuery = false;
   }
 
   newQuery(){
     this.currentQuery = this.queryService.getNewQuery();
-    this.createQuery = true;
   }
 
   editQuery(){
     this.currentQuery = this.queryService.getQuery();
-    this.createQuery = true;
+  }
+  loadQuery(query: Query){
+    this.queryService.updateQueryWebsite(query.website);
+    this.queryService.updateQueryTable(query.table);
+    this.queryService.updateQueryPagePath(query.pagePath);
   }
 
 }
