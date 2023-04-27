@@ -16,8 +16,10 @@
       </div>
     </div>
     <div class="row my-fit" style="padding-top: 10px; padding-bottom: -10px;">
-      <div class="col-md-3" style="padding-left: 30px; text-align: center;">
+      <div class="col-md-3" style="text-align: center;">
         <label class="my-label-1" style="margin-right: 5px;">Extensions</label>
+      </div>
+      <div class="col-md-3" style="text-align: left; margin-top: 0 auto;">
         <div class="btn-group" appDropdown>
           <button class="my-info-btn dropdown-toggle" type="button">
             Syntax
@@ -54,7 +56,7 @@
     </div>
   </form>
   <form *ngSwitchDefault>
-    <div class="row my-fit">
+    <div class="row my-fit" style="padding-bottom: 10px;">
       <div class="col-md-12">
         <label class="my-label-1">Website URL</label>
         <input type="text" placeholder="Website URL" class="my-input-2" 

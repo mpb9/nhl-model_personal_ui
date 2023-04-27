@@ -11,7 +11,6 @@ import { QueryService } from './query.service';
 export class QueryComponent implements OnInit{
   currentQuery!: Query;
   queries: Query[] = [];
-  //query_id: number = -1;
 
   constructor(private queryService: QueryService){}
   

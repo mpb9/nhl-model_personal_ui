@@ -1,18 +1,28 @@
 <div class="col-md-12 my-page" style="margin: 0 auto;">
   <div class="row my-fill-1 my-fit" style="padding: 5px; background-image: linear-gradient(to bottom, rgb(105, 48, 8), aquamarine);">
-    <div class="col-md-3">
+    <div class="col-md-6" style="text-align: center; padding-top: 1px;">
       <div class="btn-group" appDropdown>
-        <button class="my-btn-2 dropdown-toggle" type="button">
-          Recent Queries
-          <span class="my-caret" ></span>
+        <button class="my-btn-3 dropdown-toggle" type="button" style="padding: 5px 9px;">
+          saved queries
+          <span class="my-caret" style="color: violet;"></span>
         </button>
-        <ul class="dropdown-menu my-dropdown-1" 
+        <ul class="dropdown-menu saved-queries-dropdown" 
           style="margin: 0px; padding: 0px;">
-          <li *ngFor="let query of queries">
-            <a routerLink="/querier" class="my-li-1" 
-              (click)="loadQuery(query.query_id)">
-              {{query.query_id}}: {{query.table.name}}, {{query.website.baseUrl}}
-            </a>
+          <li *ngFor="let query of queries" routerLink="/querier" 
+          (click)="loadQuery(query.query_id)" style="border-bottom: 2px solid aquamarine;">
+            <div class="row my-fit pad-5">
+              <div class="col-md-2" style="padding-right: 0px; padding-top: 8px; font-size: 130%; text-shadow: 1px 1px 1px violet;">
+                {{query.query_id}}
+              </div>
+              <div class="col-md-10" style="padding-left: 0px;">
+                <div class="row my-fit" style="font-weight: 900; font-size: 115%;">
+                  {{query.table.name}}
+                </div>
+                <div class="row my-fit" style="font-weight: 900; font-size: 110%;">
+                  {{query.website.baseUrl}}
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
@@ -24,7 +34,13 @@
       <button class="my-fake-btn">QUERY</button>
     </div>
   </div>
-  <app-website></app-website>
-  <app-table></app-table>
-  <app-page-paths></app-page-paths>
+  <div class="row my-fit">
+    <div class="col-md-6" style="padding-left: 0px;">
+      <app-website></app-website>
+      <app-page-paths></app-page-paths>
+    </div>
+    <div class="col-md-6" style="padding-right: 0px;">
+      <app-table></app-table>
+    </div>
+  </div>
 </div>

@@ -1,16 +1,13 @@
-<div class="row my-fill-3 my-fit" style="margin-top: 15px; padding-left: 10px; border-bottom: 2px solid aquamarine">
+<div class="row my-fill-3 my-fit" style="padding-left: 10px; border-bottom: 2px solid aquamarine">
   <h4 style="font-weight: bolder;">Table Properties</h4>
 </div>
 <div class="row my-fit pad-10" style="padding-bottom: 50px;">
   <form>
     <div class="row my-fit">
-      
-      <div class="col-md-12">
-        <label class="my-label-1">Table Name</label>
-        <input type="text" placeholder="Table Name" class="my-input-2"
-              (change)="updateTable()" [value]="currentName"
-              #tableName>
-      </div>
+      <label class="my-label-1">Table Name</label>
+      <input type="text" placeholder="Table Name" class="my-input-2"
+            (change)="updateTable()" [value]="currentName"
+            #tableName>
     </div>
     <div class="row my-fit" style="padding-top: 15px; ">
       <div class="col-md-3">
@@ -43,7 +40,7 @@
               </button>
               <ul class="dropdown-menu my-column-type-dropdown">
                 <li>
-                  <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'INT', updateColumns('INT', i, 'TYPE')]">
+                  <a routerLink="/querier" (click)="[colType.value = 'INT', updateColumns('INT', i, 'TYPE')]">
                   INT </a>
                   <a routerLink="/querier" class="my-li-1" (click)="[colType.value = 'VARCHAR', updateColumns('VARCHAR', i, 'TYPE')]">
                   VARCHAR </a>

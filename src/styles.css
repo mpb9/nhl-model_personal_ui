@@ -115,9 +115,9 @@ body{
   background-color: transparent;
   color: violet;
   border: transparent;
-  font-size: 13px;
+  font-size: 14px;
   user-select: none;
-  margin: 8px;
+  margin: 2px;
   text-decoration-line: underline;
 }
 .my-info-btn:focus {
@@ -181,6 +181,43 @@ body{
   text-decoration: none;
   background-color: aquamarine;
 }
+.saved-queries-dropdown{
+  position: absolute;
+  top: 100%;
+  left: -33%;
+  z-index: 1000;
+  display: none;
+  min-width: 400px;
+  max-width: 700px;
+  overflow-x: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  margin: 0px;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: rgba(148, 91, 148, 0.9);
+  background-clip: padding-box;
+  border: 3px solid aquamarine;
+  border-radius: 0px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.saved-queries-dropdown::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+.saved-queries-dropdown>li>a>div{
+  color: aquamarine;
+  padding-right: 10px;
+  margin-right: -20px;
+}
+.saved-queries-dropdown>li>div:focus, .saved-queries-dropdown>li>div:hover {
+  color: rgb(105, 48, 8);
+  text-decoration: none;
+  background-color: aquamarine;
+  border: 2px solid rgb(105, 48, 8);
+  cursor: pointer;
+}
+
 .my-column-type-dropdown{
   position: absolute;
   top: 100%;
@@ -227,8 +264,8 @@ body{
 
 .my-info-dropdown {
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 123%;
+  left: -6px;
   z-index: 1000;
   display: none;
   float: left;
@@ -323,6 +360,9 @@ body{
 /* FORMATTING */
 .my-fit{
   margin: 0 auto;
+}
+.pad-0{
+  padding: 0px;
 }
 .pad-5{
   padding: 5px;
