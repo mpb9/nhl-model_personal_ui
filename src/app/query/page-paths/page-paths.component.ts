@@ -9,13 +9,13 @@ import { PagePath, Query } from '../query.model';
 })
 export class PagePathsComponent implements OnInit {
   path: PagePath = new PagePath(-1, "", "", "");
-  
+
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
-    this.queryService.queryChanged.subscribe(()=>{
-      this.path = this.queryService.getQuery().pagePath;
-    });
+    this.queryService.queryChanged.subscribe(() =>
+      this.path = this.queryService.getQueryCopy().pagePath
+    );
   }
 
   alterPath(event: any, index: number){
@@ -32,7 +32,7 @@ export class PagePathsComponent implements OnInit {
   }
 
   clearPathInputs(){
-    this.path = new PagePath(this.queryService.getQuery().query_id, "", "", "");
+    this.path = new PagePath(this.queryService.getQueryCopy().query_id, "", "", "");
     this.queryService.updateQueryPagePath(this.path);
   }
 

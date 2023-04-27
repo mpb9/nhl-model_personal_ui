@@ -6,22 +6,21 @@ import { QueryService } from './query.service';
   selector: 'app-query',
   templateUrl: './query.component.html',
   styleUrls: ['./query.component.css'],
-  providers: [QueryService]
+  providers: [ QueryService ]
 })
 export class QueryComponent implements OnInit{
   currentQuery!: Query;
   queries: Query[] = [];
-  query_id: number = -1;
+  //query_id: number = -1;
 
   constructor(private queryService: QueryService){}
   
   ngOnInit() {
-    this.currentQuery = this.queryService.getQuery();
-    this.queryService.queryChanged.subscribe(
-      this.currentQuery = this.queryService.getQuery()
-    );
     this.queries = this.queryService.loadQueries();
-    
+    this.currentQuery = this.queryService.getQueryCopy();
+    this.queryService.queryChanged.subscribe(
+      this.currentQuery = this.queryService.getQueryCopy()
+    );    
   }
 
   submitQuery(){
@@ -33,12 +32,10 @@ export class QueryComponent implements OnInit{
   }
 
   editQuery(){
-    this.currentQuery = this.queryService.getQuery();
+    this.currentQuery = this.queryService.getQueryCopy();
   }
-  loadQuery(query: Query){
-    this.queryService.updateQueryWebsite(query.website);
-    this.queryService.updateQueryTable(query.table);
-    this.queryService.updateQueryPagePath(query.pagePath);
+  loadQuery(query_id: number){
+    this.queryService.loadQuery(query_id);
   }
 
 }

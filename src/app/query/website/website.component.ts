@@ -12,21 +12,24 @@ export class WebsiteComponent implements OnInit {
   // can try to make multiple pages be false if returning from edit and it was false for prev query
   multiplePages = true; 
   multiplePagesText = "Just One Page?";
-  queries: Query[] = [];
+  //queries: Query[] = [];
   @ViewChild('baseUrl') baseUrlRef!: ElementRef;
   currentUrl: string = "";
   extensionGroups: string[][] = [["", "", "", ""]];
   extensions: string[] = [];
+  query_id: number = -1;
 
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
-    this.queries = this.queryService.loadQueries();
-    this.queryService.queriesChanged.subscribe(
-      this.queries = this.queryService.loadQueries() 
-    );
-    this.extensions = this.queryService.getQuery().website.extensions;
-    this.currentUrl = this.queryService.getQuery().website.baseUrl;
+    //this.queries = this.queryService.loadQueries();
+    this.queryService.queryChanged.subscribe(() => {
+      const currentWebsite = this.queryService.getQueryCopy().website;
+      this.extensions = currentWebsite.extensions;
+      this.currentUrl = currentWebsite.baseUrl;
+      this.query_id = currentWebsite.query_id;
+    });
+
   }
 
   multiplePagesChanged(){
@@ -35,7 +38,7 @@ export class WebsiteComponent implements OnInit {
 
     this.extensions = [];
     this.extensionGroups = [["", "", "", ""]];
-    this.queryService.updateQueryWebsite(new Website(this.queries.length, '', []));
+    this.queryService.updateQueryWebsite(new Website(this.query_id, '', []));
   }
 
   updateExtensions(event: any, index: number){
@@ -51,7 +54,7 @@ export class WebsiteComponent implements OnInit {
   }
 
   autoCompleteExtensions(url: string){
-    let existingSearches = this.queries.filter((query) => query.website.baseUrl === url);
+    /* let existingSearches = this.queries.filter((query) => query.website.baseUrl === url);
 
     if(existingSearches !== undefined && this.multiplePages){
       this.extensions = existingSearches[0].website.extensions;
@@ -64,11 +67,11 @@ export class WebsiteComponent implements OnInit {
       }
     }
 
-    this.updateWebsite();
+    this.updateWebsite(); */
   }
 
   updateWebsite(){
-    let websiteSelected = new Website(this.queries.length, this.baseUrlRef.nativeElement.value, this.extensions);
+    let websiteSelected = new Website(this.query_id, this.baseUrlRef.nativeElement.value, this.extensions);
     this.queryService.updateQueryWebsite(websiteSelected);
   }
 
@@ -83,7 +86,7 @@ export class WebsiteComponent implements OnInit {
   clearExtInputs(){
     this.extensions = [];
     this.extensionGroups = [["", "", "", ""]];
-    this.queryService.updateQueryWebsite(new Website(this.queries.length, this.baseUrlRef.nativeElement.value, []));
+    this.queryService.updateQueryWebsite(new Website(this.query_id, this.baseUrlRef.nativeElement.value, []));
   }
 
 }

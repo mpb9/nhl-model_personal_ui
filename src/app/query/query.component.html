@@ -10,7 +10,7 @@
           style="margin: 0px; padding: 0px;">
           <li *ngFor="let query of queries">
             <a routerLink="/querier" class="my-li-1" 
-              (click)="loadQuery(query)">
+              (click)="loadQuery(query.query_id)">
               {{query.query_id}}: {{query.table.name}}, {{query.website.baseUrl}}
             </a>
           </li>

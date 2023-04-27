@@ -4,24 +4,8 @@
 <div class="row my-fit pad-10" style="padding-bottom: 50px;">
   <form>
     <div class="row my-fit">
-      <div class="col-md-3" style="text-align: center; padding-top: 5px;">
-        <div class="btn-group" appDropdown>
-          <button class="my-btn-2 dropdown-toggle" type="button">
-            Recent Tables
-            <span class="my-caret" ></span>
-          </button>
-          <ul class="dropdown-menu my-dropdown-1" 
-            style="margin: 0px; padding: 0px;">
-            <li *ngFor="let query of queries">
-              <a routerLink="/querier" class="my-li-1" 
-                (click)="[tableName.value = query.table.name, autoCompleteColumns(query.table.name)]">
-                {{query.table.name}}
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-8">
+      
+      <div class="col-md-12">
         <label class="my-label-1">Table Name</label>
         <input type="text" placeholder="Table Name" class="my-input-2"
               (change)="updateTable()" [value]="currentName"
