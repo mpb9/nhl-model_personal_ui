@@ -19,6 +19,10 @@ if(empty($website['baseUrl']) || empty($website['extensions'])) die();
 $base_url = $website['baseUrl'];
 $extensions = $website['extensions'];
 
+$page_path = $_POST['pagePath'];
+if(empty($page_path['toTable']) || empty($page_path['toAllData']) || empty($page_path['toDataElement'])) die();
+
+
 try{
   $sql = "SELECT COUNT(*) FROM queries";
   $s = $pdo->prepare($sql);
@@ -80,4 +84,21 @@ for($i = 0; $i < count($extensions); $i++){
     echo $e->getMessage();
     exit();
   }
+}
+
+try{
+  $sql = "INSERT INTO query_page_paths SET
+          query_id = :query_id,
+          to_table = :to_table,
+          to_all_data = :to_all_data,
+          to_data_element = :to_data_element";
+  $s = $pdo->prepare($sql);
+  $s->bindValue(':query_id', $new_query_index);
+  $s->bindValue(':to_table', $page_path['toTable']);
+  $s->bindValue(':to_all_data', $page_path['toAllData']);
+  $s->bindValue(':to_data_element', $page_path['toDataElement']);
+  $s->execute();
+} catch (PDOException $e) {
+  echo $e->getMessage();
+  exit();
 }

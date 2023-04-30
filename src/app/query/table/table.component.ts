@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../query.service';
-import { Column, Query, Table, Website } from '../query.model';
+import { Column, Query, Table } from '../query.model';
 
 @Component({
   selector: 'app-table',
@@ -8,8 +8,6 @@ import { Column, Query, Table, Website } from '../query.model';
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit{
-  //tables!: Table[];
-  //queries: Query[] = [];
   @ViewChild('tableName') tableNameRef!: ElementRef;
   currentTable: Table = new Table(-1, "", [new Column("", "")]);
   currentName: string = "";
@@ -18,13 +16,6 @@ export class TableComponent implements OnInit{
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
-    //this.queries = this.queryService.loadQueries();
-
-    /* this.columns = this.queryService.getQuery().table.columns.length > 0 
-                    ? this.queryService.getQuery().table.columns
-                    : [new Column("", "")];
-
-    this.currentName = this.queryService.getQuery().table.name; */
     this.queryService.queryChanged.subscribe(() => {
       this.currentTable = this.queryService.getQueryCopy().table;
       this.columns = this.currentTable.columns.length > 0 ? this.currentTable.columns : [new Column("", "")];
@@ -44,16 +35,6 @@ export class TableComponent implements OnInit{
     this.updateTable();
   }
 
-  autoCompleteColumns(table_name: string){
-    /* let existingSearches = this.queries.filter((query) => query.table.name === table_name);
-
-    if(existingSearches !== undefined){
-      this.columns = existingSearches[0].table.columns;
-    }
-
-    this.updateTable(); */
-  }
-
   updateTable(){
     this.queryService.updateQueryTable(new Table(this.currentTable.query_id, this.tableNameRef.nativeElement.value, this.columns));
   }
@@ -62,8 +43,9 @@ export class TableComponent implements OnInit{
     this.columns.push(new Column("", ""));
   }
 
-  clearColumnInputs(){
+  clearCurrent(){
     this.columns = [new Column("", "")];
-    this.updateTable();
+    this.currentName = "";
+    this.queryService.updateQueryTable(new Table(this.currentTable.query_id, this.currentName, this.columns));
   }
 }

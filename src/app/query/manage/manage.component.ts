@@ -15,9 +15,7 @@ export class ManageComponent implements OnInit {
 
   ngOnInit(){
     this.queries = this.queryService.loadQueries();
-    this.queryService.queriesChanged.subscribe(
-      this.queries = this.queryService.loadQueries()
-    );
+    
   }
 
   manageTypeChanged(newManageType: string){

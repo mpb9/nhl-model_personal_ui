@@ -12,12 +12,10 @@ $_POST = json_decode($restJson, true);
 $table = $_POST['table'];
 if(empty($table['name']) || empty($table['columns'])) die();
 $table_name = $table['name'];
-$columns = $table['columns'];
 
 $website = $_POST['website'];
 if(empty($website['baseUrl']) || empty($website['extensions'])) die();
 $base_url = $website['baseUrl'];
-$extensions = $website['extensions'];
 
 try{
   $sql = "SELECT * FROM queries
@@ -58,6 +56,17 @@ try{
 
 try{
   $sql = "DELETE FROM query_extensions
+          WHERE query_id = :query_id";
+  $s = $pdo->prepare($sql);
+  $s->bindValue(':query_id', $query_id);
+  $s->execute();
+} catch (PDOException $e) {
+  echo $e->getMessage();
+  exit();
+}
+
+try{
+  $sql = "DELETE FROM query_page_paths
           WHERE query_id = :query_id";
   $s = $pdo->prepare($sql);
   $s->bindValue(':query_id', $query_id);

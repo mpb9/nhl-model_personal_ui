@@ -184,7 +184,7 @@ body{
 .saved-queries-dropdown{
   position: absolute;
   top: 100%;
-  left: -33%;
+  left: 0%;
   z-index: 1000;
   display: none;
   min-width: 400px;
@@ -227,7 +227,7 @@ body{
   overflow-x: scroll;
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */
-  margin: 0px 15px;
+  margin: 0px 7px;
   font-size: 14px;
   text-align: left;
   list-style: none;
@@ -236,7 +236,7 @@ body{
   border: 1px solid aquamarine;
   border-radius: 0px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
-  width: 90%;
+  width: 97%;
   height: 200px;
 }
 .my-column-type-dropdown::-webkit-scrollbar { 
@@ -265,10 +265,10 @@ body{
 .my-info-dropdown {
   position: absolute;
   top: 123%;
-  left: -6px;
+  left: -268px;
   z-index: 1000;
   display: none;
-  float: left;
+  float: right;
   margin: 0px;
   margin-left: 8px;
   margin-top: -8px;

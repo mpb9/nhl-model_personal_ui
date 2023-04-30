@@ -3,7 +3,7 @@ import { Column, PagePath, Query, Table, Website } from "./query.model";
 import axios from "axios";
 
 const SAVED_QUERIES = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/saved_queries.php';
-const SAVE_QUERY = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/create_query.php';
+const CREATE_QUERY = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/create_query.php';
 const DELETE_QUERY = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/delete_query.php';
 
 export class QueryService{
@@ -26,6 +26,7 @@ export class QueryService{
       url: `${SAVED_QUERIES}`,
       headers: { "content-type": "application/json" }
     }).then((result) => {
+      console.log(result.data);
       result.data.forEach(
           (saved_query: { 
               query_id: number;
@@ -65,7 +66,7 @@ export class QueryService{
     if(this.query.query_id == this.newQueryId){
       axios({
         method: "post",
-        url: `${SAVE_QUERY}`,
+        url: `${CREATE_QUERY}`,
         headers: { "content-type": "application/json" },
         data: this.query
       }).then(()=>{

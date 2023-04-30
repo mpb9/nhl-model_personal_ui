@@ -1,4 +1,5 @@
-<div class="row my-fill-3 my-fit" style="padding: 2px; border-bottom: 2px solid aquamarine">
+<div class="row my-fill-3 my-fit" 
+  style="padding: 2px; border-bottom: 2px solid aquamarine;">
   <div class="col-md-6">
     <h4 style="font-weight: bolder;">Website Properties</h4>
   </div>
@@ -6,20 +7,18 @@
     <button class="my-btn-1" type="button" (click)="multiplePagesChanged()">{{multiplePagesText}}</button>
   </div>
 </div>
-<div class="row my-fit pad-10" [ngSwitch]="multiplePages">
-  <form *ngSwitchCase="true">
-    <div class="row my-fit">
-      <div class="col-md-12">
-        <label class="my-label-1">Base URL</label>
-        <input type="text" placeholder="Base URL" class="my-input-2" 
-              (change)="updateWebsite()" [value]="currentUrl" #baseUrl>
-      </div>
+<div class="row my-fit pad-10" [ngSwitch]="multiplePagesText">
+  <form *ngSwitchCase="'Just One Page?'">
+    <div class="row my-fit" style="padding-left: 6px;">
+      <label class="my-label-1">Base URL</label>
+      <input type="text" placeholder="Base URL" class="my-input-2" 
+            (change)="updateWebsite()" [value]="currentUrl" #baseUrl>
     </div>
-    <div class="row my-fit" style="padding-top: 10px; padding-bottom: -10px;">
-      <div class="col-md-3" style="text-align: center;">
-        <label class="my-label-1" style="margin-right: 5px;">Extensions</label>
+    <div class="row my-fit" style="padding-top: 10px; padding-left: 7px;">
+      <div class="col-md-3" style="padding-left: 0px; margin: 0 auto;">
+        <label class="my-label-1" style="margin-right: 0px;">Extensions</label>
       </div>
-      <div class="col-md-3" style="text-align: left; margin-top: 0 auto;">
+      <div class="col-md-9" style="text-align: right; margin-top: 0 auto; padding-right: 0px;">
         <div class="btn-group" appDropdown>
           <button class="my-info-btn dropdown-toggle" type="button">
             Syntax
@@ -31,28 +30,23 @@
         </div>
       </div>
     </div>
-    <div class="row my-fit" *ngFor="let extensionGroup of extensionGroups; let i=index"
-      style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
-      <div class="col-md-3" style="padding-left: 10px; padding-right: 10px;"
-          *ngFor="let extension of extensionGroup; let j=index">
+    <div class="row my-fit" *ngFor="let extension of extensions; let i=index"
+      style="padding-top: 0px; padding-bottom: 10px; padding-left: 0px;">
+      <div class="col-md-12" style="padding-right: 2px; padding-left: 7px;">
         <input type="text" class="my-input-2" 
-          [placeholder]="'Extension Part ' + [4*i + j + 1]"
-          (change)="updateExtensions($event, 4*i + j)"
-          [value]="extensions[4*i + j] === undefined ? '' : extensions[4*i + j]">
+          [placeholder]="'Extension Part ' + [i+ 1]"
+          (change)="updateExtensions($event, i)"
+          [value]="extensions[i] === undefined ? '' : extensions[i]">
       </div>
     </div>
-    <div class="row my-fit" style="text-align: center; padding-bottom: 0px; padding-top: 15px; padding-left: 25px; padding-right: 25px;">
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <button class="my-btn-2" type="button" (click)="moreExtInputs()">
-          Add More Extensions
+    <div class="row my-fit" style="text-align: center; padding-bottom: 5px; padding-top: 10px; padding-right: 0px;">
+        <button class="my-btn-2" style="margin-right: 20%; margin-left: 30%;"
+          type="button" (click)="extensions.push('')">
+          Add Extension
         </button>
-      </div>
-      <div class="col-md-4" style="text-align: right; padding-right: 30px;">
-        <button class="my-btn-4" type="button" (click)="clearExtInputs()">
-          Reset Extensions
+        <button class="my-btn-4" type="button" (click)="clearCurrent()">
+          clear
         </button>
-      </div>
     </div>
   </form>
   <form *ngSwitchDefault>

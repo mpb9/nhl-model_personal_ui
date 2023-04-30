@@ -1,6 +1,6 @@
-<div class="col-md-12 my-page" style="margin: 0 auto;">
-  <div class="row my-fill-1 my-fit" style="padding: 5px; background-image: linear-gradient(to bottom, rgb(105, 48, 8), aquamarine);">
-    <div class="col-md-6" style="text-align: center; padding-top: 1px;">
+<div class="container my-page" style="margin: 0 auto;">
+  <div class="row my-fill-1 my-fit" style="padding: 0px; background-image: linear-gradient(to bottom, rgb(105, 48, 8), aquamarine);">
+    <div class="col-md-3" style="width: min-content; margin: 0px; padding: 0px; border-right: 8px solid violet; border-bottom: 5px solid violet; border-top: 4px solid violet;">
       <div class="btn-group" appDropdown>
         <button class="my-btn-3 dropdown-toggle" type="button" style="padding: 5px 9px;">
           saved queries
@@ -27,11 +27,11 @@
         </ul>
       </div>
     </div>
-    <div class="col-md-3" style="text-align: right; padding-right: 1px; padding-top: 8px;">
-      <a class="my-btn-3" type="button" href="http://localhost:4200/scraper" (click)="submitQuery()">create</a>
-    </div>
-    <div class="col-md-3" style="text-align: left; padding-left: 1px; margin-top: -4px;">
-      <button class="my-fake-btn">QUERY</button>
+    <div class="col-md-auto" style="text-align: right; padding-right: 15px; padding-left: 0px; padding-top: 12px;">
+      <a class="my-btn-3" type="button" style="margin-right: 20px;"
+        routerLink="/querier/manage" (click)="submitQuery()">create</a>
+      <a class="my-btn-3" type="button" 
+        routerLink="/querier/manage">manage</a>
     </div>
   </div>
   <div class="row my-fit">
