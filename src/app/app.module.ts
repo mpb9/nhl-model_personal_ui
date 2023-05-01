@@ -8,11 +8,11 @@ import { HeaderComponent } from './header/header.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { WebsiteComponent } from './query/website/website.component';
 import { TableComponent } from './query/table/table.component';
-import { ScraperComponent } from './scraper/scraper.component';
+import { ScraperComponent } from './query/scraper/scraper.component';
 import { HomeComponent } from './home/home.component';
 import { ManageComponent } from './query/manage/manage.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ScraperService } from './scraper/scraper.service';
+import { ScraperService } from './query/scraper/scraper.service';
 import { PagePathsComponent } from './query/page-paths/page-paths.component';
 
 @NgModule({

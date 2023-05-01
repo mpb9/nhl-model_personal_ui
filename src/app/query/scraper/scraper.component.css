@@ -1,0 +1,59 @@
+.scrape-btn{
+  font-weight: bolder;
+  padding: 5px 25px;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image:linear-gradient(to top left, violet, aquamarine);
+  color: rgb(201, 123, 201);
+  border: solid;
+  border-image: linear-gradient(to bottom right, violet, aquamarine) 1/5px;
+  font-size: 25px;
+  user-select: none;
+}
+.scrape-btn:focus, .scrape-btn:hover{
+  text-decoration: none;
+  background-image: linear-gradient(to bottom right, violet, aquamarine);
+  color: rgb(255, 111, 255);
+
+}
+
+.list-of-scrapers{
+  margin: 2px;
+  padding: 0px;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: rgba(148, 91, 148, 0.9);
+  background-clip: padding-box;
+  border: 3px solid aquamarine;
+  border-radius: 0px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  overflow-y: scroll;
+  overflow-x: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.list-of-scrapers::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+.list-of-scrapers>li>div:focus, .list-of-scrapers>li>div:hover {
+  color: rgba(148, 91, 148, 0.9);
+  text-decoration: none;
+  background-color: aquamarine;
+  border-left: 5px solid rgba(148, 91, 148, 0.9);
+  cursor: pointer;
+}
+
+.list-of-pages{
+  max-height: 150px;
+  padding-left: 10px;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.list-of-pages::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}

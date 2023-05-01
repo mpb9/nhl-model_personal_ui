@@ -1,0 +1,57 @@
+<div class="col-md-12 my-page" style="margin: 0 auto; min-height: 80vh;">
+  <div class="col-md-5" style="padding:0px; min-height: 80vh;">
+    <div class="row my-fill-1 my-fit" style="padding: 10px; min-height: 80vh; background-image: linear-gradient(to top, violet, aquamarine);">
+      <b style="padding-left: 5px; font-size: 135%; color: violet;">Select Scraper:</b>
+      <ul class="list-of-scrapers" 
+          style="max-height: 70vh;">
+          <li *ngFor="let scraper of scrapers" routerLink="/scraper" (click)="loadScraper(scraper.query_id)"
+           style="border-bottom: 2px solid aquamarine; margin-right: -50%;">
+            <div class="row my-fit">
+              <div class="col-md-1" style="padding: 13px; font-size: 120%; text-shadow: 1px 1px 1px violet;">
+                {{scraper.query_id}}
+              </div>
+              <div class="col-md-11" style="padding: 6px 0px;">
+                <div class="row my-fit" style="font-weight: 900; font-size: 105%;">
+                  {{scraper.table.name}}
+                </div>
+                <div class="row my-fit" style="font-weight: 900; font-size: 100%;">
+                  {{scraper.website.baseUrl}}
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+    </div>
+  </div>
+  <div class="col-md-7" style="padding: 10px; min-height: 80vh; text-align: center;" *ngIf="currentScraper.website.baseUrl == ''">
+    <h4 style="font-style: italic; font-weight: 900;">Select a Web Scraper...</h4> 
+  </div>
+  <div class="col-md-7" style="padding: 10px; min-height: 80vh;" *ngIf="currentScraper.website.baseUrl !== ''">
+    <div class="row my-fit pad-10" style="text-align: center;">
+      <a class="scrape-btn" type="button" routerLink="/scraper" (click)="scrape()">GO!!</a>
+    </div>
+    <div class="row my-fit pad-10" >
+      <div class="row my-fit" style="margin-left: -5px;"> <b>Table: </b>{{currentScraper.table.name}}</div>
+      <div class="col-xs-2" style="padding: 1px; border: 1px solid aquamarine; text-align: center;"
+        *ngFor="let col of currentScraper.table.columns">
+        <p style="font-size: 90%; font-weight: 800; padding: 0px; margin: 0px;">{{col.name}}</p>
+        <p style="font-size: 80%; padding: 0px; margin: 0px;">{{col.type}}</p>
+      </div>
+    </div>
+    <div class="row my-fit pad-5">
+      <b>Web Pages: </b> ({{currentWebsites.length}}) 
+      <div class="row my-fit list-of-pages">
+        <div class="row my-fit" style="font-size: 80%;" *ngFor="let page of currentWebsites">
+          {{page}}
+        </div>
+      </div>
+    </div>
+    <div class="row my-fit pad-5">
+      <b>Page Paths: </b>
+      <div class="row my-fit" style="font-size: 90%; padding-left: 10px;"><b>toTable: </b>{{currentScraper.pagePath.toTable}}</div>
+      <div class="row my-fit" style="font-size: 90%; padding-left: 10px;"><b>toAllData: </b>{{currentScraper.pagePath.toAllData}}</div>
+      <div class="row my-fit" style="font-size: 90%; padding-left: 10px;"><b>toDataElement: </b>{{currentScraper.pagePath.toDataElement}}</div>      
+    </div>
+    
+  </div>
+</div>
