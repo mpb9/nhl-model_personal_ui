@@ -1,51 +1,23 @@
 import { EventEmitter, Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
 import { Scraper } from "./scraper.model";
 import { QueryService } from "../query.service";
 import { PagePath, Query, Table, Website } from "../query.model";
 import axios from "axios";
-
+ 
+const SCRAPE_WEB = 'http://localhost/bet-nhl/bet-nhl-APIs/web-scrapers/webScrapeExample/index.js';
 @Injectable()
 export class ScraperService{
-  private scrapers: Scraper[] = [];
-  private scraper: Scraper = this.getNewScraper();
+   
+  constructor(private http: HttpClient) {}
 
-  scrapersChanged = new EventEmitter<Scraper[]>();
-
-  constructor(private queryService: QueryService){}
-
-  loadScrapers(){
-    const queries = this.queryService.loadQueries();
-    queries.forEach((query) => {
-      this.scrapers.push(
-        new Scraper(
-          query,
-          []
-        )
-      )
-    });
-    this.updateScrapers();
-    return this.scrapers;
+  newScrape(){
+    /* axios({
+      method: "post",
+      url: `${SCRAPE_WEB}`,
+      headers: { "content-type": "application/json" }
+    }).then(()=>{
+    }).catch((error) => console.log(error)); */
   }
-  updateScrapers(){
-    this.scrapersChanged.emit(this.scrapers);
-  }
-
-  getScraperCopy(){
-    return JSON.parse(JSON.stringify(this.scraper));;
-  }
-
-  getNewScraper(){
-    this.scraper = new Scraper(
-      new Query(
-        -1, 
-        new Website(-1, '', []), 
-        new Table(-1, '', []),
-        new PagePath(-1, '', '', '')
-      ),
-      []
-    );
-    return this.getScraperCopy();
-  }
-
 
 }

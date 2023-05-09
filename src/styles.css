@@ -78,6 +78,10 @@ body{
   font-size: 20px;
   user-select: none;
 }
+.my-btn-3:focus, .my-btn-3:hover{
+  text-decoration-line: none;
+  color: rgb(230, 101, 230);
+}
 .my-btn-4{
   font-weight: 600;
   font-style: italic;

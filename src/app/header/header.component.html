@@ -4,18 +4,18 @@
       <button type="button" class="navbar-toggle" (click)="collapsed = !collapsed">
         <span class="icon-bar" *ngFor="let iconBar of [1,2,3]"></span>
       </button>
-      <a routerLink="" class="navbar-brand" style="font-size:x-large; color: violet;">BetNHL</a>
+      <a routerLink="" class="navbar-brand" style="font-size:28px;font-weight: 100; color: violet;">BetNHL</a>
     </div>
     <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
       <ul class="nav navbar-nav">
-        <li>
-          <a routerLink="/querier" style="font-size:large; color: aquamarine;">
-            Query
+        <li routerLinkActive="active-query" [routerLinkActiveOptions]="{exact: true}" >
+          <a routerLink="/querier" style="color: aquamarine; font-size: 23px;">
+            new_query
           </a>
         </li>
-        <li>
-          <a routerLink="/scraper" style="font-size:large; color: aquamarine;">
-            Web Scraper
+        <li routerLinkActive="active-scrape" [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/scraper" style="color: aquamarine; font-size: 23px;">
+            scrape
           </a>
         </li>
       </ul>

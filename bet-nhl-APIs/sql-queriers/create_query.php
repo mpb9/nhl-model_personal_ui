@@ -9,6 +9,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/bet-nhl/bet-nhl-APIs/includes/helpers.inc.
 $restJson = file_get_contents("php://input");
 $_POST = json_decode($restJson, true);
 
+if(empty($_POST['query_id'])) die();
+$new_query_index = $_POST['query_id'];
+
 $table = $_POST['table'];
 if(empty($table['name']) || empty($table['columns'])) die();
 $table_name = $table['name'];
@@ -22,18 +25,6 @@ $extensions = $website['extensions'];
 $page_path = $_POST['pagePath'];
 if(empty($page_path['toTable']) || empty($page_path['toAllData']) || empty($page_path['toDataElement'])) die();
 
-
-try{
-  $sql = "SELECT COUNT(*) FROM queries";
-  $s = $pdo->prepare($sql);
-  $s->execute();
-} catch (PDOException $e) {
-  echo $e->getMessage();
-  exit();
-}
-
-$count = $s->fetch();
-$new_query_index = $count[0];
 
 try{
   $sql = "INSERT INTO queries SET

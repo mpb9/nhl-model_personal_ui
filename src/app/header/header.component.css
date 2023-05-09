@@ -7,3 +7,19 @@
   border-right: 0px;
   border-radius: 0px;
 }
+.my-nav>div>div>ul>li>a:hover{
+  font-weight: 900;
+  font-style: italic;
+}
+.active-scrape>a{
+  background-image: repeating-linear-gradient(0deg, violet, aquamarine 45%, violet);
+  text-shadow: -1px -1px 1px violet, 0 0 0.2em rgb(105, 48, 8), 0 0 0.2em rgb(105, 48, 8);
+  font-weight: 900;
+  font-size: larger;
+}
+.active-query>a{
+  background-image: repeating-linear-gradient(0deg, violet, rgb(63, 123, 87) 45%, violet);
+  text-shadow: -1px -1px 1px violet, 0 0 0.2em rgb(72, 32, 3), 0 0 0.2em rgb(66, 29, 2);
+  font-weight: 900;
+  font-size: larger;
+}

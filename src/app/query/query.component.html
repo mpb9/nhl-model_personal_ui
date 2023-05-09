@@ -9,12 +9,12 @@
         <ul class="dropdown-menu saved-queries-dropdown" 
           style="margin: 0px; padding: 0px;">
           <li *ngFor="let query of queries" routerLink="/querier" 
-          (click)="loadQuery(query.query_id)" style="border-bottom: 2px solid aquamarine;">
+          (click)="loadQuery(query.query_id)" style="border-bottom: 2px solid aquamarine; margin-right: -150px;">
             <div class="row my-fit pad-5">
               <div class="col-md-2" style="padding-right: 0px; padding-top: 8px; font-size: 130%; text-shadow: 1px 1px 1px violet;">
                 {{query.query_id}}
               </div>
-              <div class="col-md-10" style="padding-left: 0px;">
+              <div class="col-md-10" style="padding-left: 0px; margin-left: -5%;">
                 <div class="row my-fit" style="font-weight: 900; font-size: 115%;">
                   {{query.table.name}}
                 </div>
@@ -28,10 +28,9 @@
       </div>
     </div>
     <div class="col-md-auto" style="text-align: right; padding-right: 15px; padding-left: 0px; padding-top: 12px;">
-      <a class="my-btn-3" type="button" style="margin-right: 20px;"
-        routerLink="/querier/manage" (click)="submitQuery()">create</a>
-      <a class="my-btn-3" type="button" 
-        routerLink="/querier/manage">manage</a>
+      <!-- CHANGED TO HREF FROM ROUTER... MIGHT BE UNNEEDED... -->
+      <a class="my-btn-3" type="button" style="margin-right: 20px;" routerLink="/scraper" (click)="submitQuery()">create!</a>
+      <a class="my-btn-3" type="button" routerLink="/scraper">scrapers</a>
     </div>
   </div>
   <div class="row my-fit">

@@ -1,28 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { Query} from '../query.model';
 import { QueryService } from '../query.service';
-
+import { ScraperService } from './scraper.service';
 
 @Component({  
   selector: 'app-scraper',
   templateUrl: './scraper.component.html',
-  styleUrls: ['./scraper.component.css']
+  styleUrls: ['./scraper.component.css'],
+  providers: [ ScraperService ]
 })
 export class ScraperComponent implements OnInit {
   scrapers: Query[] = [];
   currentScraper!: Query;
   currentWebsites: String[] = [];
 
-  constructor(private queryService: QueryService){}
+  constructor(private queryService: QueryService, private scraperService: ScraperService){}
 
   ngOnInit(){
     this.scrapers = this.queryService.loadQueries();
-    this.currentScraper = this.queryService.getQueryCopy();
+    this.currentScraper = this.queryService.getNewQuery();
     this.queryService.queryChanged.subscribe(() => {
       this.currentScraper = this.queryService.getQueryCopy();
       this.loadWebPages();
-  });    
+    });    
   }
+
+  deleteQuery(query: Query){
+    this.queryService.deleteQuery(query);
+  }
+
 
   newScraper(){
     this.currentScraper = this.queryService.getNewQuery();
@@ -33,7 +39,7 @@ export class ScraperComponent implements OnInit {
   }
 
   scrape(){
-    
+    this.scraperService.newScrape();
   }
 
   loadWebPages(){

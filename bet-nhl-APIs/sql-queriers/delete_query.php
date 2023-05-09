@@ -9,28 +9,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/bet-nhl/bet-nhl-APIs/includes/helpers.inc.
 $restJson = file_get_contents("php://input");
 $_POST = json_decode($restJson, true);
 
-$table = $_POST['table'];
-if(empty($table['name']) || empty($table['columns'])) die();
-$table_name = $table['name'];
-
-$website = $_POST['website'];
-if(empty($website['baseUrl']) || empty($website['extensions'])) die();
-$base_url = $website['baseUrl'];
-
-try{
-  $sql = "SELECT * FROM queries
-          WHERE table_name = :table_name 
-          AND base_url = :base_url";
-  $s = $pdo->prepare($sql);
-  $s->bindValue(':table_name', $table_name);
-  $s->bindValue(':base_url', $base_url);
-  $s->execute();
-} catch (PDOException $e) {
-  echo $e->getMessage();
-  exit();
-}
-$row = $s->fetch(PDO::FETCH_ASSOC);
-$query_id = $row['query_id'];
+if(empty($_POST['query_id'])) die();
+$query_id = $_POST['query_id'];
 
 try{
   $sql = "DELETE FROM queries 

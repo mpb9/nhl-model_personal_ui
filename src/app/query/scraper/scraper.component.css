@@ -5,18 +5,19 @@
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
-  background-image:linear-gradient(to top left, violet, aquamarine);
-  color: rgb(201, 123, 201);
+  background-image:linear-gradient(to top left, rgb(255, 106, 255), aquamarine);
+  color: rgb(255, 120, 255);
+  text-shadow: 2px 0px rgb(77, 201, 160);
   border: solid;
-  border-image: linear-gradient(to bottom right, violet, aquamarine) 1/5px;
-  font-size: 25px;
+  border-image: linear-gradient(to bottom right, rgb(227, 106, 227), aquamarine) 1/5px;
+  font-size: 30px;
   user-select: none;
 }
 .scrape-btn:focus, .scrape-btn:hover{
   text-decoration: none;
-  background-image: linear-gradient(to bottom right, violet, aquamarine);
-  color: rgb(255, 111, 255);
-
+  background-image: linear-gradient(to bottom right, rgb(227, 106, 227), aquamarine);
+  color: rgb(255, 100, 255);
+  text-shadow: -4px 0px rgb(182, 255, 231);
 }
 
 .list-of-scrapers{
@@ -56,4 +57,25 @@
 }
 .list-of-pages::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
+}
+
+.delete-query{
+  font-size: 16px; 
+  font-style: italic;
+  background-color: rgba(108, 23, 10, 0.51);
+  border: 3px solid rgb(255, 141, 228); 
+  color: rgb(255, 117, 170); 
+  font-weight: 100; 
+  padding: 10px 20%;
+}
+.delete-query:hover{
+  text-decoration-line: none;
+  background-color: rgba(173, 45, 45, 0.873);
+  color: rgb(67, 23, 40); 
+  font-size: 18px; 
+  font-weight: 900; 
+  padding: 10px 20%;
+  font-style: normal;
+  border: 3px dashed rgb(34, 21, 31); 
+  text-transform: uppercase;
 }
