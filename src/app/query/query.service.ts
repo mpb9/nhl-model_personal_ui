@@ -26,7 +26,6 @@ export class QueryService{
       method: "post",
       url: `${SAVED_QUERIES}`,
       headers: { "content-type": "application/json" }
-      
     }).then((result) => {
       result.data.forEach(
         (saved_query: { 
@@ -137,6 +136,7 @@ export class QueryService{
     const tempQuery = this.queries.slice().find(q => q.query_id === query_id);
     if(tempQuery){
       this.query = tempQuery;
+      console.log("CURRENT QUERY ID: " + this.query.query_id);
       this.queryChanged.emit(this.query);
     }
   }

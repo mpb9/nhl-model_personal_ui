@@ -71,7 +71,6 @@ export class ScraperComponent implements OnInit {
         const secondDate: any = new Date(extensions[i].substring(extensions[i].indexOf(' ', 6)+1)+'T12:00:00');
         num = Math.round(Math.abs((firstDate - secondDate) / 24 * 60 * 60 * 1000));
       }
-      console.log(numPages + ', ' + num);
       numPages = num > numPages ? num : numPages;
     }
 
@@ -111,7 +110,7 @@ export class ScraperComponent implements OnInit {
         }
       }
       this.currentWebsites.push(tempPage);
-      console.log(tempPage);
+      //console.log(tempPage);
     }
   }
 
