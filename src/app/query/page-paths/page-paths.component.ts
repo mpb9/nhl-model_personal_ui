@@ -8,7 +8,7 @@ import { PagePath, Query } from '../query.model';
   styleUrls: ['./page-paths.component.css']
 })
 export class PagePathsComponent implements OnInit {
-  path: PagePath = new PagePath(-1, "", "", "");
+  path: PagePath = new PagePath(-1, "", "", "", 0);
 
   constructor(private queryService: QueryService){}
 
@@ -26,13 +26,20 @@ export class PagePathsComponent implements OnInit {
     
     this.updatePath();
   }
+  alterNumCols(event:any){
+    if(event.target === null) return;
+    this.path.numCols = event.target.value;
+    this.updatePath();
+    
+    console.log(this.queryService.getQueryCopy().pagePath);
+  }
 
   updatePath(){
     this.queryService.updateQueryPagePath(this.path);
   }
 
   clearPathInputs(){
-    this.path = new PagePath(this.queryService.getQueryCopy().query_id, "", "", "");
+    this.path = new PagePath(this.queryService.getQueryCopy().query_id, "", "", "", 0);
     this.queryService.updateQueryPagePath(this.path);
   }
 

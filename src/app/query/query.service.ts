@@ -2,9 +2,9 @@ import { EventEmitter } from "@angular/core";
 import { Column, PagePath, Query, Table, Website } from "./query.model";
 import axios from "axios";
 
-const SAVED_QUERIES = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/saved_queries.php';
-const CREATE_QUERY = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/create_query.php';
-const DELETE_QUERY = 'http://localhost/bet-nhl/bet-nhl-APIs/sql-queriers/delete_query.php';
+const SAVED_QUERIES = 'http://localhost/bet-apis/sql-queriers/saved_queries.php';
+const CREATE_QUERY = 'http://localhost/bet-apis/sql-queriers/create_query.php';
+const DELETE_QUERY = 'http://localhost/bet-apis/sql-queriers/delete_query.php';
 
 export class QueryService{
   private tables: Table[] = [];
@@ -32,11 +32,11 @@ export class QueryService{
             query_id: number;
             table: { query_id: number; table_name: string; columns: Column[]; }; 
             website: { query_id: number; base_url: string; extensions: string[]; }; 
-            page_path: { query_id: number; to_table: string; to_all_data: string; to_data_element: string; };
+            page_path: { query_id: number; to_table: string; to_all_data: string; to_data_element: string; num_cols: number};
         }) => {
             const newTable = new Table(saved_query.table.query_id, saved_query.table.table_name, saved_query.table.columns);
             const newWebsite = new Website(saved_query.website.query_id, saved_query.website.base_url, saved_query.website.extensions);
-            const newPagePath = new PagePath(saved_query.query_id, saved_query.page_path.to_table, saved_query.page_path.to_all_data, saved_query.page_path.to_data_element);
+            const newPagePath = new PagePath(saved_query.query_id, saved_query.page_path.to_table, saved_query.page_path.to_all_data, saved_query.page_path.to_data_element, saved_query.page_path.num_cols);
             this.queries.push(new Query(saved_query.query_id, newWebsite, newTable, newPagePath));
             this.tables.push(newTable);
             this.websites.push(newWebsite);
@@ -98,7 +98,7 @@ export class QueryService{
         this.newQueryId, 
         new Website(this.newQueryId, website.baseUrl, website.extensions),
         new Table(this.newQueryId, this.query.table.name, this.query.table.columns), 
-        new PagePath(this.newQueryId, this.query.pagePath.toTable, this.query.pagePath.toAllData, this.query.pagePath.toDataElement)
+        new PagePath(this.newQueryId, this.query.pagePath.toTable, this.query.pagePath.toAllData, this.query.pagePath.toDataElement, this.query.pagePath.numCols)
       );
     } else {
       this.query.website = website;
@@ -112,7 +112,7 @@ export class QueryService{
         this.newQueryId, 
         new Website(this.newQueryId, this.query.website.baseUrl, this.query.website.extensions),
         new Table(this.newQueryId, table.name, table.columns), 
-        new PagePath(this.newQueryId, this.query.pagePath.toTable, this.query.pagePath.toAllData, this.query.pagePath.toDataElement)
+        new PagePath(this.newQueryId, this.query.pagePath.toTable, this.query.pagePath.toAllData, this.query.pagePath.toDataElement, this.query.pagePath.numCols)
       );
     } else {
       this.query.table = table;
@@ -125,7 +125,7 @@ export class QueryService{
         this.newQueryId, 
         new Website(this.newQueryId, this.query.website.baseUrl, this.query.website.extensions),
         new Table(this.newQueryId, this.query.table.name, this.query.table.columns), 
-        new PagePath(this.newQueryId, pagePath.toTable, pagePath.toAllData, pagePath.toDataElement)
+        new PagePath(this.newQueryId, pagePath.toTable, pagePath.toAllData, pagePath.toDataElement, pagePath.numCols)
       );
     } else {
       this.query.pagePath = pagePath;
@@ -148,7 +148,7 @@ export class QueryService{
       this.newQueryId, 
       new Website(this.newQueryId, '', []), 
       new Table(this.newQueryId, '', []),
-      new PagePath(this.newQueryId, '', '', '')
+      new PagePath(this.newQueryId, '', '', '', 0)
     );
     return this.getQueryCopy();
   }

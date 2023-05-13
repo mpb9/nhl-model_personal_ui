@@ -1,27 +1,34 @@
 <div class="row my-fill-3 my-fit" 
   style="padding: 2px; border-bottom: 2px solid aquamarine;">
   <div class="col-md-6">
-    <h4 style="font-weight: bolder;">Page Path</h4>
+    <h4 style="font-weight: bolder;">Page Properties</h4>
   </div>
 </div>
 <div class="row my-fit pad-10">
   <form>
     <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
-      <label class="my-label-1" style="margin-right: 5px;">..to Table</label>
+      <label class="my-label-1" style="margin-right: 5px;"># of Columns on Webpage</label>
+      <input type="text" class="my-input-2" 
+        placeholder="numCols"
+        (change)="alterNumCols($event)"
+        [value]="path.numCols === 0 ? '' : path.numCols">
+    </div>
+    <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
+      <label class="my-label-1" style="margin-right: 5px;">Path to Table</label>
       <input type="text" class="my-input-2" 
         placeholder="toTable"
         (change)="alterPath($event, 0)"
         [value]="path.toTable === undefined ? '' : path.toTable">
     </div>
     <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
-      <label class="my-label-1" style="margin-right: 5px;">..to All Data</label>
+      <label class="my-label-1" style="margin-right: 5px;">Path to All Data</label>
       <input type="text" class="my-input-2" 
         placeholder="toAllData"
         (change)="alterPath($event, 1)"
         [value]="path.toAllData === undefined ? '' : path.toAllData">
     </div>
     <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
-      <label class="my-label-1" style="margin-right: 5px;">..to Data Element</label>
+      <label class="my-label-1" style="margin-right: 5px;">Path to Data Element</label>
       <input type="text" class="my-input-2" 
         placeholder="toDataElement"
         (change)="alterPath($event, 2)"

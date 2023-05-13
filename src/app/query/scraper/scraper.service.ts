@@ -1,23 +1,35 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { Scraper } from "./scraper.model";
-import { QueryService } from "../query.service";
-import { PagePath, Query, Table, Website } from "../query.model";
 import axios from "axios";
+import { Query } from "../query.model";
  
-const SCRAPE_WEB = 'http://localhost/bet-nhl/bet-nhl-APIs/web-scrapers/webScrapeExample/index.js';
 @Injectable()
 export class ScraperService{
    
   constructor(private http: HttpClient) {}
 
-  newScrape(){
-    /* axios({
+  newScrape(scraper: Query, websites: String[]){   
+    const API_URL = 'http://localhost:3000/start-scraper';
+    const pagePath = {
+      toTable: scraper.pagePath.toTable,
+      toAllData: scraper.pagePath.toAllData,
+      toDataElement: scraper.pagePath.toDataElement,
+      numCols: scraper.pagePath.numCols
+    };
+    
+    
+    axios({
       method: "post",
-      url: `${SCRAPE_WEB}`,
-      headers: { "content-type": "application/json" }
-    }).then(()=>{
-    }).catch((error) => console.log(error)); */
+      url: `${API_URL}`,
+      headers: { "content-type": "application/json" },
+      data: {
+        websites,
+        pagePath
+      }
+    }).then((result) => {
+      console.log(result);
+    }).catch((error) => console.log(error));
+
   }
 
 }

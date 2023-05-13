@@ -39,7 +39,7 @@ export class ScraperComponent implements OnInit {
   }
 
   scrape(){
-    this.scraperService.newScrape();
+    this.scraperService.newScrape(this.currentScraper, this.currentWebsites);
   }
 
   loadWebPages(){
