@@ -1,0 +1,146 @@
+.upload-page{
+  margin: 0 auto;
+  min-height: 80vh;
+  background-image: linear-gradient(to right, rgb(26 12 2), lightgreen);
+  border-top: 5px solid black;
+  border-right: 20px solid black;
+  border-left: 15px solid black;
+  border-bottom: 10px solid black;
+  padding: 0px;
+  font-family: 'Monaco', monospace;
+  color: lightgreen;
+}
+
+.upload-header-btn{
+  padding: 5px 9px;
+  color: black;
+  font-size: 125%;
+  cursor: pointer;
+  background-image: linear-gradient(to top left, #4a4f4a, #a9c99f);
+  border: solid;
+  border-image: linear-gradient(to bottom right, rgb(0 0 0), #cfffd0) 1/5px;
+  font-weight: 900;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  user-select: none;
+}
+.upload-header-btn:focus, .upload-header-btn:hover{
+  background-image: linear-gradient(to bottom right, rgb(0 0 0), #cfffd0);
+  color: lightgreen;
+  cursor: pointer;
+  text-decoration: none;
+}
+.exit-upload-btn{
+  padding: 5px 9px;
+  font-size: 125%;
+  cursor: pointer;
+  background-image: linear-gradient(to bottom right, rgb(0 0 0), #cfffd0); 
+  color: rgb(162 227 142);   
+  border: solid;
+  border-image: linear-gradient(to top left, rgb(132, 181, 118), #3b4331) 1/5px;
+  font-weight: 900;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  user-select: none;
+}
+.exit-upload-btn:focus, .exit-upload-btn:hover{
+  background-image: linear-gradient(to top left, rgb(132, 181, 118), #3b4331);
+  color: black;
+  cursor: pointer;
+  text-decoration: none;
+}
+.option-btn{
+  padding: 2px 5px;
+  font-size: 100%;
+  cursor: pointer;
+  background-image: linear-gradient(to top left, rgb(132, 181, 118), #3b4331);
+  color: black;   
+  text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(0, 0, 0, 0.74), 0 0 0.2em rgba(0, 0, 0, 0.712);
+  border: solid;
+  border-image: linear-gradient(to top left, rgb(98 111 83), #426516) 1/3px;
+  font-weight: 900;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  user-select: none;
+}
+.option-btn:focus, .option-btn:hover{
+  background-image: linear-gradient(to top left, rgb(132, 181, 118), #3b4331);
+  border-image: linear-gradient(to top left, rgb(132, 181, 118), #3b4331) 1/3px;
+  color: black;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.list-of-diagnostics{
+  position: absolute;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  z-index: 1000;
+  background-color: black;
+  background-clip: padding-box;
+  border: 3px solid lightgreen;
+  border-radius: 0px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.list-of-diagnostics>li{
+  padding: 3px 5px;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+.sql-table{
+  padding: 10px 20px; 
+  font-size: 110%; 
+  overflow-x: auto;
+}
+.sql-table-cols{
+  border: 3px solid black;
+  background-color: #2f4f35;
+  text-align: center;
+  padding: 0px;
+}
+.sql-table-cols:hover{
+  cursor: pointer;
+  background-color: #6f8e75;
+}
+
+.scraped-table{
+  padding: 10px 20px; 
+  font-size: 110%; 
+  overflow-x: auto;
+  max-height: 40vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.scraped-table::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+.scraped-table-cols{
+  border: 3px solid black;
+  background-color: #2f4f35;
+  text-align: center;
+  padding: 0px;
+}
+.scraped-table-cols:hover{
+  cursor: pointer;
+  background-color: #6f8e75;
+}
+.scraped-table-data{
+  border: 3px solid black;
+  background-color: #6f8e75;
+  text-align: center;
+  padding: 0px;
+}

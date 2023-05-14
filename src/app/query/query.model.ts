@@ -15,5 +15,5 @@ export class Website{
 }
 
 export class PagePath{
-  constructor(public query_id: number, public toTable: string, public toAllData: string, public toDataElement: string, public numCols: number){}
+  constructor(public query_id: number, public toAllHeaders: string, public toHeaderElement: string, public toAllData: string, public toDataElement: string, public numCols: number){}
 }

@@ -19,6 +19,43 @@
   color: rgb(255, 100, 255);
   text-shadow: -4px 0px rgb(182, 255, 231);
 }
+.loading-btn{
+  font-weight: bolder;
+  padding: 5px 25px;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  color: aquamarine;
+  font-style: italic;
+  text-shadow: 2px 0px rgb(39, 40, 40);
+  font-size: 30px;
+  user-select: none;
+}
+.loading-btn:focus, .loading-btn:hover{
+  text-decoration: none;
+  cursor: default;
+}
+.scraped-btn{
+  font-weight: bolder;
+  padding: 5px 25px;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image:linear-gradient(to top left, rgb(247, 208, 247), rgb(135, 140, 139));
+  color: aquamarine;
+  text-shadow: -4px 0px rgb(39, 40, 40);
+  border: solid;
+  border-image: linear-gradient(to bottom right, rgb(168, 142, 168), rgb(43, 196, 166)) 1/5px;
+  font-size: 30px;
+  user-select: none;
+}
+.scraped-btn:focus, .scraped-btn:hover{
+  text-decoration: none;
+  background-image: linear-gradient(to bottom right, rgb(249, 206, 249), rgb(135, 140, 139));
+  color: rgb(39, 40, 40);
+  text-shadow: 2px 0px rgb(77, 201, 160);
+}
 
 .list-of-scrapers{
   margin: 2px;

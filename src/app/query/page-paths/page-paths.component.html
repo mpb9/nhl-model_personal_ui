@@ -14,24 +14,31 @@
         [value]="path.numCols === 0 ? '' : path.numCols">
     </div>
     <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
-      <label class="my-label-1" style="margin-right: 5px;">Path to Table</label>
+      <label class="my-label-1" style="margin-right: 5px;">Path to All Headers</label>
       <input type="text" class="my-input-2" 
-        placeholder="toTable"
+        placeholder="toAllHeaders"
         (change)="alterPath($event, 0)"
-        [value]="path.toTable === undefined ? '' : path.toTable">
+        [value]="path.toAllHeaders === undefined ? '' : path.toAllHeaders">
+    </div>
+    <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
+      <label class="my-label-1" style="margin-right: 5px;">Path to Header Element</label>
+      <input type="text" class="my-input-2" 
+        placeholder="toHeaderElement"
+        (change)="alterPath($event, 1)"
+        [value]="path.toHeaderElement === undefined ? '' : path.toHeaderElement">
     </div>
     <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
       <label class="my-label-1" style="margin-right: 5px;">Path to All Data</label>
       <input type="text" class="my-input-2" 
         placeholder="toAllData"
-        (change)="alterPath($event, 1)"
+        (change)="alterPath($event, 2)"
         [value]="path.toAllData === undefined ? '' : path.toAllData">
     </div>
     <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
       <label class="my-label-1" style="margin-right: 5px;">Path to Data Element</label>
       <input type="text" class="my-input-2" 
         placeholder="toDataElement"
-        (change)="alterPath($event, 2)"
+        (change)="alterPath($event, 3)"
         [value]="path.toDataElement === undefined ? '' : path.toDataElement">
     </div>
     <div class="row my-fit" style="text-align: right; margin-right: 11%; padding-bottom: 10px; padding-top: 10px;">

@@ -1,22 +1,23 @@
 import { EventEmitter, Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
 import axios from "axios";
 import { Query } from "../query.model";
+import { RawScrape } from "./scraper.model";
  
-@Injectable()
 export class ScraperService{
-   
-  constructor(private http: HttpClient) {}
+
+  private rawScrape: RawScrape = this.getNewRawScrape();
+
+  rawScrapeChanged = new EventEmitter<RawScrape>();
 
   newScrape(scraper: Query, websites: String[]){   
     const API_URL = 'http://localhost:3000/start-scraper';
     const pagePath = {
-      toTable: scraper.pagePath.toTable,
+      toAllHeaders: scraper.pagePath.toAllHeaders,
+      toHeaderElement: scraper.pagePath.toHeaderElement,
       toAllData: scraper.pagePath.toAllData,
       toDataElement: scraper.pagePath.toDataElement,
       numCols: scraper.pagePath.numCols
     };
-    
     
     axios({
       method: "post",
@@ -27,9 +28,31 @@ export class ScraperService{
         pagePath
       }
     }).then((result) => {
-      console.log(result);
-    }).catch((error) => console.log(error));
+      this.rawScrape = new RawScrape(
+        result.data.headers,
+        result.data.body
+      );
+      //console.log(this.rawScrape);
+      this.updateRawScrape();
 
+    }).catch((error) => console.log(error));
+    
+    return this.rawScrape;
+  }
+
+  updateRawScrape(){
+    this.rawScrapeChanged.emit(this.rawScrape);
+  }
+
+  getRawScrapeCopy(){
+    return JSON.parse(JSON.stringify(this.rawScrape));
+  }
+  getNewRawScrape(){
+    this.rawScrape = new RawScrape(
+      [],
+      []
+    );
+    return this.getRawScrapeCopy();
   }
 
 }

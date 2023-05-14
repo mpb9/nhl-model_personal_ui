@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
-
 import { AppComponent } from './app.component';
 import { QueryComponent } from './query/query.component';
 import { QueryService } from './query/query.service';
@@ -15,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ScraperService } from './query/scraper/scraper.service';
 import { PagePathsComponent } from './query/page-paths/page-paths.component';
+import { UploadComponent } from './query/scraper/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { PagePathsComponent } from './query/page-paths/page-paths.component';
     TableComponent,
     ScraperComponent,
     HomeComponent,
-    PagePathsComponent
+    PagePathsComponent,
+    UploadComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,78 @@
+<div class="col-md-12 upload-page">
+  <div class="row my-fill-1 my-fit" style="padding: 0px; background-image: linear-gradient(to bottom, rgb(0 0 0), #a6e7a8)">
+    <div class="col-md-3" style="width: min-content; margin: 0px; padding: 0px; padding-bottom: 10px;">
+      <div class="btn-group" appDropdown>
+        <button class="upload-header-btn dropdown-toggle" type="button" style="padding: 5px 9px;" (click)="showDiagnostics = !showDiagnostics">
+          DIAGNOSTICS
+          <span class="my-caret" style="color: black;"></span>
+        </button>
+        <ul class="list-of-diagnostics" *ngIf="showDiagnostics" style="margin: 0px; padding: 0px;">
+          <li style="border-bottom: 2px solid lightgreen;"># pages</li>
+          <li style="border-bottom: 2px solid lightgreen;"># rows</li>
+          <li style="border-bottom: 2px solid lightgreen;"># cols</li>
+          <li style="border-bottom: 2px solid lightgreen;">rows with wrong # cols (?)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-auto" style="text-align: right; padding-right: 0px; padding-left: 0px; padding-top: 4px;">
+      <a class="upload-header-btn" type="button" style="margin-right: 20px; font-size: 150%;">SQL</a>
+      <a class="exit-upload-btn" type="button" style="font-size: 150%;" 
+        href="http://localhost:4200/scraper">nvm..</a>
+    </div>
+  </div>
+  <div class="row my-fit">
+    <div class="row my-fit" style="background-color: black; padding-top: 10px; padding-bottom: 10px; text-align: center; font-size: 145%;">
+      OPTIONS-> 
+      <a class="option-btn" type="button" style="margin-right: 20px;">MATCH</a>
+      <a class="option-btn" type="button">DELETE</a>
+    </div>
+    <div class="row my-fit" style="border-left: 10px solid lightgreen; padding-left: 15px; font-size: 125%;">
+      <b>SQL Table: </b>{{query.table.name}}... ({{query.table.columns.length}} cols)
+    </div>
+    <div class="row my-fit sql-table">
+      <table>
+        <tr>
+          <th class="sql-table-cols" *ngFor="let col of query.table.columns; let i=index">
+            <div class="row my-fit" style="font-weight: 100; font-size: 100%;">
+              {{i+1}}
+            </div>
+            <div class="row my-fit" style="font-weight: 100; font-size: 100%; background-color: rgba(0, 0, 0, 0.6);">
+              <b>{{col.name}}</b>
+              <p style="padding: 0px; margin: 0px;">
+                ({{col.type}})
+              </p>
+            </div>
+          </th>
+        </tr>
+      </table>      
+    </div>
+    <div class="row my-fit" style="border-left: 10px solid lightgreen; padding-left: 15px; font-size: 125%;">
+      <b>Scraped Data:</b>
+    </div>
+    <div class="row my-fit scraped-table">
+      <table>
+        <tr>
+          <th class="scraped-table-cols" *ngFor="let header of rawScrape.headers; let i=index">
+            <div class="row my-fit" style="font-weight: 100; font-size: 100%;">
+              {{i+1}}
+            </div>
+            <div class="row my-fit" style="font-weight: 100; font-size: 100%; background-color: rgba(0, 0, 0, 0.6);">
+              <b>{{header}}</b>
+              <p style="padding: 0px; margin: 0px;">
+              </p>
+            </div>
+          </th>
+        </tr>
+        <tr *ngFor="let row of rawScrape.data[0]; let i=index">
+          <td class="scraped-table-data" *ngFor="let cell of row;">
+            {{cell}}
+          </td>
+        </tr>
+      </table>      
+    </div>
+  </div>
+  
+  <div class="row my-fit">
+   
+  </div>
+</div>

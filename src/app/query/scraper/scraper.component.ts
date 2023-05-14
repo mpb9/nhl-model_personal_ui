@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Query} from '../query.model';
 import { QueryService } from '../query.service';
 import { ScraperService } from './scraper.service';
+import { RawScrape } from './scraper.model';
 
 @Component({  
   selector: 'app-scraper',
@@ -13,6 +14,10 @@ export class ScraperComponent implements OnInit {
   scrapers: Query[] = [];
   currentScraper!: Query;
   currentWebsites: String[] = [];
+  currentRawScrape!: RawScrape;
+
+  loading: boolean = false;
+  gotScrape: boolean = false;
 
   constructor(private queryService: QueryService, private scraperService: ScraperService){}
 
@@ -23,6 +28,14 @@ export class ScraperComponent implements OnInit {
       this.currentScraper = this.queryService.getQueryCopy();
       this.loadWebPages();
     });    
+
+    this.currentRawScrape = this.scraperService.getRawScrapeCopy();
+    this.scraperService.rawScrapeChanged.subscribe(() => {
+      this.currentRawScrape = this.scraperService.getRawScrapeCopy();
+      this.gotScrape = true;
+      this.loading = false;
+      console.log(this.currentRawScrape);
+    })
   }
 
   deleteQuery(query: Query){
@@ -39,7 +52,8 @@ export class ScraperComponent implements OnInit {
   }
 
   scrape(){
-    this.scraperService.newScrape(this.currentScraper, this.currentWebsites);
+    this.loading = true;
+    this.currentRawScrape = this.scraperService.newScrape(this.currentScraper, this.currentWebsites);
   }
 
   loadWebPages(){
