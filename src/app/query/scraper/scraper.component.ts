@@ -17,7 +17,7 @@ export class ScraperComponent implements OnInit {
   currentRawScrape!: RawScrape;
 
   loading: boolean = false;
-  gotScrape: boolean = false;
+  gotScrape: boolean = true;
 
   constructor(private queryService: QueryService, private scraperService: ScraperService){}
 

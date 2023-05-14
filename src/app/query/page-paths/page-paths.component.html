@@ -25,7 +25,7 @@
       <input type="text" class="my-input-2" 
         placeholder="toHeaderElement"
         (change)="alterPath($event, 1)"
-        [value]="path.toHeaderElement === undefined ? '' : path.toHeaderElement">
+        [value]="path.toHeaderElement === undefined ? 'tr > th' : path.toHeaderElement">
     </div>
     <div class="row my-fit" style="padding-top: 0px; padding-bottom: 10px; padding-left: 25px; padding-right: 25px;">
       <label class="my-label-1" style="margin-right: 5px;">Path to All Data</label>
@@ -39,7 +39,7 @@
       <input type="text" class="my-input-2" 
         placeholder="toDataElement"
         (change)="alterPath($event, 3)"
-        [value]="path.toDataElement === undefined ? '' : path.toDataElement">
+        [value]="path.toDataElement === undefined ? 'tr > td' : path.toDataElement">
     </div>
     <div class="row my-fit" style="text-align: right; margin-right: 11%; padding-bottom: 10px; padding-top: 10px;">
         <button class="my-btn-4" type="button" (click)="clearPathInputs()">

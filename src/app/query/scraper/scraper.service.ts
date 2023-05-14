@@ -10,7 +10,6 @@ export class ScraperService{
 
   rawScrapeChanged = new EventEmitter<RawScrape>();
 
-
   newScrape(scraper: Query, websites: String[]){   
     const API_URL = 'http://localhost:3000/start-scraper';
     const pagePath = {
@@ -65,7 +64,6 @@ export class ScraperService{
     while(i<this.rawScrape.headers.length){
       this.rawScrape.headers[i] = JSON.parse(JSON.stringify(this.rawScrape.headers[i])).toLowerCase();
       i++;
-      console.log(this.rawScrape.headers[i-1]);
     }
     
     this.tryFixingColMismatch();
@@ -184,6 +182,57 @@ export class ScraperService{
         const temp_data = JSON.parse(JSON.stringify(copyOf_row[id_1]));
         copyOf_row[id_1] =  JSON.parse(JSON.stringify(copyOf_row[id_2]));
         copyOf_row[id_2] =  JSON.parse(JSON.stringify(temp_data));
+        copyOf_page.push(copyOf_row);                
+      });
+      copyOf_rawScrape.data.push(copyOf_page)
+    });
+
+    this.rawScrape = JSON.parse(JSON.stringify(copyOf_rawScrape));
+    this.alterScrapeTable(this.rawScrape);
+  }
+
+  moveColumns(original_id: number, new_id: number){
+    const copyOf_rawScrape = new RawScrape(
+      [],
+      []
+    );
+    
+    let header_target = new_id;
+    for(let i = 0; i<header_target; i++){
+      if(i != original_id){
+        console.log(this.rawScrape.headers[i]);
+        copyOf_rawScrape.headers.push(this.rawScrape.headers[i]);
+      } else {
+        header_target++;
+      }
+    }
+    copyOf_rawScrape.headers.push(this.rawScrape.headers[original_id]);
+    console.log(this.rawScrape.headers[original_id]);
+
+    for(let i = header_target; i<this.rawScrape.headers.length; i++){
+      if(i != original_id){
+        console.log(this.rawScrape.headers[i]);
+        copyOf_rawScrape.headers.push(this.rawScrape.headers[i]);
+      }
+    }
+
+
+    this.rawScrape.data.forEach((page) => {
+      const copyOf_page: string[][] = [];
+      page.forEach((row) => {
+        const copyOf_row = [];
+        let row_target = new_id;
+        for(let k=0; k<row_target; k++){
+          if(k != original_id){
+            copyOf_row.push(JSON.parse(JSON.stringify(row[k])));
+          } else row_target++;
+        }
+        copyOf_row.push(JSON.parse(JSON.stringify(row[original_id])));
+        for(let k=row_target; k<row.length; k++){
+          if(k != original_id){
+            copyOf_row.push(JSON.parse(JSON.stringify(row[k])));
+          }
+        }
         copyOf_page.push(copyOf_row);                
       });
       copyOf_rawScrape.data.push(copyOf_page)

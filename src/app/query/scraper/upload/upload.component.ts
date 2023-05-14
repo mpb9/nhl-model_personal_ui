@@ -13,6 +13,8 @@ export class UploadComponent implements OnInit {
   @Input('rawScraped') rawScraped!: RawScrape;
   rawScrape!: RawScrape;
   query!: Query;
+  sqlColumns!: Column[];
+  sqlResponse = '';
 
   pageNumber = 0;
   numPages = 0;
@@ -21,15 +23,21 @@ export class UploadComponent implements OnInit {
   allColsSame = true;
 
   swappingCols = [-1, -1];
+  movingCol = [-1,-1];
   deletingCol = false;
   deletingRow = false;
-
+  usingScraperColumns = false;
+  usingExtraColumns = false;
   showDiagnostics: boolean = false;
+  showSQLOptions: boolean = false;
+  showSQLResponse: boolean = false;
+  sqlResponseCopied: boolean = false;
 
   constructor(private queryService: QueryService, private scraperService: ScraperService){}
 
   ngOnInit(){
     this.query = this.queryService.getQueryCopy();
+    this.sqlColumns = this.query.table.columns;
     this.rawScrape = this.scraperService.getRawScrapeCopy();
     if(this.rawScrape.headers.length == 0){
       this.rawScrape = new RawScrape(
@@ -66,6 +74,7 @@ export class UploadComponent implements OnInit {
         ]),
         new PagePath( -1, 'toAllHeaders', 'toHeaderElement', 'toAlData', 'toDataElement',7)
       );
+      this.sqlColumns = this.query.table.columns;
     }
     this.initializeDiagnostics();
 
@@ -80,10 +89,25 @@ export class UploadComponent implements OnInit {
   initializeDiagnostics(){
     this.numPages = this.rawScrape.data.length;
     this.numCols = this.rawScrape.data[0][0].length;
+    this.numRows = 0;
     this.rawScrape.data.forEach((page) => {
       this.numRows += page.length;
       if(page[page.length-1].length != this.numCols) this.allColsSame = false; 
     });
+  }
+
+  initializeSQLTable(){
+    let createCommand = "CREATE TABLE `betting`.`" + this.query.table.name + "` (";
+    this.sqlColumns.forEach((col) => {
+      let colToAdd = " `" + col.name + "` " + col.type + " NOT NULL ,";
+      createCommand += colToAdd;
+    });
+    createCommand = createCommand.slice(0,createCommand.length-1);
+    createCommand += createCommand + ") ENGINE = MyISAM;";
+
+    this.showSQLOptions = false;
+    this.showSQLResponse = true;
+    this.sqlResponse = createCommand;
   }
 
   changePage(event:any){
@@ -91,12 +115,33 @@ export class UploadComponent implements OnInit {
     this.pageNumber = Number(event.target.value)-1 > this.numPages ? this.pageNumber : Number(event.target.value)-1;
   }
 
+  changeType(event: any, index: number){
+    if(event.target === null) return;
+    this.sqlColumns[index].type = event.target.value;
+
+    if(this.usingScraperColumns == false){
+      this.query.table.columns = this.sqlColumns;
+      this.queryService.updateQueryTable(this.query.table);
+    }
+  }
+
+  copySQLResponse(){
+    navigator.clipboard.writeText(this.sqlResponse);
+    this.sqlResponseCopied = true;
+  }
+  closeSQLResponse(){
+    this.showSQLOptions = false;
+    this.showSQLResponse = false;
+  }
+
   cancelAlteration(){
     this.deletingCol = false;
     this.deletingRow = false;
     this.swappingCols = [-1,-1];
+    this.movingCol = [-1,-1];
     this.scraperService.alterScrapeTable(this.rawScrape);
   }
+
   handleColumnClick(index: number){
     if(this.deletingCol) this.deleteCol(index);
 
@@ -105,6 +150,14 @@ export class UploadComponent implements OnInit {
         this.swapCols(index);
       } else {
         this.swappingCols[1] = index;
+      }
+    }
+
+    if(this.movingCol[0] == 0) {
+      if(this.movingCol[1] != -1){
+        this.moveCol(index);
+      } else {
+        this.movingCol[1] = index;
       }
     }
   }
@@ -127,6 +180,16 @@ export class UploadComponent implements OnInit {
     this.swappingCols = [-1, -1];
   }
 
+  prep_movingCol(){
+    this.movingCol[0] = 0;
+  }
+  moveCol(index: number){
+    if(index != this.movingCol[1]){
+      this.scraperService.moveColumns(this.movingCol[1], index);
+    }
+    this.movingCol = [-1, -1];
+  }
+
   prep_deletingRow(){
     this.deletingRow = true;
   }
@@ -136,6 +199,25 @@ export class UploadComponent implements OnInit {
   deleteRow(index: number){
     this.scraperService.removeRow(this.pageNumber, index);
     this.deletingRow = false;
+  }
+
+
+  useScraperColumns(){
+    this.usingScraperColumns = true;
+    this.usingExtraColumns = false;
+
+    this.sqlColumns = [];
+
+    this.rawScrape.headers.forEach(header => {
+      this.sqlColumns.push(new Column(header, ''));
+    });
+  }
+  useSQLColumns(){
+    this.usingScraperColumns = false;
+    this.usingExtraColumns = false;
+
+    this.sqlColumns = [];
+    this.sqlColumns = this.query.table.columns;
   }
 
 }

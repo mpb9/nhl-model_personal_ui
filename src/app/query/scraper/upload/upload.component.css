@@ -11,9 +11,9 @@
 }
 
 .upload-header-btn{
-  padding: 5px 9px;
+  padding: 5px;
   color: black;
-  font-size: 125%;
+  font-size: 115%;
   cursor: pointer;
   background-image: linear-gradient(to top left, #4a4f4a, #a9c99f);
   border: solid;
@@ -30,6 +30,101 @@
   cursor: pointer;
   text-decoration: none;
 }
+
+.sql-options{
+  margin: 0px; 
+  padding: 0px;
+  position: absolute;
+  font-size: 16px;
+  text-align: left;
+  list-style: none;
+  z-index: 1000;
+  background-color:rgb(139 199 111 / 95%);
+  background-clip: padding-box;
+  border-radius: 0px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  text-align: center;
+}
+.sql-options>li{
+  padding: 6px;
+  border: solid;
+  border-image: linear-gradient(to top left, rgb(139 199 111), #546554) 1/4px;
+  border-top: 0px;
+}
+.sql-options>li>a{
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  padding: 0px;
+  border: 0px;
+  font-size: 115%;
+  color: #404940;
+  font-weight: 900;
+  text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
+
+}
+.sql-options>li>a:hover, .sql-options>li>a:focus{
+  text-decoration: none;
+  cursor: pointer;
+  color: rgb(139 199 111);
+}
+.sql-options>li:focus, .sql-options>li:hover{
+  cursor: pointer;
+  background-color: rgba(64, 73, 64, 0.9);
+}
+
+.sql-response-container{
+  position: absolute;
+  z-index: 1000;
+  margin-top: 25px;
+  padding: 5px 10px;
+  background-color: rgba(145, 204, 73, 0.95);
+  width: 60%;
+  margin-left:20%;
+  margin-right:20%;
+}
+
+.sql-response{
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+  text-align: left;
+  background-color: rgba(64, 73, 64, 0.98);
+  min-height: 20vh;
+  max-height: 40vh;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.sql-response::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+.copy-sql-response{
+  padding: 4px 15px;
+  cursor: pointer;
+  background-color: black;
+  color: rgb(81, 81, 81);   
+  text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
+  border: solid;
+  border-image: linear-gradient(to top left, rgb(153, 196, 103), #426516) 1/2px;
+  font-weight: 100;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  user-select: none;
+  margin-right: 20px;
+}
+.copy-sql-response:hover, .copy-sql-response:focus{
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+
+
+
 .exit-upload-btn{
   padding: 5px 9px;
   font-size: 125%;
@@ -162,10 +257,12 @@ th, td {
 }
 
 .scraped-table{
-  padding: 5px 10px; 
+  margin: 5px 10px; 
   font-size: 110%; 
   overflow-x: auto;
-  max-height: 40vh;
+  max-height: 55vh;
+  border: 3px solid black;
+  border-bottom: 5px solid black;
   overflow-y: scroll;
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */
@@ -188,6 +285,7 @@ th, td {
   background-color: #6f8e75;
   text-align: center;
   padding: 0px;
+  font-size: 105%;
 }
 
 .deletingColsCSS{
