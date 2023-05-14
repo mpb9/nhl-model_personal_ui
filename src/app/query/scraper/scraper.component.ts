@@ -34,8 +34,7 @@ export class ScraperComponent implements OnInit {
       this.currentRawScrape = this.scraperService.getRawScrapeCopy();
       this.gotScrape = true;
       this.loading = false;
-      console.log(this.currentRawScrape);
-    })
+    });
   }
 
   deleteQuery(query: Query){

@@ -10,8 +10,19 @@ import { Column, PagePath, Query, Table, Website } from '../../query.model';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
-  @Input('rawScraped') rawScrape!: RawScrape;
+  @Input('rawScraped') rawScraped!: RawScrape;
+  rawScrape!: RawScrape;
   query!: Query;
+
+  pageNumber = 0;
+  numPages = 0;
+  numCols = 0;
+  numRows = 0;
+  allColsSame = true;
+
+  swappingCols = [-1, -1];
+  deletingCol = false;
+  deletingRow = false;
 
   showDiagnostics: boolean = false;
 
@@ -19,9 +30,10 @@ export class UploadComponent implements OnInit {
 
   ngOnInit(){
     this.query = this.queryService.getQueryCopy();
+    this.rawScrape = this.scraperService.getRawScrapeCopy();
     if(this.rawScrape.headers.length == 0){
       this.rawScrape = new RawScrape(
-        ['fakeHeader1', 'Header2', 'fakeHeader3', 'fake4', 'fakeHeader5', 'fh6', 'fakeHeader7'],
+        ['fakeHeader1', 'Header2', 'fakeHeader3', 'fake4', 'fakeHeader5', 'fh6'],
         [
           [
             ['p1r1d1', 'p1r1d2', 'p1r1d3', 'p1r1d4', 'p1r1d5', 'p1r1d6', 'p1r1d7'],
@@ -54,10 +66,76 @@ export class UploadComponent implements OnInit {
         ]),
         new PagePath( -1, 'toAllHeaders', 'toHeaderElement', 'toAlData', 'toDataElement',7)
       );
-
     }
+    this.initializeDiagnostics();
+
+    this.scraperService.rawScrapeChanged.subscribe(() => {
+      this.rawScrape = this.scraperService.getRawScrapeCopy();
+      this.initializeDiagnostics();
+      console.log(this.rawScrape);
+    });
+    console.log(this.rawScrape);
   }
 
+  initializeDiagnostics(){
+    this.numPages = this.rawScrape.data.length;
+    this.numCols = this.rawScrape.data[0][0].length;
+    this.rawScrape.data.forEach((page) => {
+      this.numRows += page.length;
+      if(page[page.length-1].length != this.numCols) this.allColsSame = false; 
+    });
+  }
 
+  changePage(event:any){
+    if(event.target === null) return;
+    this.pageNumber = Number(event.target.value)-1 > this.numPages ? this.pageNumber : Number(event.target.value)-1;
+  }
+
+  cancelAlteration(){
+    this.deletingCol = false;
+    this.deletingRow = false;
+    this.swappingCols = [-1,-1];
+    this.scraperService.alterScrapeTable(this.rawScrape);
+  }
+  handleColumnClick(index: number){
+    if(this.deletingCol) this.deleteCol(index);
+
+    if(this.swappingCols[0] == 0) {
+      if(this.swappingCols[1] != -1){
+        this.swapCols(index);
+      } else {
+        this.swappingCols[1] = index;
+      }
+    }
+  }
+  
+  prep_deletingCol(){
+    this.deletingCol = true;
+  }
+  deleteCol(index: number){
+    this.scraperService.removeColumn(index); 
+    this.deletingCol = false;
+  }
+
+  prep_swappingCols(){
+    this.swappingCols[0] = 0;
+  }
+  swapCols(index: number){
+    if(index != this.swappingCols[1]){
+      this.scraperService.swapColumns(this.swappingCols[1], index);
+    }
+    this.swappingCols = [-1, -1];
+  }
+
+  prep_deletingRow(){
+    this.deletingRow = true;
+  }
+  handleRowClick(index: number){
+    if(this.deletingRow) this.deleteRow(index);
+  }
+  deleteRow(index: number){
+    this.scraperService.removeRow(this.pageNumber, index);
+    this.deletingRow = false;
+  }
 
 }
