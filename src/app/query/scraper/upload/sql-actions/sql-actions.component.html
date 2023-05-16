@@ -1,0 +1,14 @@
+<div class="sql-response">
+  <div class="row my-fit response-tools" *ngIf="!sqlResponseCopied">
+    <a class="copy-sql-response" type="button" [href]="sqlLink" target="_blank">LINK</a>
+    <a class="copy-sql-response" style="margin-left: 0px; margin-right: 0px;" type="button" (click)="copySQLResponse()">COPY</a>
+  </div>
+  <div class="row my-fit pad-10" style="text-align: center; padding-top: 5px; color: aquamarine; font-weight: 900; font-size: 120%;" 
+    *ngIf="sqlResponseCopied" (click)="sqlResponseCopied = false">
+    <a class="copy-sql-response" type="button" [href]="sqlLink" target="_blank">LINK</a>
+    COPIED!
+  </div>
+    <textarea class="response-text" type="text" placeholder="numCols" [value]="sqlResponse" (change)="userSQLResponse($event)"></textarea>
+
+    
+</div>

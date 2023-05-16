@@ -1,0 +1,65 @@
+.sql-response{
+  padding: 1%;
+  text-align: left;
+  background-color: rgb(145, 204, 73);
+  color: rgb(159, 222, 82);
+}
+
+.response-tools{
+  text-align: center; 
+  padding: 7px; 
+  font-size: 120%; 
+  background-color: rgb(42 50 34 / 70%); 
+  border: 2px solid black;
+  border-bottom: none;
+}
+
+
+
+.response-text{
+  border: 2px solid black;
+  border-radius: 0px;
+  padding: 10px;
+  font-weight: 600;
+  background-color: rgba(64, 73, 64, 0.98);
+  margin: 0px;
+  display: inline-block;
+  width: 100%;
+  min-height: 25vh;
+  height: max-content;
+  max-height: 45vh;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.response-text::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+.response-text:focus{
+  box-shadow: 0 0px 3px 3px rgb(63 114 0), inset 0 0 8px 2px rgb(63 114 0);
+  border: 2px solid rgb(196, 236, 146);
+  outline: 0;
+  border-radius: 0px;
+}
+
+.copy-sql-response{
+  padding: 4px 15px;
+  cursor: pointer;
+  background-color: black;
+  color: rgb(81, 81, 81);   
+  text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
+  border: solid;
+  border-image: linear-gradient(to top left, rgb(153, 196, 103), #426516) 1/2px;
+  font-weight: 100;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  user-select: none;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.copy-sql-response:hover, .copy-sql-response:focus{
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.5);
+}

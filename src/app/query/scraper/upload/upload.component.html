@@ -5,7 +5,7 @@
         DIAGNOSTICS
         <span class="my-caret" style="color: black;"></span>
       </button>
-      <ul class="list-of-diagnostics" *ngIf="showDiagnostics" style="width: 100%;">
+      <ul class="list-of-diagnostics" *ngIf="showDiagnostics" style="width: 100%;" (mouseleave)="showDiagnostics = false">
         <li><b>{{numPages}}</b> pages</li>
         <li><b>{{numRows}}</b> rows</li>
         <li><b>{{numCols}}</b> cols</li>
@@ -14,81 +14,94 @@
     </div>
     <div class="row my-fit pad-10" style="text-decoration: underline; font-size: 90%; color: rgb(153, 196, 103);">
       ALTER SQL TABLE
-    </div>
-    <div class="row my-fit" style="padding-left: 20px; text-align: left;">
-      <div class="row my-fit" style="padding-bottom: 15px;">
-        <a class="option-btn" type="button" *ngIf="!usingScraperColumns" (click)="useScraperColumns()">USE SCRAPED COLUMNS</a>
-        <a class="option-btn" type="button" *ngIf="usingScraperColumns" (click)="useSQLColumns()">USE SQL COLUMNS</a>
-
-      </div>
-      <div class="row my-fit" style="padding-bottom: 15px;">
-        <a class="option-btn" type="button" *ngIf="rawScrape.headers.length > sqlColumns.length">ADD BLANK COLUMNS</a>
+      <div class="row my-fit" style="padding: 10px; text-align: left;">
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" (click)="showSavedTables = !showSavedTables">
+            MY TABLES
+            <span class="my-caret" style="color: rgb(145, 204, 93);"></span>
+          </a>
+            <ul class="saved-tables" *ngIf="showSavedTables" style="width: 100%; margin-left: -20px" (mouseleave)="showSavedTables = false">
+              <li *ngFor="let query of savedQueries; let i = index">
+                <a type="button" (click)="useSavedTable(i)">
+                 <b style="font-size: 16px;">{{query.query_id}}: {{query.table.name}}</b> ({{query.table.columns.length}} cols)
+                </a>
+              </li>
+            </ul>
+        </div>
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="!usingScraperColumns" (click)="useScraperColumns()">USE SCRAPED COLUMNS</a>
+        </div>
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="!usingScraperColumns" (click)="addColumn()">ADD COLUMN</a>
+        </div>
+        <div class="row my-fit">
+          <a class="option-btn" type="button" *ngIf="rawScrape.headers.length > sqlColumns.length" (click)="addBlankColumns()">ADD BLANK COLUMNS</a>
+        </div>
       </div>
     </div>
     <div class="row my-fit pad-10" style="text-decoration: underline; font-size: 90%; color: rgb(153, 196, 103);">
       ALTER SCRAPED DATA
-    </div>
-    <div class="row my-fit" style="padding-left: 20px; text-align: left;">
-      <div class="row my-fit" style="padding-bottom: 15px;">
-        <a class="option-btn" type="button" *ngIf="swappingCols[0] == -1" (click)="prep_swappingCols()">SWAP COLUMNS</a>
-        <a class="cancel-option-btn" type="button" *ngIf="swappingCols[0] != -1" (click)="cancelAlteration()">NVM!</a>
-      </div>
-      <div class="row my-fit" style="padding-bottom: 15px;">
-        <a class="option-btn" type="button" *ngIf="movingCol[0] == -1" (click)="prep_movingCol()">MOVE COLUMN</a>
-        <a class="cancel-option-btn" type="button" *ngIf="movingCol[0] != -1" (click)="cancelAlteration()">NVM!</a>
-      </div>
-      <div class="row my-fit" style="padding-bottom: 15px;">
-        <a class="option-btn" type="button" *ngIf="!deletingCol" (click)="prep_deletingCol()">DELETE COLUMN</a>
-        <a class="cancel-option-btn" type="button" *ngIf="deletingCol" (click)="cancelAlteration()">NVM!</a>
-      </div>
-      <div class="row my-fit">
-        <a class="option-btn" type="button" *ngIf="!deletingRow"  (click)="prep_deletingRow()">DELETE ROW</a>
-        <a class="cancel-option-btn" type="button" *ngIf="deletingRow" (click)="cancelAlteration()">NVM!</a>
+      <div class="row my-fit" style="padding: 10px; text-align: left;">
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="swappingCols[0] == -1" (click)="prep_swappingCols()">SWAP COLUMNS</a>
+          <a class="cancel-option-btn" type="button" *ngIf="swappingCols[0] != -1" (click)="cancelAlteration()">NVM!</a>
+        </div>
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="movingCol[0] == -1" (click)="prep_movingCol()">MOVE COLUMN</a>
+          <a class="cancel-option-btn" type="button" *ngIf="movingCol[0] != -1" (click)="cancelAlteration()">NVM!</a>
+        </div>
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="!deletingCol" (click)="prep_deletingCol()">DELETE COLUMN</a>
+          <a class="cancel-option-btn" type="button" *ngIf="deletingCol" (click)="cancelAlteration()">NVM!</a>
+        </div>
+        <div class="row my-fit">
+          <a class="option-btn" type="button" *ngIf="!deletingRow"  (click)="prep_deletingRow()">DELETE ROW</a>
+          <a class="cancel-option-btn" type="button" *ngIf="deletingRow" (click)="cancelAlteration()">NVM!</a>
+        </div>
       </div>
     </div>
   </div>
   <div class="col-md-9 my-fit pad-0">
     <div class="row my-fill-1 my-fit" style="padding: 5px 0px; background-image: linear-gradient(to bottom, rgb(0 0 0), #a6e7a8);">
-      <div class="col-md-4">
+      <div class="col-md-5" style="text-align: right;">
+        <div class="btn-group" style="width: 60%;" appDropdown>
+          <button class="upload-header-btn dropdown-toggle" type="button" (click)="showExportOptions = !showExportOptions"
+            style="padding: 5px; width: 100%; font-size: 150%; text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);">
+            Export
+            <span class="my-caret" style="color: black;"></span>
+          </button>
+          <ul class="sql-options" *ngIf="showExportOptions" style="width: 100%;" (mouseleave)="showExportOptions = false">
+            <li>
+              <a type="button" style="font-size: 100%; padding-top:5px; padding-bottom: 5px;" 
+                (click)="exportRawScrapeAsCSV()">Scraped Data (.csv)</a>
+              </li>
+          </ul>
+        </div>
       </div>
-      <div class="col-md-4">
-        <div class="btn-group" style="width: 100%;" appDropdown>
+      <div class="col-md-5" style="text-align: center;">
+        <div class="btn-group" style="width: 70%;" appDropdown>
           <button class="upload-header-btn dropdown-toggle" type="button" (click)="showSQLOptions = !showSQLOptions"
             style="padding: 5px; width: 100%; font-size: 150%; text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);">
             SQL Actions
             <span class="my-caret" style="color: black;"></span>
           </button>
-          <ul class="sql-options" *ngIf="showSQLOptions" style="width: 100%;">
-            <li>
-              <a type="button">Insert</a>
-            </li>
-            <li>
-              <a type="button">Add Columns</a>
-            </li>
-            <li>
-              <a type="button" (click)="initializeSQLTable()">Initialize Table</a>
-            </li>
+          <ul class="sql-options" *ngIf="showSQLOptions" style="width: 100%;" (mouseleave)="showSQLOptions = false">
+            <li><a type="button" (click)="[openSQLResponse(), sqlAction = 'insert']">Insert</a></li>
+            <li><a type="button" (click)="[openSQLResponse(), sqlAction = 'alter']">Alter Table Structure</a></li>
+            <li><a type="button" (click)="[openSQLResponse(), sqlAction = 'initialize']">Initialize Table</a></li>
           </ul>
         </div>
       </div>
-      <div class="col-md-4" style="text-align: right; padding-right: 0px; padding-left: 0px; padding-top: 4px;">
+      <div class="col-md-2" style="text-align: right; padding-right: 0px; padding-left: 0px; padding-top: 4px;">
         <a class="exit-upload-btn" type="button" style="font-size: 150%; padding: 5px 20px;" 
           href="http://localhost:4200/scraper">bye bye</a>
       </div>
     </div>
     <div class="sql-response-container" *ngIf="showSQLResponse">
-      <div class="row my-fit pad-10" style="text-align: center; font-size: 120%;" *ngIf="!sqlResponseCopied">
-        <a class="copy-sql-response" type="button" (click)="copySQLResponse()">COPY</a>
-        <a class="copy-sql-response" type="button" (click)="closeSQLResponse()">done</a>
+      <div class="row my-fit pad-5" style="text-align: right; font-size: 120%; padding-bottom: 10px;">
+        <a class="exit-sql-response" type="button" (click)="closeSQLResponse()">done</a>
       </div>
-      <div class="row my-fit pad-10" style="text-align: center; color: white; font-weight: 900; font-size: 120%;" 
-        *ngIf="sqlResponseCopied" (click)="sqlResponseCopied = false">
-        COPIED!
-        <a class="copy-sql-response" type="button" (click)="closeSQLResponse()">done</a>
-      </div>
-      <div class="sql-response">
-        {{sqlResponse}}
-      </div>
+      <app-sql-actions [query]="query" [action-type]="sqlAction" [sql-columns]="sqlColumns" [raw-scraped]="rawScrape"></app-sql-actions>
     </div>
     <div class="row my-fit" style="padding-top: 5px; padding-bottom: 50px;">
       <div class="row my-fit" style="padding-left: 15px; font-size: 125%;">
@@ -101,10 +114,13 @@
               <div class="row my-fit" style="font-weight: 100; font-size: 100%; height: 20px; background-color: rgba(0, 0, 0, 0.6);">
                 {{i+1}}
               </div>
-              <div class="row my-fit" style="font-weight: 100; font-size: 100%;">
-                <b>{{col.name}}</b>
+              <div class="row my-fit" style="font-weight: 100; font-size: 100%; width:fit-content; min-width: 100px; padding: 2px 0px;">
                 <p style="padding: 0px; margin: 0px;">
-                  <input class="page-input" type="text" style="padding: 3px; width: 100%; background-color: transparent;" 
+                  <input class="page-input" type="text" style="padding: 3px; background-color: transparent; min-width: 95px;"
+                    placeholder="name" (change)="changeName($event, i)" [value]="(col.name)">
+                </p>
+                <p style="padding: 0px; margin: 0px;">
+                  <input class="page-input" type="text" style="padding: 3px; background-color: transparent; min-width: 95px;"
                     placeholder="type" (change)="changeType($event, i)" [value]="(col.type)">
                 </p>
               </div>

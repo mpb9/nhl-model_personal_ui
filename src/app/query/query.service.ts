@@ -56,6 +56,9 @@ export class QueryService{
   clearQueries(){
     this.queries = [] as Query[];
   }
+  getQueriesCopy(){
+    return JSON.parse(JSON.stringify(this.queries));
+  }
 
   // QUERY Methods
   addQuery(){

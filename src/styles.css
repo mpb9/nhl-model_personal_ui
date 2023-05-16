@@ -16,8 +16,10 @@ body{
   color: aquamarine; 
   font-family:monospace;
 }
+
 .my-page{
   border-top: 0px;
+  width: 100%;
   border-bottom: 10px solid violet;
   border-left: 15px solid violet;
   border-right: 20px solid violet;

@@ -11,10 +11,12 @@ import { Column, PagePath, Query, Table, Website } from '../../query.model';
 })
 export class UploadComponent implements OnInit {
   @Input('rawScraped') rawScraped!: RawScrape;
+  @Input('queries') queriesInput!: Query[];
+
   rawScrape!: RawScrape;
   query!: Query;
   sqlColumns!: Column[];
-  sqlResponse = '';
+  savedQueries!: Query[];
 
   pageNumber = 0;
   numPages = 0;
@@ -28,16 +30,22 @@ export class UploadComponent implements OnInit {
   deletingRow = false;
   usingScraperColumns = false;
   usingExtraColumns = false;
+
   showDiagnostics: boolean = false;
   showSQLOptions: boolean = false;
   showSQLResponse: boolean = false;
-  sqlResponseCopied: boolean = false;
+  showSavedTables: boolean = false;  
+  showExportOptions: boolean = false;
+
+  sqlAction = '';
+  exportAction = '';
 
   constructor(private queryService: QueryService, private scraperService: ScraperService){}
 
   ngOnInit(){
+    this.savedQueries = this.queriesInput;
     this.query = this.queryService.getQueryCopy();
-    this.sqlColumns = this.query.table.columns;
+    this.sqlColumns = JSON.parse(JSON.stringify(this.query.table.columns));
     this.rawScrape = this.scraperService.getRawScrapeCopy();
     if(this.rawScrape.headers.length == 0){
       this.rawScrape = new RawScrape(
@@ -74,7 +82,7 @@ export class UploadComponent implements OnInit {
         ]),
         new PagePath( -1, 'toAllHeaders', 'toHeaderElement', 'toAlData', 'toDataElement',7)
       );
-      this.sqlColumns = this.query.table.columns;
+      this.sqlColumns = JSON.parse(JSON.stringify(this.query.table.columns));
     }
     this.initializeDiagnostics();
 
@@ -83,7 +91,8 @@ export class UploadComponent implements OnInit {
       this.initializeDiagnostics();
       console.log(this.rawScrape);
     });
-    console.log(this.rawScrape);
+    console.log(this.rawScrape);  
+    console.log(this.savedQueries);  
   }
 
   initializeDiagnostics(){
@@ -96,44 +105,111 @@ export class UploadComponent implements OnInit {
     });
   }
 
-  initializeSQLTable(){
-    let createCommand = "CREATE TABLE `betting`.`" + this.query.table.name + "` (";
-    this.sqlColumns.forEach((col) => {
-      let colToAdd = " `" + col.name + "` " + col.type + " NOT NULL ,";
-      createCommand += colToAdd;
-    });
-    createCommand = createCommand.slice(0,createCommand.length-1);
-    createCommand += createCommand + ") ENGINE = MyISAM;";
-
+// SQL RESPONSE METHODS
+  openSQLResponse(){
     this.showSQLOptions = false;
     this.showSQLResponse = true;
-    this.sqlResponse = createCommand;
-  }
-
-  changePage(event:any){
-    if(event.target === null) return;
-    this.pageNumber = Number(event.target.value)-1 > this.numPages ? this.pageNumber : Number(event.target.value)-1;
-  }
-
-  changeType(event: any, index: number){
-    if(event.target === null) return;
-    this.sqlColumns[index].type = event.target.value;
-
-    if(this.usingScraperColumns == false){
-      this.query.table.columns = this.sqlColumns;
-      this.queryService.updateQueryTable(this.query.table);
-    }
-  }
-
-  copySQLResponse(){
-    navigator.clipboard.writeText(this.sqlResponse);
-    this.sqlResponseCopied = true;
   }
   closeSQLResponse(){
     this.showSQLOptions = false;
     this.showSQLResponse = false;
+    this.sqlAction = '';
   }
 
+// Download Methods
+  exportRawScrapeAsCSV() {
+    var csv = [];
+
+    var headers = [];
+    for(var i = 0; i<this.rawScrape.headers.length;i++){
+      headers.push(this.rawScrape.headers[i]);
+    }
+    csv.push(headers.join(","));
+
+    for(var page_id = 0; page_id < this.rawScrape.data.length; page_id++){
+      for(var row_id = 0; row_id < this.rawScrape.data[page_id].length; row_id++){
+        var row = [];
+        for(var col_id = 0; col_id < this.rawScrape.data[page_id][row_id].length; col_id++){
+          row.push(this.rawScrape.data[page_id][row_id][col_id]);
+        }
+        csv.push(row.join(","));
+      }
+    }
+
+    this.downloadCSV(csv.join("\n"), this.query.table.name);
+  }
+
+  downloadCSV(csv: BlobPart, filename: string) {
+    var csvFile;
+    var downloadLink;
+
+    if (window.Blob == undefined || window.URL == undefined || window.URL.createObjectURL == undefined) {
+      alert("Your browser doesn't support Blobs");
+      return;
+    }
+
+    filename += '_' + new Date().toLocaleDateString();
+
+
+    csvFile = new Blob([csv], {type:"text/csv"});
+    downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+  }
+
+// Alter Associated SQL Table Methods
+  changeType(event: any, index: number){
+    if(event.target === null) return;
+    this.sqlColumns[index].type = event.target.value;
+  }
+  changeName(event: any, index: number){
+    if(event.target === null) return;
+    this.sqlColumns[index].name = event.target.value;
+  }
+  useScraperColumns(){
+    this.usingScraperColumns = true;
+    this.usingExtraColumns = false;
+
+    this.sqlColumns = [];
+    this.rawScrape.headers.forEach(header => {
+      this.sqlColumns.push(new Column(header, ''));
+    });
+  }
+  useSQLColumns(){
+    this.usingScraperColumns = false;
+    this.usingExtraColumns = false;
+
+    this.sqlColumns = [];
+    this.sqlColumns = JSON.parse(JSON.stringify(this.query.table.columns)); 
+  }
+  useSavedTable(index: number){
+    this.usingScraperColumns = false;
+    this.usingExtraColumns = false;
+    this.showSavedTables = false;
+
+    if(this.savedQueries[index] === JSON.parse(JSON.stringify(this.query))){
+      this.useSQLColumns();
+      return;
+    }
+
+    this.query = JSON.parse(JSON.stringify(this.savedQueries[index]));
+    this.sqlColumns = [];
+    this.sqlColumns = JSON.parse(JSON.stringify(this.savedQueries[index].table.columns));
+  }
+  addColumn(){
+    this.sqlColumns.push(new Column('', ''));
+  }
+  addBlankColumns(){
+    while(this.rawScrape.headers.length > this.sqlColumns.length){
+      this.sqlColumns.push(new Column('', ''));
+    }
+  }
+
+
+// Alter Scraped Data Table Methods
   cancelAlteration(){
     this.deletingCol = false;
     this.deletingRow = false;
@@ -201,23 +277,9 @@ export class UploadComponent implements OnInit {
     this.deletingRow = false;
   }
 
-
-  useScraperColumns(){
-    this.usingScraperColumns = true;
-    this.usingExtraColumns = false;
-
-    this.sqlColumns = [];
-
-    this.rawScrape.headers.forEach(header => {
-      this.sqlColumns.push(new Column(header, ''));
-    });
-  }
-  useSQLColumns(){
-    this.usingScraperColumns = false;
-    this.usingExtraColumns = false;
-
-    this.sqlColumns = [];
-    this.sqlColumns = this.query.table.columns;
+  changePage(event:any){
+    if(event.target === null) return;
+    this.pageNumber = Number(event.target.value)-1 > this.numPages ? this.pageNumber : Number(event.target.value)-1;
   }
 
 }

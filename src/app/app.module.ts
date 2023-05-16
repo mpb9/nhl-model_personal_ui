@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ScraperService } from './query/scraper/scraper.service';
 import { PagePathsComponent } from './query/page-paths/page-paths.component';
 import { UploadComponent } from './query/scraper/upload/upload.component';
+import { SqlActionsComponent } from './query/scraper/upload/sql-actions/sql-actions.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UploadComponent } from './query/scraper/upload/upload.component';
     ScraperComponent,
     HomeComponent,
     PagePathsComponent,
-    UploadComponent
+    UploadComponent,
+    SqlActionsComponent
   ],
   imports: [
     BrowserModule,

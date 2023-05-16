@@ -8,6 +8,7 @@
   padding: 0px;
   font-family: 'Monaco', monospace;
   color: lightgreen;
+  box-shadow:  0px 25px 15px 6px black, 0px 40px 12px 15px rgb(169, 238, 144);
 }
 
 .upload-header-btn{
@@ -24,7 +25,7 @@
   touch-action: manipulation;
   user-select: none;
 }
-.upload-header-btn:focus, .upload-header-btn:hover{
+.upload-header-btn:hover{
   background-image: linear-gradient(to bottom right, rgb(0 0 0), #cfffd0);
   color: lightgreen;
   cursor: pointer;
@@ -73,53 +74,76 @@
   background-color: rgba(64, 73, 64, 0.9);
 }
 
+
+.saved-tables{
+  margin: 0px; 
+  padding: 0px;
+  position: absolute;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  z-index: 1000;
+  background-color:rgba(95, 130, 69, 0.95);
+  background-clip: padding-box;
+  border-radius: 0px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  text-align: center;
+}
+.saved-tables>li{
+  padding: 6px;
+  border: solid;
+  border-image: linear-gradient(to top left, rgb(114 145 88), #283028) 1/4px;
+  border-top: 0px;
+}
+.saved-tables>li>a{
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  padding: 0px;
+  border: 0px;
+  color: #1f221f;
+  text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
+}
+.saved-tables>li>a:hover, .saved-tables>li>a:focus{
+  text-decoration: none;
+  cursor: pointer;
+  color: rgb(139 199 111);
+}
+.saved-tables>li:focus, .saved-tables>li:hover{
+  cursor: pointer;
+  background-color: rgba(38, 43, 38, 0.9);
+}
+
 .sql-response-container{
   position: absolute;
   z-index: 1000;
   margin-top: 25px;
-  padding: 5px 10px;
-  background-color: rgba(145, 204, 73, 0.95);
-  width: 60%;
-  margin-left:20%;
-  margin-right:20%;
-}
-
-.sql-response{
+  padding: 10px;
   padding-top: 5px;
-  padding-left: 15px;
-  padding-right: 10px;
-  padding-bottom: 15px;
-  text-align: left;
-  background-color: rgba(64, 73, 64, 0.98);
-  min-height: 20vh;
-  max-height: 40vh;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  background-color: rgba(0, 0, 0, 0.95);
+  width: 84%;
+  margin-left: 8%;
+  margin-right: 8%;
 }
-.sql-response::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
-}
-
-.copy-sql-response{
-  padding: 4px 15px;
+.exit-sql-response{
+  padding: 5px 30px;
   cursor: pointer;
-  background-color: black;
-  color: rgb(81, 81, 81);   
+  background-color: rgb(85 109 56);
+  color: rgb(0, 0, 0);   
   text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
   border: solid;
-  border-image: linear-gradient(to top left, rgb(153, 196, 103), #426516) 1/2px;
+  border-image: linear-gradient(to bottom right, rgb(153, 196, 103), #426516) 1/3px;
   font-weight: 100;
   text-align: center;
   white-space: nowrap;
   touch-action: manipulation;
   user-select: none;
-  margin-right: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
-.copy-sql-response:hover, .copy-sql-response:focus{
+.exit-sql-response:hover, .exit-sql-response:focus{
   text-decoration: none;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(153, 196, 103, 0.75);
 }
 
 
@@ -146,8 +170,10 @@
   text-decoration: none;
 }
 .option-btn{
-  padding: 3px 15px;
-  font-size: 100%;
+  padding: 3px 10px;
+  font-size: 90%;
+  width: 90%;
+  display: inline-block;
   cursor: pointer;
   background-image: linear-gradient(to top left, rgb(0, 0, 0), #000000);
   color: rgb(40, 40, 40);   
@@ -156,7 +182,6 @@
   border-image: linear-gradient(to top left, rgb(153, 196, 103), #426516) 1/3px;
   font-weight: 900;
   text-align: center;
-  white-space: nowrap;
   touch-action: manipulation;
   user-select: none;
 }
@@ -224,7 +249,7 @@
 .page-input:focus{
   border-color: yellowgreen;
   outline: 0;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px yellowgreen;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px 1px rgb(162 227 142);
 }
 
 table {
@@ -242,6 +267,12 @@ th, td {
   padding: 5px 10px; 
   font-size: 110%; 
   overflow-x: auto;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.sql-table::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
 }
 
 .sql-table-cols{
