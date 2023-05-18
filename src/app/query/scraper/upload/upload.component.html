@@ -43,20 +43,128 @@
       ALTER SCRAPED DATA
       <div class="row my-fit" style="padding: 10px; text-align: left;">
         <div class="row my-fit" style="padding-bottom: 15px;">
-          <a class="option-btn" type="button" *ngIf="swappingCols[0] == -1" (click)="prep_swappingCols()">SWAP COLUMNS</a>
-          <a class="cancel-option-btn" type="button" *ngIf="swappingCols[0] != -1" (click)="cancelAlteration()">NVM!</a>
+          <a class="option-btn" type="button" (click)="showScrapedColOptions = !showScrapedColOptions"
+            *ngIf="swappingCols[0] == -1 && movingCol[0] == -1 && !deletingCol">
+            ARRANGE COLUMNS
+            <span class="my-caret" style="color: rgb(145, 204, 93);"></span>
+          </a>
+            <ul class="saved-tables" style="width: 100%; margin-left: -20px" 
+              *ngIf="showScrapedColOptions" (mouseleave)="showScrapedColOptions = false">
+              <li>
+                <a class="option-btn" type="button" style="font-size: 125%; padding: 5px 10px; border: 2px solid rgb(153, 196, 103);"
+                  *ngIf="swappingCols[0] == -1" (click)="swappingCols[0] = 0; showScrapedColOptions = false">SWAP COLUMNS</a>               
+                <a class="option-btn" type="button" style="font-size: 125%; padding: 5px 10px; border: 2px solid rgb(153, 196, 103);"
+                  *ngIf="movingCol[0] == -1" (click)="movingCol[0] = 0; showScrapedColOptions = false">MOVE COLUMN</a>                
+                <a class="option-btn" type="button" style="font-size: 125%; padding: 5px 10px; border: 2px solid rgb(153, 196, 103);"
+                 *ngIf="!deletingCol" (click)="deletingCol = true; showScrapedColOptions = false">DELETE COLUMN</a>
+              </li>
+            </ul>
+          <a class="cancel-option-btn" type="button" *ngIf="swappingCols[0] != -1" (click)="resetClickActions()">NVM!</a>
+          <a class="cancel-option-btn" type="button" *ngIf="movingCol[0] != -1" (click)="resetClickActions()">NVM!</a>
+          <a class="cancel-option-btn" type="button" *ngIf="deletingCol" (click)="resetClickActions()">NVM!</a>
         </div>
         <div class="row my-fit" style="padding-bottom: 15px;">
-          <a class="option-btn" type="button" *ngIf="movingCol[0] == -1" (click)="prep_movingCol()">MOVE COLUMN</a>
-          <a class="cancel-option-btn" type="button" *ngIf="movingCol[0] != -1" (click)="cancelAlteration()">NVM!</a>
+          <a class="option-btn" type="button" *ngIf="fillingCol[0] == -1" (click)="fillingCol[0] = 0">FILL COLUMN</a>
+          <div class="option-input" *ngIf="fillingCol[0] != -1">
+            <div class="row my-fit" style="margin-bottom: 8px;">
+              <a class="option-btn" type="button" *ngIf="fillingNotAdding" (click)="fillingNotAdding = false"
+                style="width: fit-content; padding: 0px 6px; border: 1px solid #d6eda8; background-image: none; background-color: #9acd324d; color: #d6eda8;"
+                >FILL</a> 
+              <a class="option-btn" type="button" *ngIf="!fillingNotAdding" (click)="fillingNotAdding = true"
+                style="width: fit-content; padding: 0px 6px; border: 1px solid #d6eda8; background-image: none; background-color: #9acd324d; color: #d6eda8;"
+                >ADD TO</a>
+              COLUMN <b style="font-style: italic; color: tomato;" *ngIf="fillingCol[1] == -1">
+                [???]
+              </b><b style="font-size: 120%; color: rgb(228, 255, 207);" *ngIf="fillingCol[1] != -1">
+                {{fillingCol[1]+1}}
+              </b>
+            </div>
+            WITH <input type="text" style="padding: 3px;" placeholder="begin" 
+              [value]="(fillingColInput[0])" (change)="changeFillingInput($event, 0)"> - <input type="text" style="padding: 3px;" placeholder="until" 
+              [value]="(fillingColInput[1])" (change)="changeFillingInput($event, 1)">
+            FROM COLUMN <b style="font-style: italic; color: tomato;" *ngIf="fillingCol[2] == -1">
+              [???]
+            </b><b style="font-size: 120%; color: rgb(228, 255, 207);" *ngIf="fillingCol[2] != -1">
+              {{fillingCol[2]+1}}
+            </b>
+            <div class="row my-fit" *ngIf="!fillingNotAdding" style="margin-top: 8px;">
+              AT <input type="text" style="padding: 3px;" placeholder="index" 
+              [value]="(addingIndex) == -1 ? '' : addingIndex" (change)="changeAddingIndex($event)">
+            </div>
+            <div class="row my-fit" style="margin-top: 8px;">
+              <a class="cancel-option-btn" type="button" style="width: 24%;" (click)="fillingCol = [-1,-1,-1]; fillingColInput = ['','']">NVM!</a>
+              <a class="option-btn" type="button" style="width: 75%; background-image: linear-gradient(to top left, rgb(125 177 69), #ecffe8)" (click)="fillCol()">FILL</a>
+            </div>
+          </div>        
         </div>
         <div class="row my-fit" style="padding-bottom: 15px;">
-          <a class="option-btn" type="button" *ngIf="!deletingCol" (click)="prep_deletingCol()">DELETE COLUMN</a>
-          <a class="cancel-option-btn" type="button" *ngIf="deletingCol" (click)="cancelAlteration()">NVM!</a>
+          <a class="option-btn" type="button" *ngIf="truncatingCol[0] == -1"  (click)="truncatingCol[0] = 0">TRUNCATE COLUMN</a>
+          <div class="option-input" *ngIf="truncatingCol[0] != -1">
+            REMOVE <input type="text" style="padding: 3px;" placeholder="begin" 
+              [value]="(truncateColInput[0])" (change)="changeTruncateInput($event, 0)"> - <input type="text" style="padding: 3px;" placeholder="until" 
+              [value]="(truncateColInput[1])" (change)="changeTruncateInput($event, 1)">
+            FROM COLUMN <b style="font-style: italic; color: tomato;" *ngIf="truncatingCol[1] == -1">
+              [???]
+            </b><b style="font-size: 120%; color: rgb(228, 255, 207);" *ngIf="truncatingCol[1] != -1">
+              {{truncatingCol[1]+1}}
+            </b>
+            <div class="row my-fit" style="margin-top: 8px;">
+              <a class="cancel-option-btn" type="button" style="width: 24%;" (click)="truncatingCol = [-1,-1]; truncateColInput = ['','']">NVM!</a>
+              <a class="option-btn" type="button" style="width: 75%; background-image: linear-gradient(to top left, rgb(125 177 69), #ecffe8)" (click)="truncateCol()">TRUNCATE</a>
+            </div>
+          </div>
+        </div>
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="columnIsHeaders[0] == -1"  (click)="columnIsHeaders[0] = 0">COLUMN -> HEADERS</a>
+          <div class="option-input" *ngIf="columnIsHeaders[0] != -1">
+            ROWS <input type="text" style="padding: 3px;" placeholder="from" 
+              [value]="(newHeaderIds[0])" (change)="changeNewHeaderIds($event, 0)"> - <input type="text" style="padding: 3px;" placeholder="to" 
+              [value]="(newHeaderIds[1])" (change)="changeNewHeaderIds($event, 1)">
+            FROM COLUMN <b style="font-style: italic; color: tomato;" *ngIf="columnIsHeaders[1] == -1">
+              [???]
+            </b><b style="font-size: 120%; color: rgb(228, 255, 207);" *ngIf="columnIsHeaders[1] != -1">
+              {{columnIsHeaders[1]+1}}
+            </b>
+            <div class="row my-fit" style="margin-top: 8px;">
+              <a class="cancel-option-btn" type="button" style="width: 24%;" (click)="columnIsHeaders = [-1,-1]; newHeaderIds = ['','']">NVM!</a>
+              <a class="option-btn" type="button" style="width: 75%; background-image: linear-gradient(to top left, rgb(125 177 69), #ecffe8)" (click)="changeHeadersToColumn()">MAKE HEADERS</a>
+            </div>
+          </div>
+        </div>
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="!usingScraperColumns" (click)="addScrapedColumn()">ADD COLUMN</a>
+        </div>
+        <div class="row my-fit" style="padding-bottom: 15px;">
+          <a class="option-btn" type="button" *ngIf="!deletingRow"  (click)="deletingRow = true">DELETE ROW</a>
+          <a class="cancel-option-btn" type="button" *ngIf="deletingRow" (click)="resetClickActions()">NVM!</a>
         </div>
         <div class="row my-fit">
-          <a class="option-btn" type="button" *ngIf="!deletingRow"  (click)="prep_deletingRow()">DELETE ROW</a>
-          <a class="cancel-option-btn" type="button" *ngIf="deletingRow" (click)="cancelAlteration()">NVM!</a>
+          <a class="option-btn" type="button" *ngIf="!alteringCells" (click)="alteringCells = true">ALTER CELLS</a>
+          <div class="option-input" *ngIf="alteringCells">
+            REPLACE <input type="text" style="padding: 3px; width: 50%;" placeholder="this pattern" 
+              [value]="(alterCellInput[0])" (change)="changeAlterCellInputs($event, 0)">
+            WITH <input type="text" style="padding: 3px; width: 50%;" placeholder="that pattern" 
+              [value]="(alterCellInput[1])" (change)="changeAlterCellInputs($event, 1)">
+            <div class="row my-fit" style="margin-top: 8px;">
+              <a class="cancel-option-btn" type="button" style="width: 24%;" (click)="alteringCells = false; alterCellInput = ['','']">NVM!</a>
+              <a class="option-btn" type="button" style="width: 75%; background-image: linear-gradient(to top left, rgb(125 177 69), #ecffe8)" (click)="alterCells()">REPLACE ALL</a>
+            </div>
+          </div>
+        </div>
+        <div class="row my-fit">
+          <a class="option-btn" type="button" *ngIf="!addingPerPageVariable" (click)="addingPerPageVariable = true">ADD PER-PAGE VALUE</a>
+          <div class="option-input" *ngIf="addingPerPageVariable">
+            INCRIMENT <input type="text" style="padding: 3px; width: 50%;" placeholder="this" 
+              [value]="(perPageVariables[0])" (change)="changePerPageVariable($event, 0)">
+            TO <input type="text" style="padding: 3px; width: 50%;" placeholder="that" 
+              [value]="(perPageVariables[1])" (change)="changePerPageVariable($event, 1)">
+            EACH PAGE IN <input type="text" style="padding: 3px; width: 50%;" placeholder="new column" 
+            [value]="(perPageVariables[2])" (change)="changePerPageVariable($event, 2)">
+            <div class="row my-fit" style="margin-top: 8px;">
+              <a class="cancel-option-btn" type="button" style="width: 24%;" (click)="addingPerPageVariable = false; perPageVariables = ['', '', '']">NVM!</a>
+              <a class="option-btn" type="button" style="width: 75%; background-image: linear-gradient(to top left, rgb(125 177 69), #ecffe8)" (click)="addPerPageVariable()">ADD IT</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -130,7 +238,7 @@
       </div>
       <div class="row my-fit" style="padding-left: 15px; font-size: 125%;">
         <b>Scraped Data</b> (pg.<input class="page-input" type="text" placeholder="#" (change)="changePage($event)"
-        [value]="(pageNumber+1)"> of {{numPages}})
+        [value]="(pageNumber+1)"> of {{numPages}}) ({{rawScrape.data[pageNumber].length}} rows)
       </div>
       <div class="row my-fit scraped-table">
         <table>
@@ -138,15 +246,16 @@
             <th class="scraped-table-cols" *ngFor="let header of rawScrape.headers; let i=index" (click)="handleColumnClick(i)"
               [ngClass]="{
                 deletingColsCSS: deletingCol, 
-                swappingColsCSS: (swappingCols[0] + movingCol[0]) != -2, 
-                selectedForSwapCSS: swappingCols[1] == i || movingCol[1] == i
+                swappingColsCSS: (swappingCols[0] + movingCol[0] + truncatingCol[0] + fillingCol[0] + columnIsHeaders[0]) != -5, 
+                selectedForSwapCSS: swappingCols[1] == i || movingCol[1] == i || truncatingCol[1] == i || fillingCol[1] == i || fillingCol[2] == i || columnIsHeaders[1] == i
               }" >
-              <div class="row my-fit" style="font-weight: 100; font-size: 100%; height: 20px; background-color: rgba(0, 0, 0, 0.6); margin-top: 0px;">
+              <div class="row my-fit" style="font-weight: 100; font-size: 100%; height: 25px; background-color: rgba(0, 0, 0, 0.6); margin-top: 0px;">
                 {{i+1}}
               </div>
               <div class="row my-fit" style="font-weight: 100; font-size: 90%; width: max-content; min-width: 100px;">
-                <b>{{header}}</b>
                 <p style="padding: 0px; margin: 0px;">
+                  <input class="page-input" type="text" style="padding: 3px; background-color: transparent; min-width: 95px;"
+                    placeholder="type" (change)="changeScrapeHeader($event, i)" [value]="(header)">
                 </p>
               </div>
             </th>

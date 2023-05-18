@@ -193,15 +193,16 @@
   text-decoration: none;
 }
 .cancel-option-btn{
-  padding: 3px 25px;
-  font-size: 120%;
+  padding: 3px 10px;
+  font-size: 90%;
+  width: 90%;
+  display: inline-block;
   cursor: pointer;
   background-color:#e7b7a6;
-  margin-right: 20px;
   color: rgb(40, 40, 40);   
-  text-shadow: -1px -1px 1px #e7b7a6, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
+  text-shadow: -1px -1px 1px #e7b7a6, 0 0 0.2em rgba(229, 27, 27, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
   border: solid;
-  border-image: linear-gradient(to top left, #e7b7a6, #426516) 1/3px;
+  border-image: linear-gradient(to top left, #86655a, rgba(229, 27, 27, 0.7)) 1/3px;
   font-weight: 900;
   text-align: center;
   white-space: nowrap;
@@ -214,6 +215,41 @@
   color: black;
   cursor: pointer;
   text-decoration: none;
+}
+.option-input{
+  padding-top: 5px;
+  padding-bottom: 2px;
+  font-size: 90%;
+  width: 100%;
+  display: inline-block;
+  background-image: linear-gradient(to top left, rgb(0, 0, 0), #000000);
+  color: #b7d691; 
+  text-shadow: -1px -1px 1px lightgreen, 0 0 0.2em rgba(145, 204, 73, 0.75), 0 0 0.2em rgba(0, 0, 0, 0);
+  border: solid;
+  border-image: linear-gradient(to top left, rgb(166, 196, 131), #b7d691) 1/3px;
+  font-weight: 300;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+}
+.option-input>input, .option-input>div>input{
+  padding: 1px;
+  background-color: #303f2b;
+  border: 2px solid #b7d691;
+  margin-bottom: 7px;
+  width: 25%;
+  font-size: 80%;
+  font-weight: 100;
+  text-align: center;
+  height: min-content;
+}
+.option-input>input:focus, .option-input>div>input:focus{
+  border-color: yellowgreen;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px 1px rgb(162 227 142);
+}
+.option-input>div>a:focus{
+  font-style: italic;
 }
 
 .list-of-diagnostics{

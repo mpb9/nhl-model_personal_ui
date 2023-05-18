@@ -8,14 +8,26 @@ import { PagePath, Query } from '../query.model';
   styleUrls: ['./page-paths.component.css']
 })
 export class PagePathsComponent implements OnInit {
-  path: PagePath = new PagePath(-1, "", "", "", "", 0);
+  path: PagePath = new PagePath(-1, "NA", "NA", "", "tr > td", 0, []);
+
+  savedHeaderPaths = ["NA", "NA"];
+  headerPathExists = true;
+
+  customHeaderName = '';
+  customDataPath = '';
 
   constructor(private queryService: QueryService){}
 
   ngOnInit(){
-    this.queryService.queryChanged.subscribe(() =>
-      this.path = this.queryService.getQueryCopy().pagePath
-    );
+    this.queryService.queryChanged.subscribe(() => {
+      this.path = this.queryService.getQueryCopy().pagePath;
+      if(this.path.toAllHeaders == 'NA'){
+        this.headerPathExists = false;
+      } else {
+        this.headerPathExists = true;
+      }
+    });
+
   }
 
   alterPath(event: any, index: number){
@@ -40,8 +52,28 @@ export class PagePathsComponent implements OnInit {
   }
 
   clearPathInputs(){
-    this.path = new PagePath(this.queryService.getQueryCopy().query_id, "", "", "", "", 0);
+    this.path = new PagePath(this.queryService.getQueryCopy().query_id, "NA", "NA", "", "tr > td", 0, []);
     this.queryService.updateQueryPagePath(this.path);
   }
 
+  notUsingHeaders(){
+    this.headerPathExists = false; 
+    this.savedHeaderPaths = [this.path.toAllHeaders, this.path.toHeaderElement];
+    this.path.toAllHeaders = 'NA'; 
+    this.path.toHeaderElement= 'NA'
+    this.updatePath();
+  }
+
+  usingHeaders(){
+    this.headerPathExists = true; 
+    this.path.toAllHeaders = this.savedHeaderPaths[0];
+    this.path.toHeaderElement = this.savedHeaderPaths[1];
+    this.updatePath();
+  }
+
+  alterCustomCol(event: any, custom_id: number, change_type: number){
+    if(event.target === null) return;
+    this.path.customColumns[custom_id][change_type] = event.target.value;
+    this.updatePath();
+  }
 }

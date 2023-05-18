@@ -24,18 +24,39 @@ export class UploadComponent implements OnInit {
   numRows = 0;
   allColsSame = true;
 
+  usingScraperColumns = false;
+  usingExtraColumns = false;
+
   swappingCols = [-1, -1];
   movingCol = [-1,-1];
   deletingCol = false;
   deletingRow = false;
-  usingScraperColumns = false;
-  usingExtraColumns = false;
+
+  fillingCol = [-1, -1, -1];
+  fillingColInput = ['', ''];
+  fillingNotAdding = true;
+  addingIndex = -1;
+
+  alteringCells = false;
+  alterCellInput = ['', ''];
+
+  truncatingCol = [-1, -1];
+  truncateColInput = ['', ''];
+
+  columnIsHeaders = [-1,-1];
+  newHeaderIds = ['',''];
+
+  addingPerPageVariable = false;
+  perPageVariables = ['','',''];
+
 
   showDiagnostics: boolean = false;
   showSQLOptions: boolean = false;
   showSQLResponse: boolean = false;
-  showSavedTables: boolean = false;  
   showExportOptions: boolean = false;
+
+  showSavedTables: boolean = false;
+  showScrapedColOptions: boolean = false; 
 
   sqlAction = '';
   exportAction = '';
@@ -47,9 +68,16 @@ export class UploadComponent implements OnInit {
     this.query = this.queryService.getQueryCopy();
     this.sqlColumns = JSON.parse(JSON.stringify(this.query.table.columns));
     this.rawScrape = this.scraperService.getRawScrapeCopy();
+  
+    this.scraperService.rawScrapeChanged.subscribe(() => {
+      this.rawScrape = this.scraperService.getRawScrapeCopy();
+      this.initializeDiagnostics();
+      console.log(this.rawScrape);
+    });
+
     if(this.rawScrape.headers.length == 0){
       this.rawScrape = new RawScrape(
-        ['fakeHeader1', 'Header2', 'fakeHeader3', 'fake4', 'fakeHeader5', 'fh6'],
+        ['fakeHeader1', 'Header2', 'fakeHeader3', 'fake4', 'fakeHeader5', 'fh6', '7'],
         [
           [
             ['p1r1d1', 'p1r1d2', 'p1r1d3', 'p1r1d4', 'p1r1d5', 'p1r1d6', 'p1r1d7'],
@@ -80,17 +108,13 @@ export class UploadComponent implements OnInit {
             new Column('fakecol5', 'faketype5'),
             new Column('fakecol6', 'ft6')
         ]),
-        new PagePath( -1, 'toAllHeaders', 'toHeaderElement', 'toAlData', 'toDataElement',7)
+        new PagePath( -1, 'toAllHeaders', 'toHeaderElement', 'toAlData', 'toDataElement',7, [])
       );
       this.sqlColumns = JSON.parse(JSON.stringify(this.query.table.columns));
+      this.scraperService.alterScrapeTable(this.rawScrape);
     }
     this.initializeDiagnostics();
 
-    this.scraperService.rawScrapeChanged.subscribe(() => {
-      this.rawScrape = this.scraperService.getRawScrapeCopy();
-      this.initializeDiagnostics();
-      console.log(this.rawScrape);
-    });
     console.log(this.rawScrape);  
     console.log(this.savedQueries);  
   }
@@ -138,7 +162,6 @@ export class UploadComponent implements OnInit {
 
     this.downloadCSV(csv.join("\n"), this.query.table.name);
   }
-
   downloadCSV(csv: BlobPart, filename: string) {
     var csvFile;
     var downloadLink;
@@ -161,6 +184,7 @@ export class UploadComponent implements OnInit {
   }
 
 // Alter Associated SQL Table Methods
+// ADD A SAVE TABLE METHOD
   changeType(event: any, index: number){
     if(event.target === null) return;
     this.sqlColumns[index].type = event.target.value;
@@ -210,17 +234,29 @@ export class UploadComponent implements OnInit {
 
 
 // Alter Scraped Data Table Methods
-  cancelAlteration(){
+  changeScrapeHeader(event: any, index: number){ //Sometimes changes multiple (if same?)
+    if(event.target === null) return;
+    this.rawScrape.headers[index] = event.target.value;
+    this.scraperService.alterScrapeTable(this.rawScrape);
+  }
+  resetClickActions(){
+    this.showScrapedColOptions = false;
     this.deletingCol = false;
     this.deletingRow = false;
     this.swappingCols = [-1,-1];
     this.movingCol = [-1,-1];
+    this.truncatingCol = [-1, -1]; this.truncateColInput = ['', ''];
+    this.fillingCol = [-1, -1, -1]; this.fillingColInput = ['', '']; this.fillingNotAdding = true; this.addingIndex = -1;
+    this.columnIsHeaders = [-1,-1]; this.newHeaderIds = ['',''];
+    this.alteringCells = false; this.alterCellInput = ['',''];
+    this.addingPerPageVariable = false; this.perPageVariables = ['', '', ''];
     this.scraperService.alterScrapeTable(this.rawScrape);
   }
-
   handleColumnClick(index: number){
-    if(this.deletingCol) this.deleteCol(index);
-
+    if(this.deletingCol){
+      this.scraperService.removeColumn(index); 
+      this.deletingCol = false;
+    }
     if(this.swappingCols[0] == 0) {
       if(this.swappingCols[1] != -1){
         this.swapCols(index);
@@ -228,7 +264,6 @@ export class UploadComponent implements OnInit {
         this.swappingCols[1] = index;
       }
     }
-
     if(this.movingCol[0] == 0) {
       if(this.movingCol[1] != -1){
         this.moveCol(index);
@@ -236,45 +271,179 @@ export class UploadComponent implements OnInit {
         this.movingCol[1] = index;
       }
     }
-  }
-  
-  prep_deletingCol(){
-    this.deletingCol = true;
-  }
-  deleteCol(index: number){
-    this.scraperService.removeColumn(index); 
-    this.deletingCol = false;
+    if(this.truncatingCol[0] == 0) {
+      if(this.truncatingCol[1] == index){
+        this.truncatingCol[1] = -1;
+      } else {
+        this.truncatingCol[1] = index;
+      }
+    }
+    if(this.fillingCol[0] == 0) {
+      if(this.fillingCol[1] == -1 && this.fillingCol[2] != index){
+        this.fillingCol[1] = index;
+      } else if(this.fillingCol[1] == index){
+        this.fillingCol[1] = -1;
+      } else if(this.fillingCol[2] == index){
+        this.fillingCol[2] = -1;
+      } else {
+        this.fillingCol[2] = index;
+      }
+    }
+    if(this.columnIsHeaders[0] == 0) {
+      if(this.columnIsHeaders[1] == index){
+        this.columnIsHeaders[1] = -1;
+      } else {
+        this.columnIsHeaders[1] = index;
+      }
+    }
   }
 
-  prep_swappingCols(){
-    this.swappingCols[0] = 0;
-  }
   swapCols(index: number){
     if(index != this.swappingCols[1]){
       this.scraperService.swapColumns(this.swappingCols[1], index);
     }
-    this.swappingCols = [-1, -1];
-  }
-
-  prep_movingCol(){
-    this.movingCol[0] = 0;
+    this.resetClickActions();
   }
   moveCol(index: number){
     if(index != this.movingCol[1]){
       this.scraperService.moveColumns(this.movingCol[1], index);
     }
-    this.movingCol = [-1, -1];
+    this.resetClickActions();
   }
 
-  prep_deletingRow(){
-    this.deletingRow = true;
+
+  changeTruncateInput(event: any, index: number){
+    if(event.target === null) return;
+    this.truncateColInput[index] = event.target.value;
   }
+  truncateCol(){
+    if(this.truncateColInput[0] == '' || this.truncateColInput[1] == '' || this.truncatingCol[1] == -1) return;
+    this.scraperService.truncateColumnInputs(
+      Number(this.truncateColInput[0]), 
+      Number(this.truncateColInput[1]), 
+      this.truncatingCol[1]
+    );
+    this.resetClickActions();
+  }
+  changeFillingInput(event: any, index: number){
+    if(event.target === null) return;
+    this.fillingColInput[index] = event.target.value;
+  }
+  changeAddingIndex(event: any){
+    if(event.target === null) return;
+    this.addingIndex = Number(event.target.value);
+  }
+  fillCol(){
+    if(this.fillingCol[1] == -1 || this.fillingColInput[0] == '' 
+      || this.fillingColInput[1] == '' || this.fillingCol[2] == -1) return;
+    console.log(this.addingIndex);
+    this.scraperService.fillColumnInputs(
+      this.fillingCol[1], 
+      this.fillingCol[2], 
+      Number(this.fillingColInput[0]), 
+      Number(this.fillingColInput[1]),
+      this.addingIndex
+    );
+    this.resetClickActions();
+  }
+  addScrapedColumn(){
+    this.scraperService.addColumn();
+  }
+  changeNewHeaderIds(event: any, index: number){
+    if(event.target === null) return;
+    this.newHeaderIds[index] = event.target.value;
+  }
+  changeHeadersToColumn(){
+    if(this.newHeaderIds[0] == '' || this.newHeaderIds[1] == '' || this.columnIsHeaders[1] == -1) return;
+    this.scraperService.columnValuesAreHeaders(
+      this.columnIsHeaders[1],
+      Number(this.newHeaderIds[0]), 
+      Number(this.newHeaderIds[1]),
+    );
+    this.resetClickActions();
+  }
+
+
+  changeAlterCellInputs(event: any, index: number){
+    if(event.target === null) return;
+    this.alterCellInput[index] = event.target.value;
+  }
+  alterCells(){
+    if(this.alterCellInput[0] == '' || this.alterCellInput[1] == '') return;
+    
+    const copyOf_rawScrape = new RawScrape(
+      JSON.parse(JSON.stringify(this.rawScrape.headers)),
+      []
+    );
+
+    this.rawScrape.data.forEach((page) => {
+      const copyOf_page: string[][] = [];
+      page.forEach((row) => {    
+        const copyOf_row: string[] = [];
+        row.forEach((col) => {
+          if(col === this.alterCellInput[0]){
+            copyOf_row.push(this.alterCellInput[1]);
+          } else {
+            copyOf_row.push(col);
+          }
+        });
+        copyOf_page.push(copyOf_row);
+      });
+      copyOf_rawScrape.data.push(copyOf_page);
+    });
+
+    this.scraperService.alterScrapeTable(copyOf_rawScrape);
+
+    this.resetClickActions();
+  }
+
+  changePerPageVariable(event: any, index: number){
+    if(event.target === null) return;
+    this.perPageVariables[index] = event.target.value;
+  }
+  addPerPageVariable(){
+    let start = Number(this.perPageVariables[0]);
+    const end = Number(this.perPageVariables[1]);
+    let incrimentBy = Math.round((end-start) / this.rawScrape.data.length);
+
+    const copyOf_rawScrape = new RawScrape(
+      [],
+      []
+    );
+    
+    let i = 0;
+    while(i<this.rawScrape.headers.length){
+      copyOf_rawScrape.headers.push(JSON.parse(JSON.stringify(this.rawScrape.headers[i])));
+      i++;
+    }
+    copyOf_rawScrape.headers.push(this.perPageVariables[2]);
+
+    this.rawScrape.data.forEach((page) => {
+      const copyOf_page: string[][] = [];
+      page.forEach((row) => {    
+        const copyOf_row: string[] = [];
+        row.forEach((col) => {
+            copyOf_row.push(col);
+        });
+        copyOf_row.push(String(start));
+        copyOf_page.push(copyOf_row);
+      });
+      copyOf_rawScrape.data.push(copyOf_page);
+      start += incrimentBy;
+    });
+
+    this.scraperService.alterScrapeTable(copyOf_rawScrape);
+
+    this.resetClickActions();
+
+  }
+
   handleRowClick(index: number){
     if(this.deletingRow) this.deleteRow(index);
   }
   deleteRow(index: number){
     this.scraperService.removeRow(this.pageNumber, index);
-    this.deletingRow = false;
+    this.resetClickActions();
   }
 
   changePage(event:any){

@@ -47,7 +47,6 @@ export class ScraperService{
   updateRawScrape(){
     this.rawScrapeChanged.emit(this.getRawScrapeCopy());
   }
-
   getRawScrapeCopy(){
     return JSON.parse(JSON.stringify(this.rawScrape));
   }
@@ -57,6 +56,10 @@ export class ScraperService{
       []
     );
     return this.getRawScrapeCopy();
+  }
+  alterScrapeTable(newTable: RawScrape){
+    this.rawScrape = JSON.parse(JSON.stringify(newTable));
+    this.updateRawScrape();
   }
 
   touchScrapeUp(){
@@ -133,6 +136,36 @@ export class ScraperService{
     this.alterScrapeTable(this.rawScrape);
   }
 
+  addColumn(){
+    const copyOf_rawScrape = new RawScrape(
+      [],
+      []
+    );
+    
+    let i = 0;
+    while(i<this.rawScrape.headers.length){
+        copyOf_rawScrape.headers.push(JSON.parse(JSON.stringify(this.rawScrape.headers[i])));
+      i++;
+    }
+    copyOf_rawScrape.headers.push('NA');
+
+    this.rawScrape.data.forEach((page) => {
+      const copyOf_page: string[][] = [];
+      page.forEach((row) => {
+        const copyOf_row = [];
+        for(let i = 0; i < row.length; i++){
+            copyOf_row.push(row[i]);
+        }
+        copyOf_row.push('NA');
+        copyOf_page.push(copyOf_row);
+      });
+      copyOf_rawScrape.data.push(copyOf_page);
+    });
+
+    this.rawScrape = JSON.parse(JSON.stringify(copyOf_rawScrape));
+    this.alterScrapeTable(this.rawScrape);
+  }
+
   removeColumn(index: number){
     const copyOf_rawScrape = new RawScrape(
       [],
@@ -196,7 +229,7 @@ export class ScraperService{
       [],
       []
     );
-    
+
     let header_target = new_id;
     for(let i = 0; i<header_target; i++){
       if(i != original_id){
@@ -242,9 +275,115 @@ export class ScraperService{
     this.alterScrapeTable(this.rawScrape);
   }
 
-  alterScrapeTable(newTable: RawScrape){
-    this.rawScrape = JSON.parse(JSON.stringify(newTable));
-    this.updateRawScrape();
+  truncateColumnInputs(start_at: number, end_before: number, col_id: number){
+    const copyOf_rawScrape = new RawScrape(
+      JSON.parse(JSON.stringify(this.rawScrape.headers)),
+      []
+    );
+    this.rawScrape.data.forEach((page) => {
+      const copyOf_page: string[][] = [];
+      page.forEach((row) => {
+        const copyOf_row = [];
+        for(let i = 0; i < row.length; i++){
+          if(i!=col_id){
+            copyOf_row.push(row[i]);
+          } else {
+            const copyOf_Data = JSON.parse(JSON.stringify(row[i])).substring(0, start_at) + JSON.parse(JSON.stringify(row[i])).substring(end_before);
+            copyOf_row.push(copyOf_Data);
+          }
+        }
+        copyOf_page.push(copyOf_row);
+      });
+      copyOf_rawScrape.data.push(copyOf_page);
+    });
+
+    this.rawScrape = JSON.parse(JSON.stringify(copyOf_rawScrape));
+    this.alterScrapeTable(this.rawScrape);
   }
+
+  fillColumnInputs(col_id: number, ref_col_id: number, start_at: number, end_before: number, insert_at: number){
+    const copyOf_rawScrape = new RawScrape(
+      JSON.parse(JSON.stringify(this.rawScrape.headers)),
+      []
+    );
+
+    console.log(insert_at)
+    this.rawScrape.data.forEach((page) => {
+      const copyOf_page: string[][] = [];
+      page.forEach((row) => {
+        let copyOf_Data = '';
+        const copyOf_row = [];
+        for(let i = 0; i < row.length; i++){
+          if(i==ref_col_id){
+            copyOf_Data = JSON.parse(JSON.stringify(row[i])).substring(start_at, end_before);
+          }
+        }
+        for(let i = 0; i < row.length; i++){
+          if(i==col_id){
+            if(insert_at >= 0){
+              copyOf_Data = String(JSON.parse(JSON.stringify(row[i])).substring(0, insert_at))
+                + String(copyOf_Data) + String(JSON.parse(JSON.stringify(row[i])).substring(insert_at));
+                console.log(copyOf_Data);
+            }
+            copyOf_row.push(copyOf_Data);
+
+          } else {
+            copyOf_row.push(row[i]);
+          }
+        }
+        copyOf_page.push(copyOf_row);
+      });
+      copyOf_rawScrape.data.push(copyOf_page);
+    });
+
+    this.rawScrape = JSON.parse(JSON.stringify(copyOf_rawScrape));
+    this.alterScrapeTable(this.rawScrape);
+  }
+
+  columnValuesAreHeaders(target_col_id: number, from: number, to: number){
+    const new_rawScrape = new RawScrape(
+      [],
+      []
+    ); 
+
+    for(let i=from; i<=to; i++){
+      new_rawScrape.headers.push(JSON.parse(JSON.stringify(this.rawScrape.data[0][i][target_col_id])));
+    }
+    console.log(new_rawScrape.headers);
+    console.log(this.rawScrape.data);
+
+    const newNumCols = to-from+1;
+
+    this.rawScrape.data.forEach((page) => {
+      const copyOf_page: string[][] = [];
+      for(let col_id=0; col_id< page[0].length; col_id++){
+        if(col_id != target_col_id){
+          for(let row_id=0; row_id< page.length; row_id++){
+            const new_row = [];
+            const new_col_id = 0;
+            while(row_id < page.length && new_col_id < newNumCols){
+              console.log(page[row_id][col_id]);
+              new_row.push(JSON.parse(JSON.stringify(page[row_id][col_id])));
+              row_id++;
+            }
+            copyOf_page.push(new_row);
+            row_id--;
+          }
+        }
+      }
+      new_rawScrape.data.push(copyOf_page)
+    });
+
+    this.rawScrape = JSON.parse(JSON.stringify(new_rawScrape));
+    this.alterScrapeTable(this.rawScrape);
+  }
+
+
+  public nhlTeams = [
+    "STL", "COL", "DAL", "EDM", "VAN", "CGY", "ARI", "WPG", "NSH", "DET", 
+    "MIN", "CHI", "SJS", "ANA", "LAK", "BOS", "TBL", "WSH", "PIT", "PHI",
+		"NYI", "CAR", "CBJ", "TOR", "NYR", "FLA", "BUF", "MTL", "NJD", "OTT",
+		"VGK", "SEA"
+  ];
 
 }

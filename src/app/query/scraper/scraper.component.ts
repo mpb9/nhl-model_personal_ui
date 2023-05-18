@@ -17,7 +17,7 @@ export class ScraperComponent implements OnInit {
   currentRawScrape!: RawScrape;
 
   loading: boolean = false;
-  gotScrape: boolean = true;
+  gotScrape: boolean = false;
 
   constructor(private queryService: QueryService, private scraperService: ScraperService){}
 
@@ -55,6 +55,7 @@ export class ScraperComponent implements OnInit {
     this.currentRawScrape = this.scraperService.newScrape(this.currentScraper, this.currentWebsites);
   }
 
+  // need to update... also add a way to get teams for each date
   loadWebPages(){
     this.currentWebsites = [];
     const extensions = JSON.parse(JSON.stringify(this.currentScraper.website.extensions));
@@ -83,14 +84,31 @@ export class ScraperComponent implements OnInit {
         const firstDate: any = new Date(extensions[i].substring(6, extensions[i].indexOf(' ', 6))+'T12:00:00');
         const secondDate: any = new Date(extensions[i].substring(extensions[i].indexOf(' ', 6)+1)+'T12:00:00');
         num = Math.round(Math.abs((firstDate - secondDate) / 24 * 60 * 60 * 1000));
+      } else if (extensions[i].includes('~teams')){
+        const year: any = Number(extensions[i].substring(7));
+        num = year > 2021 ? 32 : 31;
+        if(year <= 2017) num--;
+      } else if (extensions[i].includes('~tovery')){
+        const yearStart: any = Number(extensions[i].substring(8, 12));
+        const yearEnd: any = Number(extensions[i].substring(13));
+
+        num = 0; 
+        for(let i=yearStart; i<=yearEnd; i++){
+          if(i < 2017) num += 30;
+          else if(i < 2022) num += 31;
+          else num += 32;
+        }
       }
+
       numPages = num > numPages ? num : numPages;
     }
+
+    let team_index = 0;
 
     for(let j = 0; j < numPages; j++){
       let tempPage = this.currentScraper.website.baseUrl;
       for(let i = 0; i < extensions.length; i++){
-        //add ~dlooop
+        //add ~dloop, ~tovery
         if(extensions[i].includes('~num')){
           tempPage += extensions[i].substring(5);
           extensions[i] = '~num ' + (parseInt(extensions[i].substring(5)) + 1);
@@ -118,6 +136,11 @@ export class ScraperComponent implements OnInit {
           let firstDay = String(firstDate.getDate()).length > 1 ? String(firstDate.getDate()) : '0' + String(firstDate.getDate());
 
           extensions[i] = '~date ' + firstDate.getFullYear() + '-' + firstMonth + '-' + firstDay + ' ' + extensions[i].substring(extensions[i].indexOf(' ', 6)+1);
+        } else if (extensions[i].includes('~teams')){
+          const year: any = Number(extensions[i].substring(7,11));
+          if((team_index == 32) || (team_index == 31 && year > 2022) || (team_index == 30 && year > 2017)) team_index = 0;
+          extensions[i] += this.scraperService.nhlTeams[team_index];
+          team_index++;
         } else {
           tempPage += extensions[i];
         }

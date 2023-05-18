@@ -33,6 +33,7 @@ export class SqlActionsComponent implements OnInit{
   performAction(){
     if(this.action == 'alter') return this.alterSQLTableStructure();
     if(this.action == 'initialize') return this.initializeSQLTable();
+    if(this.action == 'insert') return this.insertSQLRows();
     else return '';
   }
 
@@ -83,7 +84,28 @@ export class SqlActionsComponent implements OnInit{
   }
 
   insertSQLRows(){
-    
+    let createCommand = "INSERT INTO `" + this.query.table.name + "` (";
+    this.sqlColumns.forEach((col) => {
+      let colToAdd = " `" + col.name + "`, ";
+      createCommand += colToAdd;
+    });
+    createCommand = createCommand.slice(0,createCommand.length-2) + ") VALUES ";
+
+    this.rawScrape.data.forEach((page) => {
+      page.forEach((row) => {    
+        let rowToAdd = "(";
+        row.forEach((col) => {
+          rowToAdd += "'" + col + "', ";
+        });
+        createCommand += rowToAdd.slice(0, rowToAdd.length -2) + "), ";
+      });
+    });
+
+    createCommand = createCommand.slice(0,createCommand.length-2) + ";";
+
+    this.sqlLink = "http://localhost/phpmyadmin/index.php?route=/table/sql&db=betting&table=" + this.query.table.name;
+    return createCommand;
+
   }
 
   userSQLResponse(event:any){
