@@ -24,15 +24,23 @@
             Syntax
           </button>
           <div class="dropdown-menu my-info-dropdown">
-            <p> <b style="font-style: italic;">Number Range:</b> ~num start end </p>
-            <p> <b style="font-style: italic;">Loop Number Range:</b> ~nloop iters s e </p>
-            <p> <b style="font-style: italic;">Date Range:</b> ~date yyyy-mm-dd yyyy-mm-dd </p>
-            <p> <b style="font-style: italic;">Loop Number Each Day:</b> ~dloop s e </p>
-            <p> <b style="font-style: italic;">Loop Teams:</b> ~teams yyyy </p>
-            <p> <b style="font-style: italic;">Loop Teams Each Year:</b> ~tovery yyyy-yyyy</p>
-            <p style="font-size: 90%; color: violet; font-style: italic; text-align: right; margin-bottom: 0px;">ADD TEAM DATE</p>
+            <p style="margin-bottom: 12px;"> <b style="font-style: italic;">Date Range:</b> ~date yyyy-mm-dd yyyy-mm-dd </p>
+
+            <p style="margin-bottom: 2px;"> <b style="font-style: italic;">Year Range:</b> ~year yyyy yyyy </p>
+            <p style="margin-bottom: 12px;"> <b style="font-style: italic;">Year Incriment With Date:</b> ~dyear [d#] [0/1]</p>
+
+            <p style="margin-bottom: 2px;"> <b style="font-style: italic;">Every Team:</b> ~team YYYY</p>
+            <p style="margin-bottom: 12px;"> <b style="font-style: italic;">Every Team Each Date/Year:</b> ~dteam/~yteam</p>
+
+            <p style="margin-bottom: 2px;"> <b style="font-style: italic;">Number Range:</b> ~num start end </p>
+            <p style="margin-bottom: 12px;"> <b style="font-style: italic;">Loop # Each D/T/Y:</b> ~dnum/~tnum/~ynum s e</p>
+
+            <p style="font-size: 90%; color: violet; font-style: italic; text-align: right; margin-bottom: 0px;">year's [d#] = date ref</p>
+            <p style="font-size: 90%; color: violet; font-style: italic; text-align: right; margin-bottom: 0px;">yr's [0/1] = refering to start/end of season</p>
             <p style="font-size: 90%; color: violet; font-style: italic; text-align: right; margin-bottom: 0px;">year season ends in</p>
+            <p style="font-size: 90%; color: violet; font-style: italic; text-align: right; margin-bottom: 0px;">indices start at 0</p>
             <p style="font-size: 90%; color: violet; font-style: italic; text-align: right; margin-bottom: 0px;">all inclusive..</p>
+            <p style="font-size: 90%; color: violet; font-style: italic; text-align: right; margin-bottom: 0px;">no ~xnum functionality</p>
           </div>
         </div>
       </div>

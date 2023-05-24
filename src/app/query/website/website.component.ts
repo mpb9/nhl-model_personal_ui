@@ -34,15 +34,15 @@ export class WebsiteComponent implements OnInit {
   }
 
   updateExtensions(event: any, index: number){
-    if(event.target === null) return;
-    if(index === this.extensions.length){
-      this.extensions.push(event.target.value);
-    } else {
-      if(index > this.extensions.length) console.log("INDEX > EXT LENGTH");
-
-      this.extensions[index] = event.target.value;
-    }
+    if(event.target === null){
+      this.extensions[index] = '';
+      return;
+    } 
+    
+    this.extensions[index] = event.target.value;
+    
     this.updateWebsite();
+    console.log(this.extensions);
   }
 
   updateWebsite(){
